@@ -22,3 +22,4 @@ if __name__ == "__main__":
 
     client = get_model()
     print("Successfully run get_model()")
+    print("Testing github desktop")
