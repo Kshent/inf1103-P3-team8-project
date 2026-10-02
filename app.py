@@ -1,3 +1,7 @@
+
+print("Test if can run code")
+##can
+
 import os
 import json
 from dotenv import load_dotenv
@@ -23,3 +27,4 @@ if __name__ == "__main__":
     client = get_model()
     print("Successfully run get_model()")
     print("Testing github desktop")
+
