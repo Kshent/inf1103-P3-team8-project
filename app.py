@@ -1,7 +1,3 @@
-
-print("Test if can run code")
-##can
-
 import os
 import json
 from dotenv import load_dotenv
@@ -9,8 +5,6 @@ from dotenv import load_dotenv
 from google import genai
 
 load_dotenv(".env")
-
-
 MODEL_VERSION = "gemini-3.6-flash"
 
 #first git "Establish successful gemini api connection"
@@ -23,13 +17,7 @@ def get_model():
 
 
 if __name__ == "__main__":
-
     client = get_model()
     print("Successfully run get_model()")
 
-<<<<<<< Updated upstream
-#printttttt
-=======
-#testing again
->>>>>>> Stashed changes
-    print("Testing github desktop again")
+
