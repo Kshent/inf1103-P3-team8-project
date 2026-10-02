@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 print("Test if can run code")
 ## zy test git pull git commit
 =======
@@ -25,3 +26,5 @@ if __name__ == "__main__":
     client = get_model()
     print("Successfully run get_model()")
 >>>>>>> d6e624fb0e76c4c3f1ec1a8909d6942d4990acb2
+=======
+>>>>>>> 59feeadf79c81eef0e221a445478315fd7bd0d8e
