@@ -21,3 +21,4 @@ if __name__ == "__main__":
     print("Successfully run get_model()")
 
 
+#test finn
