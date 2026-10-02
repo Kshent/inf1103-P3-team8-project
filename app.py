@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 from google import genai
 
+load_dotenv(".env")
+
 
 MODEL_VERSION = "gemini-3.6-flash"
 
