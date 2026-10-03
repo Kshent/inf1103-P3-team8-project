@@ -18,7 +18,10 @@ def main():
 
     ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
     ai_manager_result = AIManager.data_process(user_input_fields, ai_manager_connection)
+    
 
+    #This will output as dictionary. Logic manager access this dictionary
+    #process your logic etc.
     print(ai_manager_result)
     
 
