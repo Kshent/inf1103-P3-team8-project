@@ -1,10 +1,44 @@
+"""
+I/O Manager
+ 
+Responsibilities:
+1. Collect traveller input from the CLI.
+2. Validate user-provided information.
+3. Format data for the AI Manager.
+4. Display hotel recommendations.
+5. Coordinate communication between all managers.
+ 
+This layer must not contain:
+- Hotel ranking logic
+- AI recommendation logic
+- Database/file storage logic
+ 
+Those responsibilities belong to the Logic Manager,
+AI Manager and Data Manager respectively.
+"""
+
+
+print("Loading I/O Manager...")
 
 import re
+   """
+# Import regular expression utilities for user input validation.
+# Import type hints used throughout the I/O Manager to improve
+# code readability, maintainability and static type checking.
+
+# - re: Validates traveller inputs such as location, price range and email.
+# - Any: Supports flexible communication with other application managers.
+# - Callable: Allows dependency injection of input/output functions for testing.
+   """
 from typing import Any, Callable
 
 
 class InputCancelledError(Exception):
-    """Raised when the user exits the application."""
+    """
+    Custom exception raised when a user intentionally
+    terminates input using Ctrl+C or Ctrl+D.
+    """
+    pass
 
 
 def _safe_input(
@@ -12,36 +46,54 @@ def _safe_input(
     input_function: Callable[[str], str] = input
 ) -> str:
     """
-    Read user input and handle common CLI errors.
+    Centralised input reader for the I/O Manager.
+
+    Prevents the application from crashing when a user
+    exits the CLI unexpectedly.
     """
     try:
         value = input_function(prompt)
     except (KeyboardInterrupt, EOFError):
+        # Convert low-level input interruptions into a
+        # business-friendly application exception.
         raise InputCancelledError(
             "\nInput cancelled. Goodbye."
         )
 
+    # Defensive validation in case a mock input function
+    # returns None during testing.
     if value is None:
         raise InputCancelledError("\nInput cancelled. Goodbye.")
 
+    # Remove leading/trailing spaces before validation.
     return value.strip()
 
 
-def validate_location(location: str) -> tuple[bool, str]:
+def validate_location(location: str) -> tuple[bool, str\]:
     """
-    Validate a country or city name.
+    Validate destination entered by the traveller.
 
-    Allows letters, spaces, apostrophes, hyphens and periods.
+    Supported examples:
+        Singapore
+        Tokyo
+        New York
+        St. John's
     """
+
+    # Empty values are not allowed.
     if not location:
         return False, "Location cannot be empty."
 
+    # Prevent unrealistic one-character locations.
     if len(location) < 2:
         return False, "Location must contain at least 2 characters."
 
+    # Protect against excessively long user input.
     if len(location) > 100:
         return False, "Location must not exceed 100 characters."
 
+    # Allow international letters, numbers, spaces and
+    # commonly used punctuation in location names.
     valid_location = re.fullmatch(
         r"[A-Za-zÀ-ÿ0-9][A-Za-zÀ-ÿ0-9 .,'-]*",
         location
@@ -56,24 +108,27 @@ def validate_location(location: str) -> tuple[bool, str]:
     return True, ""
 
 
-def validate_price_range(price_range: str) -> tuple[bool, str, int | None]:
+def validate_price_range(price_range: str) -> tuple[bool, str, int | None\]:
     """
-    Validate a price range in Singapore dollars.
+    Validate traveller budget range in SGD.
 
-    Accepted examples:
+    Examples:
         100-250
         100 - 250
         100,250
-
-    Returns:
-        (is_valid, error_message, price_range_value)
     """
+
     if not price_range:
         return False, "Price range cannot be empty.", None
 
+    # Remove spaces to support flexible user formatting.
     cleaned_value = price_range.replace(" ", "")
 
-    match = re.fullmatch(r"(\d+(?:\.\d+)?)[-,](\d+(?:\.\d+)?)", cleaned_value)
+    # Accept either hyphen or comma as a separator.
+    match = re.fullmatch(
+        r"(\d+(?:\.\d+)?)\d+(?:\.\d+?)",
+        cleaned_value
+    )
 
     if not match:
         return (
@@ -85,9 +140,11 @@ def validate_price_range(price_range: str) -> tuple[bool, str, int | None]:
     minimum_price = float(match.group(1))
     maximum_price = float(match.group(2))
 
+    # Hotel prices must be positive values.
     if minimum_price <= 0 or maximum_price <= 0:
         return False, "Prices must be greater than zero.", None
 
+    # Logical validation to ensure valid range ordering.
     if minimum_price > maximum_price:
         return (
             False,
@@ -95,9 +152,11 @@ def validate_price_range(price_range: str) -> tuple[bool, str, int | None]:
             None
         )
 
+    # Protect against unrealistic budget values.
     if maximum_price > 1_000_000:
         return False, "The maximum price is too high.", None
 
+    # Return structured budget information for later layers.
     return True, "", {
         "min": round(minimum_price, 2),
         "max": round(maximum_price, 2),
@@ -105,13 +164,18 @@ def validate_price_range(price_range: str) -> tuple[bool, str, int | None]:
     }
 
 
-def validate_email(email_address: str) -> tuple[bool, str]:
+def validate_email(email_address: str) -> tuple[bool, str\]:
     """
-    Validate an email address using a practical CLI validation rule.
+    Validate traveller email address.
+
+    Email is required because recommendations
+    will be delivered through the Email Manager.
     """
+
     if not email_address:
         return False, "Email address cannot be empty."
 
+    # RFC-compliant email addresses cannot exceed 254 characters.
     if len(email_address) > 254:
         return False, "Email address is too long."
 
@@ -129,13 +193,17 @@ def validate_email(email_address: str) -> tuple[bool, str]:
 def request_mandatory_inputs(
     input_function: Callable[[str], str] = input,
     output_function: Callable[[str], None] = print
-) -> dict[str, Any]:
+) -> dict[str, Any\]:
     """
-    Step 1:
-    Request and validate location, price range and email address.
+    I/O Manager Step 1.
+
+    Collect all mandatory traveller information
+    required before hotel searching can begin.
     """
+
     output_function("\n=== Hotel Search ===")
 
+    # Keep requesting destination until valid.
     while True:
         location = _safe_input(
             "Enter your destination country or city: ",
@@ -149,6 +217,7 @@ def request_mandatory_inputs(
 
         output_function(f"Error: {error_message}")
 
+    # Keep requesting budget until valid.
     while True:
         price_input = _safe_input(
             "Enter your price range in SGD, for example 100-250: ",
@@ -164,6 +233,7 @@ def request_mandatory_inputs(
 
         output_function(f"Error: {error_message}")
 
+    # Keep requesting email until valid.
     while True:
         email_address = _safe_input(
             "Enter your email address: ",
@@ -177,6 +247,7 @@ def request_mandatory_inputs(
 
         output_function(f"Error: {error_message}")
 
+    # Return structured data for downstream managers.
     return {
         "location": location,
         "price_range": price_range,
@@ -189,9 +260,12 @@ def request_user_preferences(
     output_function: Callable[[str], None] = print
 ) -> str:
     """
-    Step 2:
-    Request elaborative, free-form hotel preferences.
+    I/O Manager Step 2.
+
+    Capture traveller preferences that will be used
+    by the AI Manager to personalise recommendations.
     """
+
     output_function(
         "\nDescribe your hotel preferences. "
         "For example: near public transport, breakfast included, "
@@ -204,12 +278,11 @@ def request_user_preferences(
             input_function
         )
 
+        # Allow the traveller to skip this step.
         if not preferences:
-            output_function(
-                "Error: Please enter at least one hotel preference."
-            )
-            continue
+        return ""
 
+        # Prevent excessively large text submissions.
         if len(preferences) > 2_000:
             output_function(
                 "Error: Preferences must not exceed 2,000 characters."
@@ -222,11 +295,14 @@ def request_user_preferences(
 def build_ai_request(
     mandatory_inputs: dict[str, Any],
     preferences: str
-) -> dict[str, Any]:
+) -> dict[str, Any\]:
     """
-    Step 3:
-    Combine Step 1 and Step 2 data into one AI request.
+    I/O Manager Step 3.
+
+    Transform traveller inputs into a standard request
+    format expected by the AI Manager.
     """
+
     return {
         "task": "Find suitable hotels for the traveller.",
         "destination": mandatory_inputs["location"],
@@ -253,8 +329,12 @@ def display_top_hotels(
     output_function: Callable[[str], None] = print
 ) -> None:
     """
-    Display the final hotel recommendations in the CLI.
+    Present final recommendations to the traveller.
+
+    This function is responsible only for output formatting
+    and does not perform any business logic.
     """
+
     if not hotels:
         output_function(
             "\nNo matching hotels were found for your search."
@@ -263,31 +343,40 @@ def display_top_hotels(
 
     output_function("\n=== Top Hotel Recommendations ===")
 
+    # Display each hotel in a numbered format.
     for index, hotel in enumerate(hotels, start=1):
+
         output_function(
             f"\n{index}. {hotel.get('name', 'Unnamed hotel')}"
         )
+
         output_function(
             f"   Location: {hotel.get('location', 'Not provided')}"
         )
+
         output_function(
             "   Price per night: "
             f"SGD {hotel.get('price_per_night_sgd', 'Not provided')}"
         )
+
         output_function(
             f"   Rating: {hotel.get('rating', 'Not provided')}"
         )
+
         output_function(
             f"   Description: "
             f"{hotel.get('description', 'Not provided')}"
         )
 
+        # Display amenities only when available.
         amenities = hotel.get("amenities", [])
+
         if amenities:
             output_function(
                 f"   Amenities: {', '.join(map(str, amenities))}"
             )
 
+        # Display booking link when provided by AI.
         if hotel.get("booking_url"):
             output_function(
                 f"   Booking URL: {hotel['booking_url']}"
@@ -304,31 +393,31 @@ def run_hotel_search(
     output_function: Callable[[str], None] = print
 ) -> bool:
     """
-    Main I/O Manager workflow.
+    Main I/O Manager orchestrator.
 
-    Steps:
-        1. Request mandatory inputs.
-        2. Request user preferences.
-        3. Send combined information to the AI Manager.
-        4. Save AI output using the Data Manager.
-        5. Filter the top three hotels using the Logic Manager.
-        6. Email the recommendations using the Email Manager.
-
-    Returns:
-        True when the workflow succeeds.
-        False when the workflow fails.
+    Coordinates communication between:
+    - User
+    - AI Manager
+    - Logic Manager
+    - Data Manager
+    - Email Manager
     """
+
     try:
+
+        # Step 1: Collect mandatory traveller details.
         mandatory_inputs = request_mandatory_inputs(
             input_function=input_function,
             output_function=output_function
         )
 
+        # Step 2: Collect optional preference details.
         preferences = request_user_preferences(
             input_function=input_function,
             output_function=output_function
         )
 
+        # Build standard AI request payload.
         ai_request = build_ai_request(
             mandatory_inputs=mandatory_inputs,
             preferences=preferences
@@ -336,11 +425,12 @@ def run_hotel_search(
 
         output_function("\nSearching for suitable hotels...")
 
-        # Step 3: Call the AI Manager.
+        # Step 3: Request hotel recommendations from AI Manager.
         ai_response = ai_manager.generate_hotel_recommendations(
             ai_request
         )
 
+        # Ensure AI Manager returned expected structure.
         if not isinstance(ai_response, dict):
             raise ValueError(
                 "The AI Manager returned an invalid response."
@@ -353,24 +443,25 @@ def run_hotel_search(
                 "The AI response does not contain a valid hotel list."
             )
 
-        # Step 4: Store the raw AI response using the Data Manager.
+        # Step 4: Persist raw AI output for auditing and traceability.
         data_manager.save_ai_results(
             ai_response,
             output_file_path
         )
 
-        # Step 5: Remove duplicates and find the best three hotels.
+        # Step 5: Logic Manager selects best hotel recommendations.
         top_hotels = logic_manager.filter_top_hotels(
             hotels,
             limit=3
         )
 
+        # Display shortlisted hotels in CLI.
         display_top_hotels(
             top_hotels,
             output_function=output_function
         )
 
-        # Step 6: Send the results to the requested email address.
+        # Step 6: Deliver results to traveller's email.
         output_function(
             f"\nSending recommendations to "
             f"{mandatory_inputs['email_address']}..."
@@ -388,28 +479,33 @@ def run_hotel_search(
         return True
 
     except InputCancelledError as error:
+        # User intentionally stopped the workflow.
         output_function(str(error))
         return False
 
     except TimeoutError:
+        # External dependency failed to respond in time.
         output_function(
-            "\nError: The request timed out. "
+            "\nError: Theest timed out. "
             "Please try again later."
         )
         return False
 
     except ConnectionError:
+        # Unable to reach one of the application managers/services.
         output_function(
             "\nError: Unable to connect to one of the application services."
         )
         return False
 
     except ValueError as error:
+        # Validation or data structure error.
         output_function(f"\nError: {error}")
         return False
 
     except Exception as error:
-        # Do not expose sensitive implementation details to CLI users.
+        # Prevent internal implementation details from leaking
+        # to end users while still providing basic diagnostics.
         output_function(
             "\nUnexpected error: The hotel search could not be completed."
         )
@@ -417,3 +513,4 @@ def run_hotel_search(
             f"Technical details: {type(error).__name__}"
         )
         return False
+
