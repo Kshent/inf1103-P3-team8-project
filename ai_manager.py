@@ -4,13 +4,22 @@ import re
 from dotenv import load_dotenv
 from google import genai
 from google.genai import errors
-
+import logging
 import ai_filter as filtering
 
 load_dotenv(".env")
 
 
-MODEL_VERSION = "gemini-3.6-flash"
+PRIMARY_MODEL = "gemini-3.8-flash"
+BACKUP_MODEL = "gemini-3.7-flash"
+TERTIARY_MODEL = "gemini-3.5-flash-lite"
+
+MODEL_FALLBACKS = [
+    PRIMARY_MODEL,
+    BACKUP_MODEL,
+    TERTIARY_MODEL
+]
+
 REQUIRED_HOTEL_FIELDS = [
     "name", "city", "country", "price_per_night_sgd", "rating",
     "amenities", "distance_to_mrt_m", "nearby_food", "nearby_activities",
@@ -62,28 +71,67 @@ def build_prompt(record):
 
 
 
+
+logger = logging.getLogger(__name__)
 def call_api(prompt, client):
 
-    #catch connection errors and timeouts; log do not crash
+    for model in MODEL_FALLBACKS:
 
-    try:
-        response = client.models.generate_content(
-            model=MODEL_VERSION,
-            contents=prompt
-        )
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=prompt
+            )
 
-        if not response.text:
+            # Successful response
+            if response.text:
+                return response.text
+
+            # Empty response -> try next model
+            logger.warning(
+                "%s returned an empty response. Trying fallback model.",
+                model
+            )
+            continue
+
+        except errors.APIError as error:
+
+            # Errors where trying another model may help
+            if error.code in {
+                404, #model unavailable
+                408, #timeout
+                429, #rate limit
+                500, #server error
+                502, #server error
+                503, #server error
+                504 #server error
+            }:
+                logger.warning(
+                    "%s failed with error %s. Trying fallback model.",
+                    model,
+                    error.code
+                )
+                continue
+
+            # Non-recoverable errors such as 400 (bad request), 401 (invalid API key), 402(Token payment needed), 403 (permission issue)
+            logger.error(
+                "Gemini API error %s: %s",
+                error.code,
+                error
+            )
             return None
 
-        return response.text
+        except (TimeoutError, ConnectionError):
 
-    except errors.ServerError as error:
+            logger.warning(
+                "%s had a connection problem. Trying fallback model.",
+                model
+            )
+            continue
 
-        if error.code == 503:
-            print("Gemini is currently busy. Please try again later.")
-            return None
-
-        raise
+    # All models failed. 
+    logger.error("All Gemini models failed.")
+    return None
 
 
 
