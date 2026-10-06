@@ -3,6 +3,7 @@ import json
 import re
 from dotenv import load_dotenv
 from google import genai
+from google.genai import errors
 
 import ai_filter as filtering
 
@@ -65,10 +66,24 @@ def call_api(prompt, client):
 
     #catch connection errors and timeouts; log do not crash
 
-    response = client.models.generate_content(model=MODEL_VERSION, contents=prompt)
-    if not response.text:
-        raise ValueError("Gemini returned an empty response.")
-    return response.text
+    try:
+        response = client.models.generate_content(
+            model=MODEL_VERSION,
+            contents=prompt
+        )
+
+        if not response.text:
+            return None
+
+        return response.text
+
+    except errors.ServerError as error:
+
+        if error.code == 503:
+            print("Gemini is currently busy. Please try again later.")
+            return None
+
+        raise
 
 
 
