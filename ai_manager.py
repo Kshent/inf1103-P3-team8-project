@@ -20,7 +20,7 @@ MODEL_FALLBACKS = [
     TERTIARY_MODEL
 ]
 
-REQUIRED_HOTEL_FIELDS = [
+EXPECTED_HOTEL_FIELDS = [
     "name", "city", "country", "price_per_night_sgd", "rating",
     "amenities", "distance_to_mrt_m", "nearby_food", "nearby_activities",
 ]
@@ -171,6 +171,126 @@ def parse_response(raw_ai_response_text):
     return data
 
 
+def validate_response(data):
+
+    # Entire response must be a dictionary
+    if not isinstance(data, dict):
+        return False
+
+    # Must contain "hotels"
+    if "hotels" not in data:
+        return False
+
+    hotels = data["hotels"]
+
+    # Hotels must be a list
+    if not isinstance(hotels, list):
+        return False
+
+    # Project requires exactly 3 hotel recommendations
+    if len(hotels) != 3:
+        return False
+
+    for hotel in hotels:
+
+        # Each hotel must be a dictionary
+        if not isinstance(hotel, dict):
+            return False
+
+        # All expected keys must exist
+        for field in EXPECTED_HOTEL_FIELDS:
+            if field not in hotel:
+                return False
+
+        # -------------------------
+        # Required core values
+        # -------------------------
+
+        # Name
+        if not isinstance(hotel["name"], str):
+            return False
+
+        if not hotel["name"].strip():
+            return False
+
+        # City
+        if not isinstance(hotel["city"], str):
+            return False
+
+        if not hotel["city"].strip():
+            return False
+
+        # Country
+        if not isinstance(hotel["country"], str):
+            return False
+
+        if not hotel["country"].strip():
+            return False
+
+        # Price
+        price = hotel["price_per_night_sgd"]
+
+        if not isinstance(price, (int, float)):
+            return False
+
+        if price <= 0:
+            return False
+
+        # -------------------------
+        # Rating
+        # Key required, None allowed
+        # -------------------------
+
+        rating = hotel["rating"]
+
+        if rating is not None:
+
+            if not isinstance(rating, (int, float)):
+                return False
+
+            if not 0 <= rating <= 5:
+                return False
+
+        # -------------------------
+        # Amenities
+        # Key required, [] allowed
+        # -------------------------
+
+        if not isinstance(hotel["amenities"], list):
+            return False
+
+        # -------------------------
+        # MRT distance
+        # Key required, None allowed
+        # -------------------------
+
+        distance = hotel["distance_to_mrt_m"]
+
+        if distance is not None:
+
+            if not isinstance(distance, (int, float)):
+                return False
+
+            if distance < 0:
+                return False
+
+        # -------------------------
+        # Nearby food
+        # Key required, [] allowed
+        # -------------------------
+
+        if not isinstance(hotel["nearby_food"], list):
+            return False
+
+        # -------------------------
+        # Nearby activities
+        # Key required, [] allowed
+        # -------------------------
+
+        if not isinstance(hotel["nearby_activities"], list):
+            return False
+
+    return True
 
 
 #This will be used to access all the other functions
@@ -180,4 +300,9 @@ def data_process(record, client):
 
     ai_response_text = call_api(prompt, client)
     ai_response_parse = parse_response(ai_response_text)
+
+    if not validate_response(ai_response_parse):
+        logger.warning("Gemini returned an invalid response structure.")
+        return None
+
     return ai_response_parse
