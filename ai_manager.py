@@ -27,12 +27,14 @@ EXPECTED_HOTEL_FIELDS = [
 
 
 def get_model(api_key=None):
+
     if api_key is None:
         api_key = os.environ.get("GEMINI_API_KEY")
-        print(api_key)
+
     if not api_key:
-        print("api key is not found unfortunately.")
+        logger.error("Gemini API key was not found.")
         return None
+
     return genai.Client(api_key=api_key)
 
 
