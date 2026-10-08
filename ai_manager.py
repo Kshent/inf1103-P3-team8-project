@@ -10,7 +10,7 @@ import ai_filter as filtering
 load_dotenv(".env")
 
 
-PRIMARY_MODEL = "gemini-3.8-flash"
+PRIMARY_MODEL = "gemini-3.6-flash"
 BACKUP_MODEL = "gemini-3.7-flash"
 TERTIARY_MODEL = "gemini-3.5-flash-lite"
 
@@ -71,6 +71,71 @@ def build_prompt(record):
     }}
     """.strip()
 
+
+# ---------------------------------------------------------
+# Correction prompt
+# ---------------------------------------------------------
+
+def build_correction_prompt(original_prompt, invalid_response):
+
+    """
+    Used once when Gemini returns malformed JSON or a
+    response that does not pass structure validation.
+    """
+
+    return f"""
+{original_prompt}
+
+CORRECTION:
+
+Your previous response did not pass the required response validation.
+
+Previous response:
+{invalid_response}
+
+Regenerate the response from scratch and correct the structure
+or data-type problems.
+
+Strict correction requirements:
+
+- Return STRICT JSON only.
+- Do not include markdown, code fences, explanations or commentary.
+- Return exactly 3 hotel objects.
+- Include every field shown in the required schema.
+- Use the correct data type for every field.
+
+Field rules:
+
+- "name" must be a non-empty string.
+- "city" must be a non-empty string.
+- "country" must be a non-empty string.
+- "price_per_night_sgd" must be a positive number.
+
+- "rating" must be a number from 0 to 5, or null.
+- If a source rating uses another numeric scale, convert it to
+  0-to-5 only if the original scale is known.
+- Do not treat hotel star classification as customer review rating.
+
+- "amenities" must be a list.
+  Use [] if unknown.
+
+- "distance_to_mrt_m" must be a non-negative number,
+  or null if unknown.
+
+- "nearby_food" must be a list.
+  Use [] if unknown.
+
+- "nearby_activities" must be a list.
+  Use [] if unknown.
+
+Accuracy rules:
+
+- Do NOT invent or guess information.
+- Do NOT fabricate hotel names, prices, ratings, amenities,
+  distances, food options or activities.
+- If information cannot be reliably provided, use the allowed
+  null or empty-list value instead.
+""".strip()
 
 
 
@@ -232,7 +297,10 @@ def validate_response(data):
         # Price
         price = hotel["price_per_night_sgd"]
 
-        if not isinstance(price, (int, float)):
+        if (
+            not isinstance(price, (int, float))
+            or isinstance(price, bool)
+        ):
             return False
 
         if price <= 0:
@@ -296,15 +364,55 @@ def validate_response(data):
 
 
 #This will be used to access all the other functions
+
 def data_process(record, client):
 
     prompt = build_prompt(record)
 
-    ai_response_text = call_api(prompt, client)
-    ai_response_parse = parse_response(ai_response_text)
+    # First attempt
+    ai_response_text = call_api(
+        prompt,
+        client
+    )
 
-    if not validate_response(ai_response_parse):
-        logger.warning("Gemini returned an invalid response structure.")
-        return None
+    ai_response_parse = parse_response(
+        ai_response_text
+    )
 
-    return ai_response_parse
+    # First response is valid
+    if validate_response(ai_response_parse):
+        return ai_response_parse
+
+    # -----------------------------------------------------
+    # One correction attempt
+    # -----------------------------------------------------
+
+    logger.warning(
+        "Gemini returned an invalid response. "
+        "Attempting one regeneration."
+    )
+
+    correction_prompt = build_correction_prompt(
+        prompt,
+        ai_response_text
+    )
+
+    corrected_response_text = call_api(
+        correction_prompt,
+        client
+    )
+
+    corrected_response_parse = parse_response(
+        corrected_response_text
+    )
+
+    # Corrected response is valid
+    if validate_response(corrected_response_parse):
+        return corrected_response_parse
+
+    # Still invalid after one correction attempt
+    logger.error(
+        "Gemini response remained invalid after regeneration."
+    )
+
+    return None
