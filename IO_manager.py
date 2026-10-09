@@ -34,14 +34,6 @@ import pycountry
 from typing import Any, Callable
 
 
-class InputCancelledError(Exception):
-    """
-    Custom exception raised when a user intentionally
-    terminates input using Ctrl+C or Ctrl+D.
-    """
-    pass
-
-
 def _safe_input(
     prompt: str,
     input_function: Callable[[str], str] = input
@@ -477,7 +469,6 @@ def run_hotel_search(
         output_function(
             "\nSuccess: Hotel recommendations have been emailed."
         )
-
         return True
 
     except InputCancelledError as error:
@@ -502,7 +493,9 @@ def run_hotel_search(
 
     except ValueError as error:
         # Validation or data structure error.
-        output_function(f"\nError: {error}")
+        output_function(
+            "\nError: API connection is currently unavailable. Please try again later."
+        )
         return False
 
     except Exception as error:
