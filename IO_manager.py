@@ -21,7 +21,8 @@ AI Manager and Data Manager respectively.
 print("Loading I/O Manager...")
 
 import re
-   """
+import pycountry
+"""
 # Import regular expression utilities for user input validation.
 # Import type hints used throughout the I/O Manager to improve
 # code readability, maintainability and static type checking.
@@ -73,11 +74,7 @@ def validate_location(location: str) -> tuple[bool, str\]:
     """
     Validate destination entered by the traveller.
 
-    Supported examples:
-        Singapore
-        Tokyo
-        New York
-        St. John's
+    Check against a list of known countries and cities to ensure
     """
 
     # Empty values are not allowed.
@@ -92,12 +89,18 @@ def validate_location(location: str) -> tuple[bool, str\]:
     if len(location) > 100:
         return False, "Location must not exceed 100 characters."
 
-    # Allow international letters, numbers, spaces and
-    # commonly used punctuation in location names.
-    valid_location = re.fullmatch(
-        r"[A-Za-zÀ-ÿ0-9][A-Za-zÀ-ÿ0-9 .,'-]*",
-        location
-    )
+    # Check against a list of known countries and cities.
+    try:
+        valid_location = any(
+            location.lower() == country.name.lower()
+            for country in pycountry.countries
+        ) or any(
+            location.lower() == city.name.lower()
+            for city in pycountry.subdivisions
+        )
+    except LookupError:
+        pass
+
 
     if not valid_location:
         return False, (
@@ -126,8 +129,7 @@ def validate_price_range(price_range: str) -> tuple[bool, str, int | None\]:
 
     # Accept either hyphen or comma as a separator.
     match = re.fullmatch(
-        r"(\d+(?:\.\d+)?)\d+(?:\.\d+?)",
-        cleaned_value
+        r"(\d+(?:\.\d+)?)[,-](\d+(?:\.\d+)   cleaned_value
     )
 
     if not match:
@@ -280,7 +282,7 @@ def request_user_preferences(
 
         # Allow the traveller to skip this step.
         if not preferences:
-        return ""
+            return ""
 
         # Prevent excessively large text submissions.
         if len(preferences) > 2_000:
