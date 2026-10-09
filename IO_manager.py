@@ -21,17 +21,11 @@ AI Manager and Data Manager respectively.
 print("Loading I/O Manager...")
 
 import re
-import pycountry
-"""
-# Import regular expression utilities for user input validation.
-# Import type hints used throughout the I/O Manager to improve
-# code readability, maintainability and static type checking.
-
-# - re: Validates traveller inputs such as location, price range and email.
-# - Any: Supports flexible communication with other application managers.
-# - Callable: Allows dependency injection of input/output functions for testing.
-   """
 from typing import Any, Callable
+
+
+class InputCancelledError(Exception):
+    """Raised when the user cancels input or closes the input stream."""
 
 
 def _safe_input(
@@ -62,12 +56,17 @@ def _safe_input(
     return value.strip()
 
 
-def validate_location(location: str) -> tuple[bool, str\]:
+def validate_location(location: str) -> tuple[bool, str]:
     """
     Validate destination entered by the traveller.
 
-    Check against a list of known countries and cities to ensure
+    Accept country and city names, including multi-part destinations.
     """
+
+    if not isinstance(location, str):
+        return False, "Location must be text."
+
+    location = location.strip()
 
     # Empty values are not allowed.
     if not location:
@@ -81,29 +80,19 @@ def validate_location(location: str) -> tuple[bool, str\]:
     if len(location) > 100:
         return False, "Location must not exceed 100 characters."
 
-    # Check against a list of known countries and cities.
-    try:
-        valid_location = any(
-            location.lower() == country.name.lower()
-            for country in pycountry.countries
-        ) or any(
-            location.lower() == city.name.lower()
-            for city in pycountry.subdivisions
-        )
-    except LookupError:
-        pass
-
-
-    if not valid_location:
+    # Validate destination text so cities and neighbourhoods are accepted.
+    if not re.fullmatch(r"[^\W\d_][\w\s.,'’()-]*", location, re.UNICODE):
         return False, (
             "Location contains invalid characters. "
-            "Please enter a valid country or city."
+            "Please enter a valid country or city name."
         )
 
     return True, ""
 
 
-def validate_price_range(price_range: str) -> tuple[bool, str, int | None\]:
+def validate_price_range(
+    price_range: str
+) -> tuple[bool, str, dict[str, int | float | str] | None]:
     """
     Validate traveller budget range in SGD.
 
@@ -113,15 +102,16 @@ def validate_price_range(price_range: str) -> tuple[bool, str, int | None\]:
         100,250
     """
 
-    if not price_range:
+    if not isinstance(price_range, str) or not price_range.strip():
         return False, "Price range cannot be empty.", None
 
-    # Remove spaces to support flexible user formatting.
-    cleaned_value = price_range.replace(" ", "")
+    # Remove whitespace to support flexible user formatting.
+    cleaned_value = re.sub(r"\s+", "", price_range)
 
     # Accept either hyphen or comma as a separator.
     match = re.fullmatch(
-        r"(\d+(?:\.\d+)?)[,-](\d+(?:\.\d+)   cleaned_value
+        r"(\d+(?:\.\d+)?)[,-](\d+(?:\.\d+)?)",
+        cleaned_value
     )
 
     if not match:
@@ -158,7 +148,7 @@ def validate_price_range(price_range: str) -> tuple[bool, str, int | None\]:
     }
 
 
-def validate_email(email_address: str) -> tuple[bool, str\]:
+def validate_email(email_address: str) -> tuple[bool, str]:
     """
     Validate traveller email address.
 
@@ -166,7 +156,7 @@ def validate_email(email_address: str) -> tuple[bool, str\]:
     will be delivered through the Email Manager.
     """
 
-    if not email_address:
+    if not isinstance(email_address, str) or not email_address:
         return False, "Email address cannot be empty."
 
     # RFC-compliant email addresses cannot exceed 254 characters.
@@ -187,7 +177,7 @@ def validate_email(email_address: str) -> tuple[bool, str\]:
 def request_mandatory_inputs(
     input_function: Callable[[str], str] = input,
     output_function: Callable[[str], None] = print
-) -> dict[str, Any\]:
+) -> dict[str, Any]:
     """
     I/O Manager Step 1.
 
@@ -289,7 +279,7 @@ def request_user_preferences(
 def build_ai_request(
     mandatory_inputs: dict[str, Any],
     preferences: str
-) -> dict[str, Any\]:
+) -> dict[str, Any]:
     """
     I/O Manager Step 3.
 
@@ -430,11 +420,13 @@ def run_hotel_search(
                 "The AI Manager returned an invalid response."
             )
 
-        hotels = ai_response.get("hotels", [])
+        hotels = ai_response.get("hotels")
 
-        if not isinstance(hotels, list):
+        if not isinstance(hotels, list) or not all(
+            isinstance(hotel, dict) for hotel in hotels
+        ):
             raise ValueError(
-                "The AI response does not contain a valid hotel list."
+                "The AI response does not contain a valid list of hotels."
             )
 
         # Step 4: Persist raw AI output for auditing and traceability.
@@ -448,6 +440,13 @@ def run_hotel_search(
             hotels,
             limit=3
         )
+
+        if not isinstance(top_hotels, list) or not all(
+            isinstance(hotel, dict) for hotel in top_hotels
+        ):
+            raise ValueError(
+                "The Logic Manager returned an invalid hotel list."
+            )
 
         # Display shortlisted hotels in CLI.
         display_top_hotels(
@@ -479,7 +478,7 @@ def run_hotel_search(
     except TimeoutError:
         # External dependency failed to respond in time.
         output_function(
-            "\nError: Theest timed out. "
+            "\nError: The hotel search request timed out. "
             "Please try again later."
         )
         return False
@@ -492,9 +491,9 @@ def run_hotel_search(
         return False
 
     except ValueError as error:
-        # Validation or data structure error.
+        # Validation or data structure errors have safe, local messages.
         output_function(
-            "\nError: API connection is currently unavailable. Please try again later."
+            f"\nError: {error}"
         )
         return False
 
@@ -508,4 +507,3 @@ def run_hotel_search(
             f"Technical details: {type(error).__name__}"
         )
         return False
-
