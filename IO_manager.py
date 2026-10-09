@@ -24,10 +24,6 @@ import re
 from typing import Any, Callable
 
 
-class InputCancelledError(Exception):
-    """Raised when the user cancels input or closes the input stream."""
-
-
 def _safe_input(
     prompt: str,
     input_function: Callable[[str], str] = input
@@ -41,16 +37,12 @@ def _safe_input(
     try:
         value = input_function(prompt)
     except (KeyboardInterrupt, EOFError):
-        # Convert low-level input interruptions into a
-        # business-friendly application exception.
-        raise InputCancelledError(
-            "\nInput cancelled. Goodbye."
-        )
+        raise EOFError("\nInput cancelled. Goodbye.") from None
 
     # Defensive validation in case a mock input function
     # returns None during testing.
     if value is None:
-        raise InputCancelledError("\nInput cancelled. Goodbye.")
+        raise EOFError("\nInput cancelled. Goodbye.")
 
     # Remove leading/trailing spaces before validation.
     return value.strip()
@@ -470,7 +462,7 @@ def run_hotel_search(
         )
         return True
 
-    except InputCancelledError as error:
+    except EOFError as error:
         # User intentionally stopped the workflow.
         output_function(str(error))
         return False
