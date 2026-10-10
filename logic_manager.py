@@ -262,8 +262,8 @@ def _amenity_matches(hotel, requirements):
             missing.append(label)
     return met, missing
 
-    # 0. build_requirements - what the user actually asked for
 
+# 0. build_requirements - what the user actually asked for
 def build_requirements(ai_output, record):
     """Work out, once per search, what will be scored and how many points
     each category is worth. Returned as plain data so the output layer can
@@ -302,3 +302,51 @@ def build_requirements(ai_output, record):
         "maxima": _allocate_maxima(active),
         "not_scored": not_scored,
     }
+
+# 1. validate_hotels
+def validate_hotels(ai_output):
+    """Return the usable hotels from the ai_manager result.
+
+    ai_manager checks the structure. This checks usefulness: drops records
+    without a name or a usable price, removes duplicate names, and attaches a
+    'flags' list for data that is missing or suspicious. Never raises.
+    """
+    if not isinstance(ai_output, dict):
+        return []
+    hotels = ai_output.get("hotels")
+    if not isinstance(hotels, list):
+        return []
+
+    targets = _proximity_targets(ai_output)
+    valid = []
+    seen = set()
+    for hotel in hotels:
+        if not isinstance(hotel, dict):
+            continue
+        name = hotel.get("name")
+        price = hotel.get("price_per_night_sgd")
+        if not isinstance(name, str) or not name.strip():
+            continue
+        if not _is_number(price) or price <= 0:
+            continue
+
+        key = _norm_name(name)
+        if key in seen:
+            continue
+        seen.add(key)
+
+        flags = []
+        rating = hotel.get("rating")
+        if not _is_number(rating):
+            flags.append("rating_missing")
+        elif float(rating).is_integer():
+            flags.append("rating_may_be_stars")
+        if not _as_list(hotel.get("amenities")):
+            flags.append("amenities_missing")
+        if any(_distance_for(hotel, target) is None for target in targets):
+            flags.append("distance_unknown")
+
+        checked = dict(hotel)
+        checked["flags"] = flags
+        valid.append(checked)
+    return valid
