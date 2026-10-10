@@ -351,7 +351,8 @@ def validate_hotels(ai_output):
         valid.append(checked)
     return valid
 
-    # 2. filter_hotels
+
+# 2. filter_hotels
 def _rejection_reason(hotel, requirements):
     """Return a reason string if a mandatory rule is violated, else None."""
     price = hotel["price_per_night_sgd"]
@@ -394,3 +395,167 @@ def filter_hotels(hotels, requirements):
             result["outcome"] = "flagged" if hotel.get("flags") else "accepted"
             kept.append(result)
     return kept, rejected
+
+
+# 3. calculate_score
+# Each component returns (share of its points 0..1, reason text).
+def _rating_component(hotel):
+    rating = hotel.get("rating")
+    if not _is_number(rating):
+        return 0.5, ("No customer review rating was available, so neutral "
+                     "points were given.")
+    share = (rating - RATING_FLOOR) / (RATING_CEILING - RATING_FLOOR)
+    share = min(max(share, 0.0), 1.0)
+    band = RATING_BELOW
+    for threshold, name in RATING_BANDS:
+        if rating >= threshold:
+            band = name
+            break
+    return share, ("Customer review rating %.1f/5 (%s). This is the average "
+                   "score from guest reviews, not the hotel's number of stars."
+                   % (rating, band))
+
+
+def _price_component(hotel, requirements):
+    price = hotel["price_per_night_sgd"]
+    budget_min = requirements["budget_min"]
+    budget_max = requirements["budget_max"]
+    if budget_max is None or budget_max <= 0:
+        return 0.5, ("%s per night. No valid budget was given, so neutral "
+                     "points were given." % _money(price))
+
+    ratio = price / budget_max
+    if ratio <= PRICE_FULL_POINTS_RATIO:
+        share = 1.0
+        note = "well within your budget"
+    else:
+        span = 1.0 - PRICE_FULL_POINTS_RATIO
+        share = 1.0 - (min(ratio, 1.0) - PRICE_FULL_POINTS_RATIO) / span * (
+            1.0 - PRICE_MIN_SHARE_AT_MAX)
+        note = "within budget but near the top of your range"
+    if budget_min is not None and price < budget_min:
+        note += ", and below your minimum"
+
+    if budget_min is not None:
+        budget_text = "%s-%s" % (_money(budget_min), _money(budget_max))
+    else:
+        budget_text = "up to %s" % _money(budget_max)
+    return share, "%s per night, %s (budget %s)." % (
+        _money(price), note, budget_text)
+
+
+def _location_component(hotel, requirements):
+    shares = []
+    parts = []
+    for target in requirements["targets"]:
+        distance = _distance_for(hotel, target)
+        if distance is None:
+            shares.append(0.0)
+            parts.append("Distance to %s is unknown" % target)
+            continue
+        share, label = _distance_band(distance)
+        shares.append(share)
+        parts.append("%s from %s (%s)" % (_metres(distance), target, label))
+    return sum(shares) / len(shares), "; ".join(parts) + "."
+
+
+def _preferences_component(hotel, requirements):
+    met, missing = _amenity_matches(hotel, requirements)
+    share = len(met) / len(requirements["pref_checks"])
+    parts = []
+    if met:
+        parts.append("Has: " + ", ".join(met) + ".")
+    if missing:
+        parts.append("Not listed: " + ", ".join(missing) + ".")
+    return share, " ".join(parts)
+
+
+def _bonus_component(hotel, requirements):
+    """Multi-condition rule: every condition must hold at the same time."""
+    ok_texts = []
+    fail_texts = []
+
+    rating = hotel.get("rating")
+    if _is_number(rating) and rating >= BONUS_MIN_RATING:
+        ok_texts.append("customer review rating %.1f (needs %.1f or more)"
+                        % (rating, BONUS_MIN_RATING))
+    else:
+        shown = "%.1f" % rating if _is_number(rating) else "unknown"
+        fail_texts.append("customer review rating of %.1f or more (this "
+                          "hotel: %s)" % (BONUS_MIN_RATING, shown))
+
+    budget_max = requirements["budget_max"]
+    if budget_max is not None and hotel["price_per_night_sgd"] <= budget_max:
+        ok_texts.append("price within budget")
+    else:
+        fail_texts.append("price within budget")
+
+    targets = requirements["targets"]
+    if targets:
+        far = [t for t in targets
+               if _distance_for(hotel, t) is None
+               or _distance_for(hotel, t) > BONUS_MAX_DISTANCE_M]
+        if not far:
+            ok_texts.append("within %d m of %s"
+                            % (BONUS_MAX_DISTANCE_M, ", ".join(targets)))
+        else:
+            fail_texts.append("within %d m of %s"
+                              % (BONUS_MAX_DISTANCE_M, ", ".join(far)))
+
+    if requirements["pref_checks"]:
+        _met, missing = _amenity_matches(hotel, requirements)
+        if not missing:
+            ok_texts.append("has every amenity you asked for")
+        else:
+            fail_texts.append("amenities not listed: " + ", ".join(missing))
+
+    if not fail_texts:
+        return 1.0, "Awarded because: " + "; ".join(ok_texts) + "."
+    return 0.0, ("Not awarded. All conditions must hold together. "
+                 "Still needed: " + "; ".join(fail_texts) + ".")
+
+
+def _make_line(key, share, reason, max_points):
+    points = min(max(_round_half_up(share * max_points), 0), max_points)
+    return {
+        "key": key,
+        "category": LABELS[key],
+        "points": points,
+        "max": max_points,
+        "reason": reason,
+    }
+
+
+def calculate_score(hotel, requirements):
+    """Return a copy of the hotel with 'score' (out of 100), 'verdict' and
+    'breakdown': a list of {category, points, max, reason} whose points add
+    up exactly to 'score'."""
+    maxima = requirements["maxima"]
+    breakdown = []
+
+    share, reason = _rating_component(hotel)
+    breakdown.append(_make_line("rating", share, reason, maxima["rating"]))
+
+    share, reason = _price_component(hotel, requirements)
+    breakdown.append(_make_line("price", share, reason, maxima["price"]))
+
+    if "location" in maxima:
+        share, reason = _location_component(hotel, requirements)
+        breakdown.append(
+            _make_line("location", share, reason, maxima["location"]))
+
+    if "preferences" in maxima:
+        share, reason = _preferences_component(hotel, requirements)
+        breakdown.append(
+            _make_line("preferences", share, reason, maxima["preferences"]))
+
+    share, reason = _bonus_component(hotel, requirements)
+    breakdown.append(_make_line("bonus", share, reason, BONUS_POINTS))
+
+    score = sum(line["points"] for line in breakdown)
+    scored = dict(hotel)
+    scored["score"] = score
+    scored["score_max"] = BASE_POINTS + BONUS_POINTS
+    scored["verdict"] = _verdict(score)
+    scored["breakdown"] = breakdown
+    return scored
