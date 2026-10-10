@@ -468,3 +468,47 @@ def _preferences_component(hotel, requirements):
     if missing:
         parts.append("Not listed: " + ", ".join(missing) + ".")
     return share, " ".join(parts)
+
+def _bonus_component(hotel, requirements):
+    """Multi-condition rule: every condition must hold at the same time."""
+    ok_texts = []
+    fail_texts = []
+
+    rating = hotel.get("rating")
+    if _is_number(rating) and rating >= BONUS_MIN_RATING:
+        ok_texts.append("customer review rating %.1f (needs %.1f or more)"
+                        % (rating, BONUS_MIN_RATING))
+    else:
+        shown = "%.1f" % rating if _is_number(rating) else "unknown"
+        fail_texts.append("customer review rating of %.1f or more (this "
+                          "hotel: %s)" % (BONUS_MIN_RATING, shown))
+
+    budget_max = requirements["budget_max"]
+    if budget_max is not None and hotel["price_per_night_sgd"] <= budget_max:
+        ok_texts.append("price within budget")
+    else:
+        fail_texts.append("price within budget")
+
+    targets = requirements["targets"]
+    if targets:
+        far = [t for t in targets
+               if _distance_for(hotel, t) is None
+               or _distance_for(hotel, t) > BONUS_MAX_DISTANCE_M]
+        if not far:
+            ok_texts.append("within %d m of %s"
+                            % (BONUS_MAX_DISTANCE_M, ", ".join(targets)))
+        else:
+            fail_texts.append("within %d m of %s"
+                              % (BONUS_MAX_DISTANCE_M, ", ".join(far)))
+
+    if requirements["pref_checks"]:
+        _met, missing = _amenity_matches(hotel, requirements)
+        if not missing:
+            ok_texts.append("has every amenity you asked for")
+        else:
+            fail_texts.append("amenities not listed: " + ", ".join(missing))
+
+    if not fail_texts:
+        return 1.0, "Awarded because: " + "; ".join(ok_texts) + "."
+    return 0.0, ("Not awarded. All conditions must hold together. "
+                 "Still needed: " + "; ".join(fail_texts) + ".")
