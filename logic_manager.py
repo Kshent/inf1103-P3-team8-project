@@ -261,3 +261,44 @@ def _amenity_matches(hotel, requirements):
         else:
             missing.append(label)
     return met, missing
+
+    # 0. build_requirements - what the user actually asked for
+
+def build_requirements(ai_output, record):
+    """Work out, once per search, what will be scored and how many points
+    each category is worth. Returned as plain data so the output layer can
+    explain it."""
+    targets = _proximity_targets(ai_output)
+    checks, unverified = _parse_preferences(
+        record.get("preferences"), targets)
+
+    budget_min = record.get("budget_min")
+    budget_max = record.get("budget_max")
+
+    active = ["rating", "price"]
+    not_scored = []
+    if targets:
+        active.append("location")
+    else:
+        not_scored.append(
+            "Location was not scored: you did not ask to be near a place.")
+    if checks:
+        active.append("preferences")
+    else:
+        not_scored.append(
+            "Amenity preferences were not scored: nothing you asked for "
+            "could be checked against the hotel data.")
+    if not_scored:
+        not_scored.append(
+            "Points for unscored categories are shared across the scored "
+            "ones, so every score is still out of 100.")
+
+    return {
+        "budget_min": budget_min if _is_number(budget_min) else None,
+        "budget_max": budget_max if _is_number(budget_max) else None,
+        "targets": targets,
+        "pref_checks": checks,
+        "unverified": unverified,
+        "maxima": _allocate_maxima(active),
+        "not_scored": not_scored,
+    }
