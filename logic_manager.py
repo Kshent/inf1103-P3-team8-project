@@ -469,6 +469,7 @@ def _preferences_component(hotel, requirements):
         parts.append("Not listed: " + ", ".join(missing) + ".")
     return share, " ".join(parts)
 
+#bonus commmit
 def _bonus_component(hotel, requirements):
     """Multi-condition rule: every condition must hold at the same time."""
     ok_texts = []
@@ -512,3 +513,49 @@ def _bonus_component(hotel, requirements):
         return 1.0, "Awarded because: " + "; ".join(ok_texts) + "."
     return 0.0, ("Not awarded. All conditions must hold together. "
                  "Still needed: " + "; ".join(fail_texts) + ".")
+
+
+# make line commit
+def _make_line(key, share, reason, max_points):
+    points = min(max(_round_half_up(share * max_points), 0), max_points)
+    return {
+        "key": key,
+        "category": LABELS[key],
+        "points": points,
+        "max": max_points,
+        "reason": reason,
+    }
+
+def calculate_score(hotel, requirements):
+    """Return a copy of the hotel with 'score' (out of 100), 'verdict' and
+    'breakdown': a list of {category, points, max, reason} whose points add
+    up exactly to 'score'."""
+    maxima = requirements["maxima"]
+    breakdown = []
+
+    share, reason = _rating_component(hotel)
+    breakdown.append(_make_line("rating", share, reason, maxima["rating"]))
+
+    share, reason = _price_component(hotel, requirements)
+    breakdown.append(_make_line("price", share, reason, maxima["price"]))
+
+    if "location" in maxima:
+        share, reason = _location_component(hotel, requirements)
+        breakdown.append(
+            _make_line("location", share, reason, maxima["location"]))
+
+    if "preferences" in maxima:
+        share, reason = _preferences_component(hotel, requirements)
+        breakdown.append(
+            _make_line("preferences", share, reason, maxima["preferences"]))
+
+    share, reason = _bonus_component(hotel, requirements)
+    breakdown.append(_make_line("bonus", share, reason, BONUS_POINTS))
+
+    score = sum(line["points"] for line in breakdown)
+    scored = dict(hotel)
+    scored["score"] = score
+    scored["score_max"] = BASE_POINTS + BONUS_POINTS
+    scored["verdict"] = _verdict(score)
+    scored["breakdown"] = breakdown
+    return scored
