@@ -19,6 +19,8 @@ MODEL_FALLBACKS = [
     TERTIARY_MODEL
 ]
 
+AI_CANDIDATE_COUNT = 10
+
 EXPECTED_HOTEL_FIELDS = [
     "name", "city", "country", "price_per_night_sgd", "rating",
     "amenities", "distance_to_mrt_m", "nearby_food", "nearby_activities",
@@ -89,7 +91,7 @@ def build_prompt(record):
     (2-3 suggestions), distance_to_mrt_m (meters, or null if unknown), and
     rating (out of 5).
     
-    Return 3 hotels as JSON matching exactly this schema and nothing else:
+    Return exactly {AI_CANDIDATE_COUNT} distinct hotel candidates as JSON matching exactly this schema and nothing else:
     {{
     "hotels": [
         {{
@@ -131,7 +133,7 @@ Strict correction requirements:
 
 - Return STRICT JSON only.
 - Do not include markdown, code fences, explanations or commentary.
-- Return exactly 3 hotel objects.
+- Return exactly {AI_CANDIDATE_COUNT} distinct hotel objects.
 - Include every field shown in the required schema.
 - Use the correct data type for every field.
 
@@ -308,9 +310,11 @@ def validate_response(data):
     if not isinstance(hotels, list):
         return False
 
-    # Project requires exactly 3 hotel recommendations
-    if len(hotels) != 3:
+    # Project requires exactly 10 hotel recommendations
+    if len(hotels) != AI_CANDIDATE_COUNT:
         return False
+
+    hotel_names = set()
 
     for hotel in hotels:
 
@@ -333,6 +337,13 @@ def validate_response(data):
 
         if not hotel["name"].strip():
             return False
+
+        hotel_name = hotel["name"].strip().lower()
+
+        if hotel_name in hotel_names:
+            return False
+
+        hotel_names.add(hotel_name)
 
         # City
         if not isinstance(hotel["city"], str):
