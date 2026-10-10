@@ -559,3 +559,16 @@ def calculate_score(hotel, requirements):
     scored["verdict"] = _verdict(score)
     scored["breakdown"] = breakdown
     return scored
+
+# 4. rank_hotels
+def rank_hotels(hotels):
+    """Sort by score (high to low). Ties go to the higher customer rating,
+    then the lower price, then the name, so the same input always gives the
+    same order."""
+    def sort_key(hotel):
+        rating = hotel.get("rating")
+        return (-hotel["score"],
+                -(rating if _is_number(rating) else 0),
+                hotel["price_per_night_sgd"],
+                _norm_name(hotel["name"]))
+    return sorted(hotels, key=sort_key)
