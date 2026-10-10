@@ -1,0 +1,156 @@
+{
+    "501f99c1-d619-4e3e-a7b7-7843384a2bb1": [
+        {
+            "name": "Ibis Singapore on Bencoolen",
+            "city": "Singapore",
+            "country": "Singapore",
+            "price_per_night_sgd": 200.0,
+            "rating": 4.1,
+            "amenities": [
+                "Free Wi-Fi",
+                "Restaurant",
+                "Bar",
+                "Free Parking",
+                "Bicycle Rental"
+            ],
+            "distance_to_mrt_m": 150,
+            "nearby_food": [
+                "Albert Centre Market & Food Centre",
+                "Fortune Centre",
+                "Swee Choon Tim Sum Restaurant"
+            ],
+            "nearby_activities": [
+                "National Museum of Singapore",
+                "Bugis Street Shopping",
+                "Kwan Im Thong Hood Cho Temple"
+            ]
+        },
+        {
+            "name": "Studio M Hotel",
+            "city": "Singapore",
+            "country": "Singapore",
+            "price_per_night_sgd": 200.0,
+            "rating": 4.0,
+            "amenities": [
+                "Outdoor Pool",
+                "Fitness Centre",
+                "Free Wi-Fi",
+                "Restaurant",
+                "Open-air Deck"
+            ],
+            "distance_to_mrt_m": 450,
+            "nearby_food": [
+                "Zion Riverside Food Centre",
+                "Common Man Coffee Roasters",
+                "Robertson Quay Dining"
+            ],
+            "nearby_activities": [
+                "Singapore River Cruise",
+                "Fort Canning Park",
+                "Clarke Quay Nightlife"
+            ]
+        },
+        {
+            "name": "YOTEL Singapore Orchard Road",
+            "city": "Singapore",
+            "country": "Singapore",
+            "price_per_night_sgd": 200.0,
+            "rating": 4.3,
+            "amenities": [
+                "Outdoor Swimming Pool",
+                "Fitness Centre",
+                "Free Wi-Fi",
+                "Restaurant & Bar",
+                "Self-Check-in Kiosks"
+            ],
+            "distance_to_mrt_m": 300,
+            "nearby_food": [
+                "Lucky Plaza Asian Food Stalls",
+                "ION Orchard Food Hall",
+                "Din Tai Fung Paragon"
+            ],
+            "nearby_activities": [
+                "Orchard Road Shopping",
+                "Singapore Botanic Gardens",
+                "The Centrepoint"
+            ]
+        }
+    ],
+    "0a12a7e3-b3a8-4d03-9319-d03eea7617cf": [
+        {
+            "name": "RIMBA by AYANA Bali",
+            "city": "Jimbaran",
+            "country": "Indonesia",
+            "price_per_night_sgd": 200.0,
+            "rating": 4.7,
+            "amenities": [
+                "Multi-tiered Outdoor Pools",
+                "Swim-up Pool Bar",
+                "Full-service Spa",
+                "Fitness Center",
+                "Free Wi-Fi"
+            ],
+            "distance_to_mrt_m": null,
+            "nearby_food": [
+                "Rock Bar Bali",
+                "Kisik Seafood Restaurant",
+                "Kampoeng Bali"
+            ],
+            "nearby_activities": [
+                "Jimbaran Bay Sunset Viewing",
+                "Garuda Wisnu Kencana Cultural Park",
+                "Kubu Beach Relaxation"
+            ]
+        },
+        {
+            "name": "Hotel Indonesia Kempinski Jakarta",
+            "city": "Jakarta",
+            "country": "Indonesia",
+            "price_per_night_sgd": 200.0,
+            "rating": 4.8,
+            "amenities": [
+                "Rooftop Outdoor Pool",
+                "Full-service Spa",
+                "Fitness Center",
+                "On-site Brewery",
+                "Free High-speed Wi-Fi"
+            ],
+            "distance_to_mrt_m": 150,
+            "nearby_food": [
+                "Paulaner Bräuhaus",
+                "SKYE Bar & Restaurant",
+                "Signatures Restaurant"
+            ],
+            "nearby_activities": [
+                "Shopping at Grand Indonesia",
+                "Exploring Bundaran HI",
+                "Visiting the National Monument (Monas)"
+            ]
+        },
+        {
+            "name": "Padma Resort Ubud",
+            "city": "Ubud",
+            "country": "Indonesia",
+            "price_per_night_sgd": 200.0,
+            "rating": 4.9,
+            "amenities": [
+                "89-meter Heated Infinity Pool",
+                "Sunken Pool Bar",
+                "Luxury Spa",
+                "Yoga Pavilion",
+                "Forest Trail"
+            ],
+            "distance_to_mrt_m": null,
+            "nearby_food": [
+                "The Puhu Restaurant",
+                "Pool Cafe & Bar",
+                "Warung Uma Bali"
+            ],
+            "nearby_activities": [
+                "Tegallalang Rice Terrace Trekking",
+                "Ayung River Rafting",
+                "Sunrise Yoga Sessions"
+            ]
+        }
+    ]
+}
