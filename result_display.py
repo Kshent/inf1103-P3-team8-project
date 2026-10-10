@@ -87,3 +87,46 @@ def _show_hotel(hotel):
         for flag in hotel["flags"]:
             print(_wrap("Note: " + NOTE_TEXT.get(flag, flag), "    "))
     print(LIGHT)
+
+def show_recommendations(result, record):
+    summary = result["summary"]
+    requirements = result["requirements"]
+
+    print()
+    print(HEAVY)
+    print("TOP HOTEL RECOMMENDATIONS")
+    print(HEAVY)
+    print("Destination : %s" % record.get("destination"))
+    print("Budget      : %s - %s per night" % (
+        _money(record.get("budget_min")), _money(record.get("budget_max"))))
+    print("Preferences : %s" % (record.get("preferences") or "None"))
+    if requirements["targets"]:
+        print("Near        : %s" % ", ".join(requirements["targets"]))
+    print("Reviewed    : %d hotels | Shown: %d | Rejected: %d" % (
+        summary["received"], summary["returned"], summary["rejected"]))
+    print(HEAVY)
+
+    if requirements["unverified"]:
+        print(_wrap("Could not be checked against hotel data (so not "
+                    "scored): " + ", ".join(requirements["unverified"]) + ".",
+                    ""))
+    for note in requirements["not_scored"]:
+        print(_wrap(note, ""))
+
+    if not result["top_hotels"]:
+        print()
+        print("No hotels matched your requirements.")
+    for hotel in result["top_hotels"]:
+        _show_hotel(hotel)
+
+    if result["rejected_hotels"]:
+        print()
+        print("REJECTED")
+        for hotel in result["rejected_hotels"]:
+            print(_wrap("x %s: %s" % (hotel["name"], hotel["reject_reason"]),
+                        "  "))
+        print(LIGHT)
+
+    print()
+    print(_wrap(FOOTER, ""))
+    print()    
