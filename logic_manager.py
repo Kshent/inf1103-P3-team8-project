@@ -350,3 +350,47 @@ def validate_hotels(ai_output):
         checked["flags"] = flags
         valid.append(checked)
     return valid
+
+    # 2. filter_hotels
+def _rejection_reason(hotel, requirements):
+    """Return a reason string if a mandatory rule is violated, else None."""
+    price = hotel["price_per_night_sgd"]
+    budget_max = requirements["budget_max"]
+    if budget_max is not None and price > budget_max:
+        return "%s per night is above your maximum budget of %s." % (
+            _money(price), _money(budget_max))
+
+    rating = hotel.get("rating")
+    if _is_number(rating) and rating < MIN_ACCEPTABLE_RATING:
+        return ("Customer review rating %.1f/5 is below the minimum of "
+                "%.1f." % (rating, MIN_ACCEPTABLE_RATING))
+
+    for target in requirements["targets"]:
+        distance = _distance_for(hotel, target)
+        if distance is not None and distance > MAX_NEAR_DISTANCE_M:
+            return "%s from %s is too far to count as near." % (
+                _metres(distance), target)
+    return None
+
+
+def filter_hotels(hotels, requirements):
+    """Split hotels into (kept, rejected) using the mandatory rules.
+
+    The budget comes from the user's input, not a hard-coded number.
+    budget_min is deliberately not a hard rule: a cheaper hotel that meets
+    everything else is not a worse result.
+    Rejected hotels carry a 'reject_reason' so it can be shown or stored.
+    """
+    kept = []
+    rejected = []
+    for hotel in hotels:
+        reason = _rejection_reason(hotel, requirements)
+        result = dict(hotel)
+        if reason:
+            result["outcome"] = "rejected"
+            result["reject_reason"] = reason
+            rejected.append(result)
+        else:
+            result["outcome"] = "flagged" if hotel.get("flags") else "accepted"
+            kept.append(result)
+    return kept, rejected
