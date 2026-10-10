@@ -590,3 +590,34 @@ def get_top_three(ranked_hotels):
         if len(top) == TOP_N:
             break
     return top
+
+# Entry point for the rest of the system
+def process_hotels(ai_output, record):
+    """Run the full logic pipeline. Does not modify ai_output or record.
+
+    Returns a dict:
+      top_hotels      - up to 3 ranked hotels, each with score, verdict, breakdown
+      rejected_hotels - hotels removed, each with 'reject_reason'
+      requirements    - what was scored and what could not be checked
+      summary         - counts, so the output layer can explain a short result
+    """
+    requirements = build_requirements(ai_output, record)
+    valid = validate_hotels(ai_output)
+    kept, rejected = filter_hotels(valid, requirements)
+    scored = [calculate_score(hotel, requirements) for hotel in kept]
+    top = get_top_three(rank_hotels(scored))
+
+    received = 0
+    if isinstance(ai_output, dict) and isinstance(ai_output.get("hotels"), list):
+        received = len(ai_output["hotels"])
+    return {
+        "top_hotels": top,
+        "rejected_hotels": rejected,
+        "requirements": requirements,
+        "summary": {
+            "received": received,
+            "valid": len(valid),
+            "rejected": len(rejected),
+            "returned": len(top),
+        },
+    }
