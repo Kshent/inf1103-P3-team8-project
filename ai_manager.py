@@ -25,6 +25,38 @@ EXPECTED_HOTEL_FIELDS = [
 ]
 
 
+# ---------------------------------------------------------
+# AI API error logging
+# ---------------------------------------------------------
+
+LOG_DIRECTORY = "logs"
+AI_ERROR_LOG_FILE = os.path.join(
+    LOG_DIRECTORY,
+    "ai_api_errors.log"
+)
+
+os.makedirs(LOG_DIRECTORY, exist_ok=True)
+
+logger = logging.getLogger("ai_manager")
+logger.setLevel(logging.WARNING)
+
+# Prevent logs from also appearing in console
+logger.propagate = False
+
+if not logger.handlers:
+    file_handler = logging.FileHandler(
+        AI_ERROR_LOG_FILE,
+        encoding="utf-8"
+    )
+
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)s | %(message)s"
+    )
+
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+
 def get_model(api_key=None):
 
     if api_key is None:
@@ -138,7 +170,6 @@ Accuracy rules:
 
 
 
-logger = logging.getLogger(__name__)
 def call_api(prompt, client):
 
     for model in MODEL_FALLBACKS:
