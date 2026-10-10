@@ -6,6 +6,7 @@ from google.genai import errors
 import logging
 import ai_filter as filtering
 
+
 load_dotenv(".env")
 
 
@@ -19,11 +20,50 @@ MODEL_FALLBACKS = [
     TERTIARY_MODEL
 ]
 
+
 AI_CANDIDATE_COUNT = 10
 
+
+# =========================================================
+# DISTANCE LOGIC CHANGE 1:
+# distance_to_preference_m becomes distance_to_preferences
+# =========================================================
+
 EXPECTED_HOTEL_FIELDS = [
-    "name", "city", "country", "price_per_night_sgd", "rating",
-    "amenities", "distance_to_mrt_m", "nearby_food", "nearby_activities",
+    "name",
+    "city",
+    "country",
+    "price_per_night_sgd",
+    "rating",
+    "amenities",
+    "distance_to_preferences",
+    "nearby_food",
+    "nearby_activities",
+]
+
+
+# =========================================================
+# DISTANCE LOGIC CHANGE 2:
+# One overall flag + support multiple preference locations
+# =========================================================
+
+EXPECTED_PROXIMITY_FIELDS = [
+    "specified",
+    "preferences",
+]
+
+
+# Structure used inside distance_to_preferences
+EXPECTED_DISTANCE_FIELDS = [
+    "target",
+    "distance_m",
+]
+
+
+# Structure used inside nearby_activities
+EXPECTED_ACTIVITY_FIELDS = [
+    "name",
+    "distance_m",
 ]
 
 
@@ -32,6 +72,7 @@ EXPECTED_HOTEL_FIELDS = [
 # ---------------------------------------------------------
 
 LOG_DIRECTORY = "logs"
+
 AI_ERROR_LOG_FILE = os.path.join(
     LOG_DIRECTORY,
     "ai_api_errors.log"
@@ -46,6 +87,7 @@ logger.setLevel(logging.WARNING)
 logger.propagate = False
 
 if not logger.handlers:
+
     file_handler = logging.FileHandler(
         AI_ERROR_LOG_FILE,
         encoding="utf-8"
@@ -71,38 +113,165 @@ def get_model(api_key=None):
     return genai.Client(api_key=api_key)
 
 
-
 def build_prompt(record):
 
-    """Build a clear, specific prompt from the record dict, instructing
-    the model to reply with JSON only."""
-    prefs = (record.get("preferences") or "").strip() or "No additional preferences."
+    """Build a clear, specific prompt from the record dict,
+    instructing the model to reply with JSON only."""
 
+    prefs = (
+        (record.get("preferences") or "").strip()
+        or "No additional preferences."
+    )
 
     return f"""
-    You are a hotel-recommendation engine. Reply with STRICT JSON ONLY - no
-    markdown, no commentary.
-    
-    Destination: {record.get('destination')}
-    Budget (SGD/night): {record.get('budget_min')} to {record.get('budget_max')}
-    Preferences: {prefs}
-    
-    For each hotel, also infer: nearby_food (2-3 suggestions), nearby_activities
-    (2-3 suggestions), distance_to_mrt_m (meters, or null if unknown), and
-    rating (out of 5).
-    
-    Return exactly {AI_CANDIDATE_COUNT} distinct hotel candidates as JSON matching exactly this schema and nothing else:
+You are a hotel-recommendation engine.
+
+Reply with STRICT JSON ONLY.
+Do not include markdown, explanations or commentary.
+
+Destination: {record.get('destination')}
+Budget (SGD/night): {record.get('budget_min')} to {record.get('budget_max')}
+Preferences: {prefs}
+
+
+PROXIMITY PREFERENCE RULES:
+
+Analyse the user's natural-language preferences and identify whether
+they explicitly mention one or more places they want the hotel to be near.
+
+Examples:
+
+"near NUS"
+- specified = true
+- preferences = ["National University of Singapore"]
+
+"near NUS and Marina Bay Sands"
+- specified = true
+- preferences = [
+    "National University of Singapore",
+    "Marina Bay Sands"
+  ]
+
+"I want a bathtub and swimming pool"
+- specified = false
+- preferences = []
+
+Rules:
+
+- Extract zero, one or multiple proximity preferences.
+- Only extract locations the user actually asks to be near.
+- Do NOT invent proximity preferences.
+- If no proximity location is mentioned:
+  specified must be false and preferences must be [].
+- If one or more proximity locations are mentioned:
+  specified must be true.
+
+
+DISTANCE RULES:
+
+If specified is true:
+
+- For every hotel, return one entry in
+  "distance_to_preferences" for EACH proximity preference.
+
+Example:
+
+"distance_to_preferences": [
     {{
+        "target": "National University of Singapore",
+        "distance_m": 850
+    }},
+    {{
+        "target": "Marina Bay Sands",
+        "distance_m": 7200
+    }}
+]
+
+- The target must correspond to one of the user's
+  proximity preferences.
+- distance_m must be a non-negative number in metres,
+  or null if the distance cannot be reliably determined.
+
+
+If specified is false:
+
+- "distance_to_preferences" must be [].
+
+- Recommend 2-3 useful nearby activities for each hotel.
+
+- For each nearby activity, provide its distance from the hotel
+  in metres when reliably available.
+
+Example:
+
+"nearby_activities": [
+    {{
+        "name": "National Museum",
+        "distance_m": 450
+    }},
+    {{
+        "name": "Botanic Gardens",
+        "distance_m": 900
+    }}
+]
+
+
+HOTEL RULES:
+
+For each hotel also provide:
+
+- name
+- city
+- country
+- price per night in SGD
+- rating out of 5
+- amenities
+- nearby food suggestions
+- nearby activities
+
+Do NOT fabricate information.
+
+If a distance or optional piece of information cannot be
+reliably determined, use null or [] where allowed.
+
+
+Return exactly {AI_CANDIDATE_COUNT} distinct hotel candidates
+matching exactly this JSON structure:
+
+{{
+    "proximity_preference": {{
+        "specified": true or false,
+        "preferences": ["string"]
+    }},
+
     "hotels": [
         {{
-        "name": "string", "city": "string", "country": "string",
-        "price_per_night_sgd": number, "rating": number or null,
-        "amenities": ["string"], "distance_to_mrt_m": number or null,
-        "nearby_food": ["string"], "nearby_activities": ["string"]
+            "name": "string",
+            "city": "string",
+            "country": "string",
+            "price_per_night_sgd": number,
+            "rating": number or null,
+            "amenities": ["string"],
+
+            "distance_to_preferences": [
+                {{
+                    "target": "string",
+                    "distance_m": number or null
+                }}
+            ],
+
+            "nearby_food": ["string"],
+
+            "nearby_activities": [
+                {{
+                    "name": "string",
+                    "distance_m": number or null
+                }}
+            ]
         }}
     ]
-    }}
-    """.strip()
+}}
+""".strip()
 
 
 # ---------------------------------------------------------
@@ -137,51 +306,101 @@ Strict correction requirements:
 - Include every field shown in the required schema.
 - Use the correct data type for every field.
 
-Field rules:
+
+Proximity rules:
+
+- "proximity_preference" must be a dictionary.
+
+- "specified" must be true or false.
+
+- "preferences" must be a list.
+
+- If "specified" is false:
+  "preferences" must be [].
+
+- If "specified" is true:
+  "preferences" must contain at least one non-empty location string.
+
+- Do NOT invent proximity preferences.
+
+
+Distance rules:
+
+- "distance_to_preferences" must be a list.
+
+- Every entry must contain:
+  "target" and "distance_m".
+
+- "target" must be a non-empty string.
+
+- "distance_m" must be a non-negative number or null.
+
+- When proximity preferences exist, every hotel must contain
+  exactly one distance entry for every proximity preference.
+
+- When no proximity preference exists,
+  "distance_to_preferences" must be [].
+
+
+Hotel field rules:
 
 - "name" must be a non-empty string.
+
 - "city" must be a non-empty string.
+
 - "country" must be a non-empty string.
+
 - "price_per_night_sgd" must be a positive number.
 
 - "rating" must be a number from 0 to 5, or null.
+
 - If a source rating uses another numeric scale, convert it to
   0-to-5 only if the original scale is known.
+
 - Do not treat hotel star classification as customer review rating.
 
 - "amenities" must be a list.
   Use [] if unknown.
 
-- "distance_to_mrt_m" must be a non-negative number,
-  or null if unknown.
-
 - "nearby_food" must be a list.
   Use [] if unknown.
 
 - "nearby_activities" must be a list.
-  Use [] if unknown.
+
+- Every nearby activity must contain:
+  "name" and "distance_m".
+
+- Activity "name" must be a non-empty string.
+
+- Activity "distance_m" must be a non-negative number or null.
+
 
 Accuracy rules:
 
 - Do NOT invent or guess information.
-- Do NOT fabricate hotel names, prices, ratings, amenities,
-  distances, food options or activities.
-- If information cannot be reliably provided, use the allowed
-  null or empty-list value instead.
+
+- Do NOT fabricate hotel names, prices, ratings,
+  amenities, distances, food options or activities.
+
+- If information cannot be reliably provided,
+  use the allowed null or empty-list value instead.
 """.strip()
 
 
 def call_api(prompt, client):
 
     if client is None:
+
         logger.error(
             "Gemini API request could not start because client is unavailable."
         )
+
         return None
 
     for model in MODEL_FALLBACKS:
 
         try:
+
             response = client.models.generate_content(
                 model=model,
                 contents=prompt
@@ -199,13 +418,13 @@ def call_api(prompt, client):
         except errors.APIError as error:
 
             if error.code in {
-                404, #model unavailable
-                408, #timeout
-                429, #rate limit
-                500, #server error
-                502, #server error
-                503, #server error
-                504 #server error
+                404,  # model unavailable
+                408,  # timeout
+                429,  # rate limit
+                500,  # server error
+                502,  # server error
+                503,  # server error
+                504   # server error
             }:
 
                 logger.warning(
@@ -260,18 +479,19 @@ def call_api(prompt, client):
 
 
 def parse_response(raw_ai_response_text):
-    """Extract and parse JSON from the raw response text. Returns a dict
-    on success, or None if the response can't be turned into one - every
-    unexpected format is caught and handled instead of crashing the
-    program. No print() here - that stays in io_manager.py; the caller
-    decides what, if anything, to tell the user when this returns None."""
+
+    """Extract and parse JSON from the raw response text.
+    Returns a dict on success, or None if the response
+    can't be turned into one."""
 
     if raw_ai_response_text is None:
         return None
+
     if not isinstance(raw_ai_response_text, str):
         return None
 
     text = raw_ai_response_text.strip()
+
     if not text:
         return None
 
@@ -283,14 +503,13 @@ def parse_response(raw_ai_response_text):
 
     try:
         data = json.loads(text)
+
     except (json.JSONDecodeError, TypeError, ValueError):
         return None
 
     if not isinstance(data, dict):
         return None
 
-
-    #Important : returns data as a dictinoary
     return data
 
 
@@ -300,17 +519,73 @@ def validate_response(data):
     if not isinstance(data, dict):
         return False
 
-    # Must contain "hotels"
+    # =====================================================
+    # DISTANCE LOGIC CHANGE 3:
+    # Validate proximity preference information
+    # =====================================================
+
+    if "proximity_preference" not in data:
+        return False
+
+    proximity = data["proximity_preference"]
+
+    if not isinstance(proximity, dict):
+        return False
+
+    for field in EXPECTED_PROXIMITY_FIELDS:
+        if field not in proximity:
+            return False
+
+    # specified must be boolean
+    if not isinstance(proximity["specified"], bool):
+        return False
+
+    preferences = proximity["preferences"]
+
+    # preferences must be a list
+    if not isinstance(preferences, list):
+        return False
+
+    preference_targets = set()
+
+    for preference in preferences:
+
+        if not isinstance(preference, str):
+            return False
+
+        if not preference.strip():
+            return False
+
+        normalised_preference = preference.strip().lower()
+
+        # Do not allow duplicate preference locations
+        if normalised_preference in preference_targets:
+            return False
+
+        preference_targets.add(normalised_preference)
+
+    # specified=True must have at least one preference
+    if proximity["specified"] and len(preferences) == 0:
+        return False
+
+    # specified=False must have no preferences
+    if not proximity["specified"] and len(preferences) != 0:
+        return False
+
+
+    # -----------------------------------------------------
+    # Hotels
+    # -----------------------------------------------------
+
     if "hotels" not in data:
         return False
 
     hotels = data["hotels"]
 
-    # Hotels must be a list
     if not isinstance(hotels, list):
         return False
 
-    # Project requires exactly 10 hotel recommendations
+    # AI Manager must return exactly 10 candidates
     if len(hotels) != AI_CANDIDATE_COUNT:
         return False
 
@@ -327,11 +602,11 @@ def validate_response(data):
             if field not in hotel:
                 return False
 
+
         # -------------------------
-        # Required core values
+        # Name
         # -------------------------
 
-        # Name
         if not isinstance(hotel["name"], str):
             return False
 
@@ -345,21 +620,33 @@ def validate_response(data):
 
         hotel_names.add(hotel_name)
 
+
+        # -------------------------
         # City
+        # -------------------------
+
         if not isinstance(hotel["city"], str):
             return False
 
         if not hotel["city"].strip():
             return False
 
+
+        # -------------------------
         # Country
+        # -------------------------
+
         if not isinstance(hotel["country"], str):
             return False
 
         if not hotel["country"].strip():
             return False
 
+
+        # -------------------------
         # Price
+        # -------------------------
+
         price = hotel["price_per_night_sgd"]
 
         if (
@@ -371,14 +658,15 @@ def validate_response(data):
         if price <= 0:
             return False
 
+
         # -------------------------
         # Rating
-        # Key required, None allowed
         # -------------------------
 
         rating = hotel["rating"]
 
         if rating is not None:
+
             if (
                 not isinstance(rating, (int, float))
                 or isinstance(rating, bool)
@@ -388,66 +676,142 @@ def validate_response(data):
             if not 0 <= rating <= 5:
                 return False
 
+
         # -------------------------
         # Amenities
-        # Key required, [] allowed
         # -------------------------
 
         if not isinstance(hotel["amenities"], list):
             return False
 
-        # -------------------------
-        # MRT distance
-        # Key required, None allowed
-        # -------------------------
 
-        distance = hotel["distance_to_mrt_m"]
+        # =================================================
+        # DISTANCE LOGIC CHANGE 4:
+        # Validate distances to user preferences
+        # =================================================
 
-        if distance is not None:
-            if (
-                not isinstance(distance, (int, float))
-                or isinstance(distance, bool)
-            ):
+        distances = hotel["distance_to_preferences"]
+
+        if not isinstance(distances, list):
+            return False
+
+        distance_targets = set()
+
+        for distance_item in distances:
+
+            if not isinstance(distance_item, dict):
                 return False
 
-            if distance < 0:
+            for field in EXPECTED_DISTANCE_FIELDS:
+                if field not in distance_item:
+                    return False
+
+            target = distance_item["target"]
+
+            if not isinstance(target, str):
                 return False
+
+            if not target.strip():
+                return False
+
+            normalised_target = target.strip().lower()
+
+            # Prevent duplicate targets for the same hotel
+            if normalised_target in distance_targets:
+                return False
+
+            distance_targets.add(normalised_target)
+
+            distance_m = distance_item["distance_m"]
+
+            if distance_m is not None:
+
+                if (
+                    not isinstance(distance_m, (int, float))
+                    or isinstance(distance_m, bool)
+                ):
+                    return False
+
+                if distance_m < 0:
+                    return False
+
+
+        # Every hotel must contain exactly the same
+        # preference targets that the AI extracted above.
+        #
+        # When no preference exists, both sets are empty.
+        if distance_targets != preference_targets:
+            return False
+
 
         # -------------------------
         # Nearby food
-        # Key required, [] allowed
         # -------------------------
 
         if not isinstance(hotel["nearby_food"], list):
             return False
 
-        # -------------------------
-        # Nearby activities
-        # Key required, [] allowed
-        # -------------------------
 
-        if not isinstance(hotel["nearby_activities"], list):
+        # =================================================
+        # DISTANCE LOGIC CHANGE 5:
+        # Nearby activities now include their distance
+        # =================================================
+
+        activities = hotel["nearby_activities"]
+
+        if not isinstance(activities, list):
             return False
+
+        for activity in activities:
+
+            if not isinstance(activity, dict):
+                return False
+
+            for field in EXPECTED_ACTIVITY_FIELDS:
+                if field not in activity:
+                    return False
+
+            if not isinstance(activity["name"], str):
+                return False
+
+            if not activity["name"].strip():
+                return False
+
+            activity_distance = activity["distance_m"]
+
+            if activity_distance is not None:
+
+                if (
+                    not isinstance(activity_distance, (int, float))
+                    or isinstance(activity_distance, bool)
+                ):
+                    return False
+
+                if activity_distance < 0:
+                    return False
 
     return True
 
 
-#This will be used to access all the other functions
+# This will be used to access all the other functions
 
 def data_process(record, client):
 
     prompt = build_prompt(record)
 
     ai_response_text = call_api(
-    prompt,
-    client)
+        prompt,
+        client
+    )
 
     # API failure is different from invalid AI output.
     # There is nothing to correct if no response was returned.
     if ai_response_text is None:
+
         logger.error(
             "AI processing stopped because no Gemini model returned a response."
         )
+
         return None
 
     ai_response_parse = parse_response(
@@ -473,15 +837,17 @@ def data_process(record, client):
     )
 
     corrected_response_text = call_api(
-    correction_prompt,
-    client
-)
+        correction_prompt,
+        client
+    )
 
     # Stop if the API failed during the correction attempt
     if corrected_response_text is None:
+
         logger.error(
             "Correction attempt stopped because no Gemini model returned a response."
         )
+
         return None
 
     corrected_response_parse = parse_response(
