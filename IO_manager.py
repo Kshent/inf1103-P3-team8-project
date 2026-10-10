@@ -268,234 +268,234 @@ def request_user_preferences(
         return preferences
 
 
-def build_ai_request(
-    mandatory_inputs: dict[str, Any],
-    preferences: str
-) -> dict[str, Any]:
-    """
-    I/O Manager Step 3.
+# def build_ai_request(
+#     mandatory_inputs: dict[str, Any],
+#     preferences: str
+# ) -> dict[str, Any]:
+#     """
+#     I/O Manager Step 3.
 
-    Transform traveller inputs into a standard request
-    format expected by the AI Manager.
-    """
+#     Transform traveller inputs into a standard request
+#     format expected by the AI Manager.
+#     """
 
-    return {
-        "task": "Find suitable hotels for the traveller.",
-        "destination": mandatory_inputs["location"],
-        "price_range": mandatory_inputs["price_range"],
-        "preferences": preferences,
-        "required_response_format": {
-            "hotels": [
-                {
-                    "name": "Hotel name",
-                    "location": "Hotel location",
-                    "price_per_night_sgd": 0,
-                    "rating": 0,
-                    "description": "Short description",
-                    "amenities": [],
-                    "booking_url": "https://example.com"
-                }
-            ]
-        }
-    }
-
-
-def display_top_hotels(
-    hotels: list[dict[str, Any]],
-    output_function: Callable[[str], None] = print
-) -> None:
-    """
-    Present final recommendations to the traveller.
-
-    This function is responsible only for output formatting
-    and does not perform any business logic.
-    """
-
-    if not hotels:
-        output_function(
-            "\nNo matching hotels were found for your search."
-        )
-        return
-
-    output_function("\n=== Top Hotel Recommendations ===")
-
-    # Display each hotel in a numbered format.
-    for index, hotel in enumerate(hotels, start=1):
-
-        output_function(
-            f"\n{index}. {hotel.get('name', 'Unnamed hotel')}"
-        )
-
-        output_function(
-            f"   Location: {hotel.get('location', 'Not provided')}"
-        )
-
-        output_function(
-            "   Price per night: "
-            f"SGD {hotel.get('price_per_night_sgd', 'Not provided')}"
-        )
-
-        output_function(
-            f"   Rating: {hotel.get('rating', 'Not provided')}"
-        )
-
-        output_function(
-            f"   Description: "
-            f"{hotel.get('description', 'Not provided')}"
-        )
-
-        # Display amenities only when available.
-        amenities = hotel.get("amenities", [])
-
-        if amenities:
-            output_function(
-                f"   Amenities: {', '.join(map(str, amenities))}"
-            )
-
-        # Display booking link when provided by AI.
-        if hotel.get("booking_url"):
-            output_function(
-                f"   Booking URL: {hotel['booking_url']}"
-            )
+#     return {
+#         "task": "Find suitable hotels for the traveller.",
+#         "destination": mandatory_inputs["location"],
+#         "price_range": mandatory_inputs["price_range"],
+#         "preferences": preferences,
+#         "required_response_format": {
+#             "hotels": [
+#                 {
+#                     "name": "Hotel name",
+#                     "location": "Hotel location",
+#                     "price_per_night_sgd": 0,
+#                     "rating": 0,
+#                     "description": "Short description",
+#                     "amenities": [],
+#                     "booking_url": "https://example.com"
+#                 }
+#             ]
+#         }
+#     }
 
 
-def run_hotel_search(
-    ai_manager: Any,
-    data_manager: Any,
-    logic_manager: Any,
-    email_manager: Any,
-    output_file_path: str = "hotel_recommendations.json",
-    input_function: Callable[[str], str] = input,
-    output_function: Callable[[str], None] = print
-) -> bool:
-    """
-    Main I/O Manager orchestrator.
+# def display_top_hotels(
+#     hotels: list[dict[str, Any]],
+#     output_function: Callable[[str], None] = print
+# ) -> None:
+#     """
+#     Present final recommendations to the traveller.
 
-    Coordinates communication between:
-    - User
-    - AI Manager
-    - Logic Manager
-    - Data Manager
-    - Email Manager
-    """
+#     This function is responsible only for output formatting
+#     and does not perform any business logic.
+#     """
 
-    try:
+#     if not hotels:
+#         output_function(
+#             "\nNo matching hotels were found for your search."
+#         )
+#         return
 
-        # Step 1: Collect mandatory traveller details.
-        mandatory_inputs = request_mandatory_inputs(
-            input_function=input_function,
-            output_function=output_function
-        )
+#     output_function("\n=== Top Hotel Recommendations ===")
 
-        # Step 2: Collect optional preference details.
-        preferences = request_user_preferences(
-            input_function=input_function,
-            output_function=output_function
-        )
+#     # Display each hotel in a numbered format.
+#     for index, hotel in enumerate(hotels, start=1):
 
-        # Build standard AI request payload.
-        ai_request = build_ai_request(
-            mandatory_inputs=mandatory_inputs,
-            preferences=preferences
-        )
+#         output_function(
+#             f"\n{index}. {hotel.get('name', 'Unnamed hotel')}"
+#         )
 
-        output_function("\nSearching for suitable hotels...")
+#         output_function(
+#             f"   Location: {hotel.get('location', 'Not provided')}"
+#         )
 
-        # Step 3: Request hotel recommendations from AI Manager.
-        ai_response = ai_manager.generate_hotel_recommendations(
-            ai_request
-        )
+#         output_function(
+#             "   Price per night: "
+#             f"SGD {hotel.get('price_per_night_sgd', 'Not provided')}"
+#         )
 
-        # Ensure AI Manager returned expected structure.
-        if not isinstance(ai_response, dict):
-            raise ValueError(
-                "The AI Manager returned an invalid response."
-            )
+#         output_function(
+#             f"   Rating: {hotel.get('rating', 'Not provided')}"
+#         )
 
-        hotels = ai_response.get("hotels")
+#         output_function(
+#             f"   Description: "
+#             f"{hotel.get('description', 'Not provided')}"
+#         )
 
-        if not isinstance(hotels, list) or not all(
-            isinstance(hotel, dict) for hotel in hotels
-        ):
-            raise ValueError(
-                "The AI response does not contain a valid list of hotels."
-            )
+#         # Display amenities only when available.
+#         amenities = hotel.get("amenities", [])
 
-        # Step 4: Persist raw AI output for auditing and traceability.
-        data_manager.save_ai_results(
-            ai_response,
-            output_file_path
-        )
+#         if amenities:
+#             output_function(
+#                 f"   Amenities: {', '.join(map(str, amenities))}"
+#             )
 
-        # Step 5: Logic Manager selects best hotel recommendations.
-        top_hotels = logic_manager.filter_top_hotels(
-            hotels,
-            limit=3
-        )
+#         # Display booking link when provided by AI.
+#         if hotel.get("booking_url"):
+#             output_function(
+#                 f"   Booking URL: {hotel['booking_url']}"
+#             )
 
-        if not isinstance(top_hotels, list) or not all(
-            isinstance(hotel, dict) for hotel in top_hotels
-        ):
-            raise ValueError(
-                "The Logic Manager returned an invalid hotel list."
-            )
 
-        # Display shortlisted hotels in CLI.
-        display_top_hotels(
-            top_hotels,
-            output_function=output_function
-        )
+# def run_hotel_search(
+#     ai_manager: Any,
+#     data_manager: Any,
+#     logic_manager: Any,
+#     email_manager: Any,
+#     output_file_path: str = "hotel_recommendations.json",
+#     input_function: Callable[[str], str] = input,
+#     output_function: Callable[[str], None] = print
+# ) -> bool:
+#     """
+#     Main I/O Manager orchestrator.
 
-        # Step 6: Deliver results to traveller's email.
-        output_function(
-            f"\nSending recommendations to "
-            f"{mandatory_inputs['email_address']}..."
-        )
+#     Coordinates communication between:
+#     - User
+#     - AI Manager
+#     - Logic Manager
+#     - Data Manager
+#     - Email Manager
+#     """
 
-        email_manager.send_hotel_recommendations(
-            recipient_email=mandatory_inputs["email_address"],
-            hotels=top_hotels
-        )
+#     try:
 
-        output_function(
-            "\nSuccess: Hotel recommendations have been emailed."
-        )
-        return True
+#         # Step 1: Collect mandatory traveller details.
+#         mandatory_inputs = request_mandatory_inputs(
+#             input_function=input_function,
+#             output_function=output_function
+#         )
 
-    except EOFError as error:
-        # User intentionally stopped the workflow.
-        output_function(str(error))
-        return False
+#         # Step 2: Collect optional preference details.
+#         preferences = request_user_preferences(
+#             input_function=input_function,
+#             output_function=output_function
+#         )
 
-    except TimeoutError:
-        # External dependency failed to respond in time.
-        output_function(
-            "\nError: The hotel search request timed out. "
-            "Please try again later."
-        )
-        return False
+#         # Build standard AI request payload.
+#         ai_request = build_ai_request(
+#             mandatory_inputs=mandatory_inputs,
+#             preferences=preferences
+#         )
 
-    except ConnectionError:
-        # Unable to reach one of the application managers/services.
-        output_function(
-            "\nError: Unable to connect to one of the application services."
-        )
-        return False
+#         output_function("\nSearching for suitable hotels...")
 
-    except ValueError as error:
-        # Validation or data structure errors have safe, local messages.
-        output_function(
-            f"\nError: {error}"
-        )
-        return False
+#         # Step 3: Request hotel recommendations from AI Manager.
+#         ai_response = ai_manager.generate_hotel_recommendations(
+#             ai_request
+#         )
 
-    except Exception as error:
-        # Prevent internal implementation details from leaking
-        # to end users while still providing basic diagnostics.
-        output_function(
-            "\nUnexpected error: The hotel search could not be completed."
-        )
-        output_function(
-            f"Technical details: {type(error).__name__}"
-        )
-        return False
+#         # Ensure AI Manager returned expected structure.
+#         if not isinstance(ai_response, dict):
+#             raise ValueError(
+#                 "The AI Manager returned an invalid response."
+#             )
+
+#         hotels = ai_response.get("hotels")
+
+#         if not isinstance(hotels, list) or not all(
+#             isinstance(hotel, dict) for hotel in hotels
+#         ):
+#             raise ValueError(
+#                 "The AI response does not contain a valid list of hotels."
+#             )
+
+#         # Step 4: Persist raw AI output for auditing and traceability.
+#         data_manager.save_ai_results(
+#             ai_response,
+#             output_file_path
+#         )
+
+#         # Step 5: Logic Manager selects best hotel recommendations.
+#         top_hotels = logic_manager.filter_top_hotels(
+#             hotels,
+#             limit=3
+#         )
+
+#         if not isinstance(top_hotels, list) or not all(
+#             isinstance(hotel, dict) for hotel in top_hotels
+#         ):
+#             raise ValueError(
+#                 "The Logic Manager returned an invalid hotel list."
+#             )
+
+#         # Display shortlisted hotels in CLI.
+#         display_top_hotels(
+#             top_hotels,
+#             output_function=output_function
+#         )
+
+#         # Step 6: Deliver results to traveller's email.
+#         output_function(
+#             f"\nSending recommendations to "
+#             f"{mandatory_inputs['email_address']}..."
+#         )
+
+#         email_manager.send_hotel_recommendations(
+#             recipient_email=mandatory_inputs["email_address"],
+#             hotels=top_hotels
+#         )
+
+#         output_function(
+#             "\nSuccess: Hotel recommendations have been emailed."
+#         )
+#         return True
+
+#     except EOFError as error:
+#         # User intentionally stopped the workflow.
+#         output_function(str(error))
+#         return False
+
+#     except TimeoutError:
+#         # External dependency failed to respond in time.
+#         output_function(
+#             "\nError: The hotel search request timed out. "
+#             "Please try again later."
+#         )
+#         return False
+
+#     except ConnectionError:
+#         # Unable to reach one of the application managers/services.
+#         output_function(
+#             "\nError: Unable to connect to one of the application services."
+#         )
+#         return False
+
+#     except ValueError as error:
+#         # Validation or data structure errors have safe, local messages.
+#         output_function(
+#             f"\nError: {error}"
+#         )
+#         return False
+
+#     except Exception as error:
+#         # Prevent internal implementation details from leaking
+#         # to end users while still providing basic diagnostics.
+#         output_function(
+#             "\nUnexpected error: The hotel search could not be completed."
+#         )
+#         output_function(
+#             f"Technical details: {type(error).__name__}"
+#         )
+#         return False
