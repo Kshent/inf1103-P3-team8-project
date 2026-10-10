@@ -268,6 +268,88 @@ def request_user_preferences(
         return preferences
 
 
+
+
+
+
+
+
+
+def show_main_menu(
+    input_function: Callable[[str], str] = input,
+    output_function: Callable[[str], None] = print
+) -> str:
+    """Show the main menu and return a valid choice: "1", "2", "3"""
+
+    while True:
+        output_function("Welcome to Team8's hotel recommendation app!\n")
+        output_function("\n----------------------------------------------")
+        output_function("1: Find a suitable hotel for your overseas travel needs!")
+        output_function("2: View your previous hotel records")
+        output_function("3: Admin login (NOT FOR USERS)")
+
+        choice = _safe_input("Please enter option 1, 2 or 3: ", input_function)
+
+        if choice in ("1", "2", "3"):
+            return choice
+
+        output_function("Invalid option. Please enter 1, 2 or 3")
+
+
+#get uuid key in json
+def request_record_id(input_function=input):
+    """Option 2: ask for the record uuid."""
+    return _safe_input("Enter your record ID: ", input_function)
+
+
+def display_message(message, output_function=print):
+    output_function(message)
+
+
+def display_hotels(hotels, output_function=print):
+    for number, hotel in enumerate(hotels, start=1):
+        output_function(f"\n  {number}. {hotel['name']}")
+        output_function(f"     {hotel['city']}, {hotel['country']}")
+        output_function(f"     SGD {hotel['price_per_night_sgd']} per night | Rating: {hotel['rating']}")
+        output_function(f"     Amenities: {', '.join(hotel['amenities'])}")
+
+
+def display_records(records, output_function=print):
+    """Print records shaped like [{"id": uuid, "hotels": [...]}]."""
+    if not records:
+        output_function("\nNo records found.")
+        return
+
+    for record in records:
+        output_function(f"\nRecord ID: {record['id']}")
+        display_hotels(record["hotels"], output_function)
+
+
+def admin_login(admin_user, admin_password, input_function=input, output_function=print):
+    """Option 3: returns True if login succeeds, False if the user quits with Q."""
+    while True:
+        username = _safe_input("Enter username or Q to exit: ", input_function)
+
+        if username.upper() == "Q":
+            return False
+        if username != admin_user:
+            output_function("Wrong username")
+            continue
+
+        while True:
+            password = _safe_input("Enter password or Q to exit: ", input_function)
+
+            if password.upper() == "Q":
+                return False
+            if password != admin_password:
+                output_function("Wrong password")
+                continue
+
+            return True
+
+
+
+
 # def build_ai_request(
 #     mandatory_inputs: dict[str, Any],
 #     preferences: str
