@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import ai_manager as AIManager
 # import data_manager as DataManager
 import IO_manager as IOManager
+import logic_manager as LogicManager
+import result_display as ResultDisplay
 
 load_dotenv(".env")
 
@@ -72,11 +74,14 @@ def main():
     if ai_manager_result is None:
         print("Hotel recommendation service is currently unavailable. Please try again later.")
         return
-        
+    
+    logic_result = LogicManager.process_hotels(ai_manager_result, user_input_details)
+    ResultDisplay.show_recommendations(logic_result, user_input_details)    
+    
     ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
     #This will output as dictionary. Logic manager access this dictionary process your logic etc.
-    print(ai_manager_result)
+    #print(ai_manager_result)
     
 
 if __name__ == "__main__":
