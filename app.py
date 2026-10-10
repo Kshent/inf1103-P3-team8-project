@@ -2,7 +2,7 @@ import os
 import uuid
 from dotenv import load_dotenv
 import ai_manager as AIManager
-import data_manager as DataManager
+# import data_manager as DataManager
 import IO_manager as IOManager
 
 load_dotenv(".env")
@@ -52,7 +52,7 @@ def main():
 
         user_input_details["destination"] = final_search_payload["location"]
         user_input_details["budget_min"] = final_search_payload["price_range"]["min"]
-        user_input_details["budget_max"] = final_search_payload["price_range"]["min"]
+        user_input_details["budget_max"] = final_search_payload["price_range"]["max"]
         user_input_details["email_address"] = final_search_payload["email_address"]
         user_input_details["preferences"] = final_search_payload["preferences"]
 
@@ -60,10 +60,18 @@ def main():
     except EOFError as e:
         # Catch the safe exit triggered by Ctrl+C or Ctrl+D in _safe_input
         print(e)
+        return
+    
+    
 
 
     ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
     ai_manager_result = AIManager.data_process(user_input_details, ai_manager_connection)
+
+    # Prevent crash if AI Manager/API fails
+    if ai_manager_result is None:
+        print("Hotel recommendation service is currently unavailable. Please try again later.")
+        return
         
     ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
