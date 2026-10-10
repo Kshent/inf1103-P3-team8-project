@@ -1,6 +1,5 @@
 import os
 import json
-import re
 from dotenv import load_dotenv
 from google import genai
 from google.genai import errors
