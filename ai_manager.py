@@ -94,7 +94,7 @@ def build_prompt(record):
     "hotels": [
         {{
         "name": "string", "city": "string", "country": "string",
-        "price_per_night_sgd": number, "rating": number,
+        "price_per_night_sgd": number, "rating": number or null,
         "amenities": ["string"], "distance_to_mrt_m": number or null,
         "nearby_food": ["string"], "nearby_activities": ["string"]
         }}
@@ -169,8 +169,13 @@ Accuracy rules:
 """.strip()
 
 
-
 def call_api(prompt, client):
+
+    if client is None:
+        logger.error(
+            "Gemini API request could not start because client is unavailable."
+        )
+        return None
 
     for model in MODEL_FALLBACKS:
 
@@ -180,20 +185,17 @@ def call_api(prompt, client):
                 contents=prompt
             )
 
-            # Successful response
             if response.text:
                 return response.text
 
-            # Empty response -> try next model
             logger.warning(
-                "%s returned an empty response. Trying fallback model.",
+                "Model %s returned an empty response. "
+                "Attempting fallback model.",
                 model
             )
-            continue
 
         except errors.APIError as error:
 
-            # Errors where trying another model may help
             if error.code in {
                 404, #model unavailable
                 408, #timeout
@@ -203,34 +205,56 @@ def call_api(prompt, client):
                 503, #server error
                 504 #server error
             }:
+
                 logger.warning(
-                    "%s failed with error %s. Trying fallback model.",
+                    "Model %s failed. API error code: %s. "
+                    "Reason: %s. Attempting fallback model.",
                     model,
-                    error.code
+                    error.code,
+                    error
                 )
+
                 continue
 
-            # Non-recoverable errors such as 400 (bad request), 401 (invalid API key), 402(Token payment needed), 403 (permission issue)
             logger.error(
-                "Gemini API error %s: %s",
+                "Model %s encountered a non-recoverable API error. "
+                "Error code: %s. Reason: %s",
+                model,
                 error.code,
                 error
             )
+
             return None
 
-        except (TimeoutError, ConnectionError):
+        except (TimeoutError, ConnectionError) as error:
 
             logger.warning(
-                "%s had a connection problem. Trying fallback model.",
-                model
+                "Model %s encountered a connection error. "
+                "Reason: %s. Attempting fallback model.",
+                model,
+                error
             )
+
             continue
 
-    # All models failed. 
-    logger.error("All Gemini models failed.")
+        except Exception as error:
+
+            logger.error(
+                "Unexpected error while calling model %s. "
+                "Error type: %s. Reason: %s",
+                model,
+                type(error).__name__,
+                error
+            )
+
+            return None
+
+    logger.error(
+        "All Gemini models failed. Models attempted: %s",
+        ", ".join(MODEL_FALLBACKS)
+    )
+
     return None
-
-
 
 
 def parse_response(raw_ai_response_text):
@@ -344,8 +368,10 @@ def validate_response(data):
         rating = hotel["rating"]
 
         if rating is not None:
-
-            if not isinstance(rating, (int, float)):
+            if (
+                not isinstance(rating, (int, float))
+                or isinstance(rating, bool)
+            ):
                 return False
 
             if not 0 <= rating <= 5:
@@ -367,8 +393,10 @@ def validate_response(data):
         distance = hotel["distance_to_mrt_m"]
 
         if distance is not None:
-
-            if not isinstance(distance, (int, float)):
+            if (
+                not isinstance(distance, (int, float))
+                or isinstance(distance, bool)
+            ):
                 return False
 
             if distance < 0:
@@ -399,11 +427,17 @@ def data_process(record, client):
 
     prompt = build_prompt(record)
 
-    # First attempt
     ai_response_text = call_api(
-        prompt,
-        client
-    )
+    prompt,
+    client)
+
+    # API failure is different from invalid AI output.
+    # There is nothing to correct if no response was returned.
+    if ai_response_text is None:
+        logger.error(
+            "AI processing stopped because no Gemini model returned a response."
+        )
+        return None
 
     ai_response_parse = parse_response(
         ai_response_text
@@ -428,9 +462,16 @@ def data_process(record, client):
     )
 
     corrected_response_text = call_api(
-        correction_prompt,
-        client
-    )
+    correction_prompt,
+    client
+)
+
+    # Stop if the API failed during the correction attempt
+    if corrected_response_text is None:
+        logger.error(
+            "Correction attempt stopped because no Gemini model returned a response."
+        )
+        return None
 
     corrected_response_parse = parse_response(
         corrected_response_text
