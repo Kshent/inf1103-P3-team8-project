@@ -81,7 +81,7 @@ def main():
     ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
     #This will output as dictionary. Logic manager access this dictionary process your logic etc.
-    print(ai_manager_result)
+    print(ai_manager_result) ##
     
 
 if __name__ == "__main__":
