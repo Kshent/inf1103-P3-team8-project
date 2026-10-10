@@ -572,3 +572,21 @@ def rank_hotels(hotels):
                 hotel["price_per_night_sgd"],
                 _norm_name(hotel["name"]))
     return sorted(hotels, key=sort_key)
+
+# 5. get_top_three
+def get_top_three(ranked_hotels):
+    """Return up to three distinct hotels from an already-ranked list.
+    Returns fewer than three if fewer exist; never pads or crashes."""
+    top = []
+    seen = set()
+    for hotel in ranked_hotels:
+        key = _norm_name(hotel["name"])
+        if key in seen:
+            continue
+        seen.add(key)
+        entry = dict(hotel)
+        entry["rank"] = len(top) + 1
+        top.append(entry)
+        if len(top) == TOP_N:
+            break
+    return top
