@@ -1,5 +1,4 @@
 import os
-import uuid
 import logging
 from dotenv import load_dotenv
 import ai_manager as AIManager
@@ -52,19 +51,26 @@ def main():
 
             ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
             ai_manager_result = AIManager.data_process(user_input_details, ai_manager_connection)
-                
-            ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
+
+            # record_id = str(uuid.uuid4())
+            # ai_manager_result[record_id] = ai_manager_result.pop("hotels")
 
             #This will output as dictionary. LOGIC MANAGER USE THIS
             print(ai_manager_result)
+            hotels = ai_manager_result["hotels"]  # LOGIC MANAGER USE THIS
+            email = user_input_details["email_address"]
 
-            #def save()
-            DataManager.save(ai_manager_result)
+            DataManager.save({email: hotels})
+
+
+            # #def save()
+            # DataManager.save(ai_manager_result)
 
         elif menu_display == "2":
             #def query(fn)
-            record_id = IOManager.request_record_id()
-            IOManager.display_records(DataManager.query(record_id))
+            record_email = IOManager.request_record_email()
+            IOManager.display_records(DataManager.query(record_email))
+
 
         elif menu_display == "3":
             #def load()

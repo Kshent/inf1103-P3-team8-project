@@ -1,156 +1,228 @@
 {
-    "501f99c1-d619-4e3e-a7b7-7843384a2bb1": [
-        {
-            "name": "Ibis Singapore on Bencoolen",
-            "city": "Singapore",
-            "country": "Singapore",
-            "price_per_night_sgd": 200.0,
-            "rating": 4.1,
-            "amenities": [
-                "Free Wi-Fi",
-                "Restaurant",
-                "Bar",
-                "Free Parking",
-                "Bicycle Rental"
-            ],
-            "distance_to_mrt_m": 150,
-            "nearby_food": [
-                "Albert Centre Market & Food Centre",
-                "Fortune Centre",
-                "Swee Choon Tim Sum Restaurant"
-            ],
-            "nearby_activities": [
-                "National Museum of Singapore",
-                "Bugis Street Shopping",
-                "Kwan Im Thong Hood Cho Temple"
-            ]
-        },
-        {
-            "name": "Studio M Hotel",
-            "city": "Singapore",
-            "country": "Singapore",
-            "price_per_night_sgd": 200.0,
-            "rating": 4.0,
-            "amenities": [
-                "Outdoor Pool",
-                "Fitness Centre",
-                "Free Wi-Fi",
-                "Restaurant",
-                "Open-air Deck"
-            ],
-            "distance_to_mrt_m": 450,
-            "nearby_food": [
-                "Zion Riverside Food Centre",
-                "Common Man Coffee Roasters",
-                "Robertson Quay Dining"
-            ],
-            "nearby_activities": [
-                "Singapore River Cruise",
-                "Fort Canning Park",
-                "Clarke Quay Nightlife"
-            ]
-        },
-        {
-            "name": "YOTEL Singapore Orchard Road",
-            "city": "Singapore",
-            "country": "Singapore",
-            "price_per_night_sgd": 200.0,
-            "rating": 4.3,
-            "amenities": [
-                "Outdoor Swimming Pool",
-                "Fitness Centre",
-                "Free Wi-Fi",
-                "Restaurant & Bar",
-                "Self-Check-in Kiosks"
-            ],
-            "distance_to_mrt_m": 300,
-            "nearby_food": [
-                "Lucky Plaza Asian Food Stalls",
-                "ION Orchard Food Hall",
-                "Din Tai Fung Paragon"
-            ],
-            "nearby_activities": [
-                "Orchard Road Shopping",
-                "Singapore Botanic Gardens",
-                "The Centrepoint"
-            ]
-        }
+    "baa@gmail.com": [
+        [
+            {
+                "name": "ibis budget Singapore Crystal",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 100.0,
+                "rating": 3.8,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air conditioning",
+                    "24-hour front desk",
+                    "Luggage storage"
+                ],
+                "distance_to_mrt_m": 600,
+                "nearby_food": [
+                    "Eminent Frog Porridge",
+                    "Swee Guan Hokkien Mee",
+                    "L32 Handmade Noodles"
+                ],
+                "nearby_activities": [
+                    "Exploring Geylang heritage shophouses",
+                    "Kallang Riverside Park stroll",
+                    "Paya Lebar Quarter shopping"
+                ]
+            },
+            {
+                "name": "Hotel 81 Dickson",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 100.0,
+                "rating": 3.9,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air conditioning",
+                    "Elevator",
+                    "Daily housekeeping"
+                ],
+                "distance_to_mrt_m": 250,
+                "nearby_food": [
+                    "Tekka Centre Hawkers",
+                    "Berseh Food Centre",
+                    "Komala Vilas Vegetarian Restaurant"
+                ],
+                "nearby_activities": [
+                    "Shopping at Mustafa Centre",
+                    "Little India Heritage Trail",
+                    "Visiting Sri Veeramakaliamman Temple"
+                ]
+            },
+            {
+                "name": "Champion Hotel",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 100.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air conditioning",
+                    "Electric kettle",
+                    "Safety deposit box"
+                ],
+                "distance_to_mrt_m": 950,
+                "nearby_food": [
+                    "328 Katong Laksa",
+                    "Dunman Food Centre",
+                    "Kim Choo Kueh Chang"
+                ],
+                "nearby_activities": [
+                    "Koon Seng Road Peranakan shophouses photo walk",
+                    "Eurasian Heritage Gallery",
+                    "East Coast Park cycling"
+                ]
+            }
+        ],
+        [
+            {
+                "name": "Hotel Círculo Mexicano",
+                "city": "Mexico City",
+                "country": "Mexico",
+                "price_per_night_sgd": 200.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Free WiFi",
+                    "Rooftop Terrace",
+                    "Restaurant",
+                    "Air Conditioning"
+                ],
+                "distance_to_mrt_m": 350,
+                "nearby_food": [
+                    "El Cardenal",
+                    "Mercado San Juan",
+                    "Café de Tacuba"
+                ],
+                "nearby_activities": [
+                    "Zócalo",
+                    "Templo Mayor Museum",
+                    "Palacio de Bellas Artes"
+                ]
+            },
+            {
+                "name": "Casa Decu",
+                "city": "Mexico City",
+                "country": "Mexico",
+                "price_per_night_sgd": 200.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Free WiFi",
+                    "Rooftop Lounge",
+                    "Gym",
+                    "Kitchenette"
+                ],
+                "distance_to_mrt_m": 600,
+                "nearby_food": [
+                    "Panadería Rosetta",
+                    "Contramar",
+                    "Lardo"
+                ],
+                "nearby_activities": [
+                    "Parque México",
+                    "Condesa Walking Tours",
+                    "Museo de Arte Moderno"
+                ]
+            },
+            {
+                "name": "Hotel Geneve Ciudad de México",
+                "city": "Mexico City",
+                "country": "Mexico",
+                "price_per_night_sgd": 200.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Free WiFi",
+                    "Historic Bar",
+                    "Fitness Center",
+                    "Meeting Rooms"
+                ],
+                "distance_to_mrt_m": 400,
+                "nearby_food": [
+                    "Huset",
+                    "Máximo Bistro",
+                    "Churrería El Moro"
+                ],
+                "nearby_activities": [
+                    "Angel of Independence",
+                    "Reforma Avenue",
+                    "Chapultepec Castle"
+                ]
+            }
+        ]
     ],
-    "0a12a7e3-b3a8-4d03-9319-d03eea7617cf": [
-        {
-            "name": "RIMBA by AYANA Bali",
-            "city": "Jimbaran",
-            "country": "Indonesia",
-            "price_per_night_sgd": 200.0,
-            "rating": 4.7,
-            "amenities": [
-                "Multi-tiered Outdoor Pools",
-                "Swim-up Pool Bar",
-                "Full-service Spa",
-                "Fitness Center",
-                "Free Wi-Fi"
-            ],
-            "distance_to_mrt_m": null,
-            "nearby_food": [
-                "Rock Bar Bali",
-                "Kisik Seafood Restaurant",
-                "Kampoeng Bali"
-            ],
-            "nearby_activities": [
-                "Jimbaran Bay Sunset Viewing",
-                "Garuda Wisnu Kencana Cultural Park",
-                "Kubu Beach Relaxation"
-            ]
-        },
-        {
-            "name": "Hotel Indonesia Kempinski Jakarta",
-            "city": "Jakarta",
-            "country": "Indonesia",
-            "price_per_night_sgd": 200.0,
-            "rating": 4.8,
-            "amenities": [
-                "Rooftop Outdoor Pool",
-                "Full-service Spa",
-                "Fitness Center",
-                "On-site Brewery",
-                "Free High-speed Wi-Fi"
-            ],
-            "distance_to_mrt_m": 150,
-            "nearby_food": [
-                "Paulaner Bräuhaus",
-                "SKYE Bar & Restaurant",
-                "Signatures Restaurant"
-            ],
-            "nearby_activities": [
-                "Shopping at Grand Indonesia",
-                "Exploring Bundaran HI",
-                "Visiting the National Monument (Monas)"
-            ]
-        },
-        {
-            "name": "Padma Resort Ubud",
-            "city": "Ubud",
-            "country": "Indonesia",
-            "price_per_night_sgd": 200.0,
-            "rating": 4.9,
-            "amenities": [
-                "89-meter Heated Infinity Pool",
-                "Sunken Pool Bar",
-                "Luxury Spa",
-                "Yoga Pavilion",
-                "Forest Trail"
-            ],
-            "distance_to_mrt_m": null,
-            "nearby_food": [
-                "The Puhu Restaurant",
-                "Pool Cafe & Bar",
-                "Warung Uma Bali"
-            ],
-            "nearby_activities": [
-                "Tegallalang Rice Terrace Trekking",
-                "Ayung River Rafting",
-                "Sunrise Yoga Sessions"
-            ]
-        }
+    "kshent@gmail.com": [
+        [
+            {
+                "name": "Mercure Madrid Centro",
+                "city": "Madrid",
+                "country": "Spain",
+                "price_per_night_sgd": 300.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air Conditioning",
+                    "Bar",
+                    "24-Hour Front Desk"
+                ],
+                "distance_to_mrt_m": 250,
+                "nearby_food": [
+                    "Mercado de San Miguel",
+                    "Botín",
+                    "Taberna La Concha"
+                ],
+                "nearby_activities": [
+                    "Prado Museum",
+                    "Retiro Park",
+                    "Plaza Mayor"
+                ]
+            },
+            {
+                "name": "Hotel Arts Barcelona",
+                "city": "Barcelona",
+                "country": "Spain",
+                "price_per_night_sgd": 300.0,
+                "rating": 4.8,
+                "amenities": [
+                    "Spa",
+                    "Outdoor Pool",
+                    "Michelin-starred dining",
+                    "Fitness Center"
+                ],
+                "distance_to_mrt_m": 400,
+                "nearby_food": [
+                    "Enoteca Paco Pérez",
+                    "Pez Vela",
+                    "La Barceloneta tapas bars"
+                ],
+                "nearby_activities": [
+                    "Barceloneta Beach",
+                    "Ciutadella Park",
+                    "Olympic Port"
+                ]
+            },
+            {
+                "name": "Hotel Alfonso XIII",
+                "city": "Seville",
+                "country": "Spain",
+                "price_per_night_sgd": 300.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Outdoor Pool",
+                    "Luxury Courtyard",
+                    "Fitness Center",
+                    "Fine Dining Restaurant"
+                ],
+                "distance_to_mrt_m": 350,
+                "nearby_food": [
+                    "Eslava",
+                    "El Rinconcillo",
+                    "Bar Alfalfa"
+                ],
+                "nearby_activities": [
+                    "Seville Cathedral",
+                    "Real Alcázar",
+                    "Santa Cruz Neighborhood"
+                ]
+            }
+        ]
     ]
 }

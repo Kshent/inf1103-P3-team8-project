@@ -275,6 +275,11 @@ def request_user_preferences(
 
 
 
+
+
+
+
+
 def show_main_menu(
     input_function: Callable[[str], str] = input,
     output_function: Callable[[str], None] = print
@@ -296,10 +301,21 @@ def show_main_menu(
         output_function("Invalid option. Please enter 1, 2 or 3")
 
 
-#get uuid key in json
-def request_record_id(input_function=input):
-    """Option 2: ask for the record uuid."""
-    return _safe_input("Enter your record ID: ", input_function)
+
+def request_record_email(input_function=input, output_function = print):
+    """Option 2: ask for the user email."""
+    while True:
+        email = _safe_input("Enter your email: ", input_function)
+
+    # return _safe_input("Enter your email: ", input_function)
+        cleaned_email = email.strip()
+
+        is_valid, error_message = validate_email(cleaned_email)
+
+        if is_valid:
+            return cleaned_email.lower()
+
+        output_function(f"Invalid input : {error_message}")
 
 
 def display_message(message, output_function=print):
@@ -312,17 +328,23 @@ def display_hotels(hotels, output_function=print):
         output_function(f"     {hotel['city']}, {hotel['country']}")
         output_function(f"     SGD {hotel['price_per_night_sgd']} per night | Rating: {hotel['rating']}")
         output_function(f"     Amenities: {', '.join(hotel['amenities'])}")
+        output_function(f"     Price per night: {hotel['price_per_night_sgd']} SGD")
+        output_function(f"     Neaby food options: {', '.join(hotel['nearby_food'])}")
+        output_function(f"     Neaby activities: {', '.join(hotel['nearby_activities'])}")
 
 
 def display_records(records, output_function=print):
-    """Print records shaped like [{"id": uuid, "hotels": [...]}]."""
+    """Print records shaped like [{"email": email, "searches": [[hotels], ...]}]."""
     if not records:
         output_function("\nNo records found.")
         return
 
     for record in records:
-        output_function(f"\nRecord ID: {record['id']}")
-        display_hotels(record["hotels"], output_function)
+        output_function(f"\nEmail: {record['email']}")
+
+        for number, hotels in enumerate(record["searches"], start=1):
+            output_function(f"\n  --- Search {number} ---")
+            display_hotels(hotels, output_function)
 
 
 def admin_login(admin_user, admin_password, input_function=input, output_function=print):

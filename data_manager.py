@@ -28,9 +28,14 @@ def _read_file():
 
 
 def save(record):
-    """Append a processed record, shaped like {uuid: {...}}, to the file."""
+
     records = _read_file()
-    records.update(record)
+
+    #append the recent records into existing email if have, if not append
+    #to empty list
+    for email, hotels in record.items():
+        email = email.strip().lower()
+        records.setdefault(email, []).append(hotels)
 
     try:
         with open(RECORDS_FILE, "w", encoding="utf-8") as file:
@@ -44,18 +49,17 @@ def load():
     Returns [] if the file does not exist or is corrupt. Never crashes."""
     records = _read_file()
 
-    
     return [
-        {"id": record_id, "hotels": hotels}
-        for record_id, hotels in records.items()
+        {"email": email, "searches": searches}
+        for email, searches in records.items()
     ]
 
 
-def query(record_id):
+def query(record_email):
 
-    hotels = _read_file().get(record_id)
+    hotels = _read_file().get(record_email)
 
     if hotels is None:
         return []
 
-    return [{"id": record_id, "hotels": hotels}]
+    return [{"email": record_email, "searches": hotels}]
