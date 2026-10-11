@@ -64,8 +64,6 @@ def main():
         print(e)
         return
     
-    
-
 
     ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
     ai_manager_result = AIManager.data_process(user_input_details, ai_manager_connection)
@@ -75,13 +73,50 @@ def main():
         print("Hotel recommendation service is currently unavailable. Please try again later.")
         return
     
-    logic_result = LogicManager.process_hotels(ai_manager_result, user_input_details)
-    ResultDisplay.show_recommendations(logic_result, user_input_details)    
-    
+
+    # STEP 1: Keep the original AI output for Logic Manager
+    original_ai_output = ai_manager_result
+
+    # Create a separate copy for displaying the AI output
+    ai_manager_result = ai_manager_result.copy()
+
     ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
     #This will output as dictionary. Logic manager access this dictionary process your logic etc.
     print(ai_manager_result) ##
+
+    # STEP 3: Process hotels using Logic Manager
+    logic_result = LogicManager.process_hotels(
+        original_ai_output,
+        user_input_details
+    )
+
+    # STEP 4: Display neatly formatted Top 3 hotels
+    ResultDisplay.show_recommendations(
+        logic_result,
+        user_input_details
+    )
+
+    
+    # STEP 5: Display Top 3 hotels using original AI data
+
+    # Match ranked hotels to the original AI hotel dictionaries
+    original_hotels_by_name = {
+        hotel["name"]: hotel
+        for hotel in original_ai_output["hotels"]
+    }
+
+    # Keep only the Top 3, in their ranked order
+    top_three_dict = {
+        "top_hotels": [
+            original_hotels_by_name[hotel["name"]]
+            for hotel in logic_result["top_hotels"]
+        ]
+    }
+
+    print("\n=== TOP 3 HOTELS (DICTIONARY OUTPUT) ===")
+    print(top_three_dict)
+    print("=== END OF TOP 3 HOTELS (DICTIONARY OUTPUT) ===\n")
     
 
 if __name__ == "__main__":
