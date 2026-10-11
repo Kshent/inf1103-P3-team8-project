@@ -21,7 +21,7 @@ MODEL_FALLBACKS = [
 
 EXPECTED_HOTEL_FIELDS = [
     "name", "city", "country", "price_per_night_sgd", "rating",
-    "amenities", "distance_to_mrt_m", "nearby_food", "nearby_activities",
+    "amenities", "nearby_food", "nearby_activities",
 ]
 
 
@@ -54,8 +54,7 @@ def build_prompt(record):
     Preferences: {prefs}
     
     For each hotel, also infer: nearby_food (2-3 suggestions), nearby_activities
-    (2-3 suggestions), distance_to_mrt_m (meters, or null if unknown), and
-    rating (out of 5).
+    (2-3 suggestions), and rating (out of 5).
     
     Return 3 hotels as JSON matching exactly this schema and nothing else:
     {{
@@ -63,8 +62,8 @@ def build_prompt(record):
         {{
         "name": "string", "city": "string", "country": "string",
         "price_per_night_sgd": number, "rating": number,
-        "amenities": ["string"], "distance_to_mrt_m": number or null,
-        "nearby_food": ["string"], "nearby_activities": ["string"]
+        "amenities": ["string"], "nearby_food": ["string"],
+        "nearby_activities": ["string"]
         }}
     ]
     }}
@@ -118,9 +117,6 @@ Field rules:
 - "amenities" must be a list.
   Use [] if unknown.
 
-- "distance_to_mrt_m" must be a non-negative number,
-  or null if unknown.
-
 - "nearby_food" must be a list.
   Use [] if unknown.
 
@@ -131,7 +127,7 @@ Accuracy rules:
 
 - Do NOT invent or guess information.
 - Do NOT fabricate hotel names, prices, ratings, amenities,
-  distances, food options or activities.
+  food options or activities.
 - If information cannot be reliably provided, use the allowed
   null or empty-list value instead.
 """.strip()
@@ -327,21 +323,6 @@ def validate_response(data):
 
         if not isinstance(hotel["amenities"], list):
             return False
-
-        # -------------------------
-        # MRT distance
-        # Key required, None allowed
-        # -------------------------
-
-        distance = hotel["distance_to_mrt_m"]
-
-        if distance is not None:
-
-            if not isinstance(distance, (int, float)):
-                return False
-
-            if distance < 0:
-                return False
 
         # -------------------------
         # Nearby food

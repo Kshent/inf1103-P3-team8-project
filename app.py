@@ -24,10 +24,8 @@ def main():
             user_input_details = {}
 
             try:
-                # Step 1: Gather the required traveler details
+
                 mandatory_data = IOManager.request_mandatory_inputs()
-                
-                # Step 2: Gather optional AI personalization preferences
                 user_prefs = IOManager.request_user_preferences()
                 
                 # Combine everything to show the final structured output
@@ -52,19 +50,14 @@ def main():
             ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
             ai_manager_result = AIManager.data_process(user_input_details, ai_manager_connection)
 
-            # record_id = str(uuid.uuid4())
-            # ai_manager_result[record_id] = ai_manager_result.pop("hotels")
+            #Hasini implement this inside ai_manager when airesult is none
+            try:
+                hotels = ai_manager_result["hotels"]  # LOGIC MANAGER USE THIS
+                email = user_input_details["email_address"]
 
-            #This will output as dictionary. LOGIC MANAGER USE THIS
-            print(ai_manager_result)
-            hotels = ai_manager_result["hotels"]  # LOGIC MANAGER USE THIS
-            email = user_input_details["email_address"]
-
-            DataManager.save({email: hotels})
-
-
-            # #def save()
-            # DataManager.save(ai_manager_result)
+                DataManager.save({email: hotels})
+            except TypeError:
+                IOManager.display_message("We encountered an issue fetching hotel data. Please try again.")
 
         elif menu_display == "2":
             #def query(fn)

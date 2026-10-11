@@ -305,9 +305,12 @@ def show_main_menu(
 def request_record_email(input_function=input, output_function = print):
     """Option 2: ask for the user email."""
     while True:
-        email = _safe_input("Enter your email: ", input_function)
+        email = _safe_input("Enter your email or q to quit: ", input_function)
 
-    # return _safe_input("Enter your email: ", input_function)
+        if email.lower() == "q":
+            output_function("Exiting view hotel records")
+            break
+
         cleaned_email = email.strip()
 
         is_valid, error_message = validate_email(cleaned_email)
@@ -328,9 +331,9 @@ def display_hotels(hotels, output_function=print):
         output_function(f"     {hotel['city']}, {hotel['country']}")
         output_function(f"     SGD {hotel['price_per_night_sgd']} per night | Rating: {hotel['rating']}")
         output_function(f"     Amenities: {', '.join(hotel['amenities'])}")
-        output_function(f"     Price per night: {hotel['price_per_night_sgd']} SGD")
         output_function(f"     Neaby food options: {', '.join(hotel['nearby_food'])}")
         output_function(f"     Neaby activities: {', '.join(hotel['nearby_activities'])}")
+        #need to output logic manager distance to preferences too later on
 
 
 def display_records(records, output_function=print):
