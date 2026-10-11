@@ -292,7 +292,7 @@ def show_main_menu(
         output_function("1: Find a suitable hotel for your overseas travel needs!")
         output_function("2: View your previous hotel records")
         output_function("3: Admin login (NOT FOR USERS)")
-        
+        output_function("4: Quit")
 
         choice = _safe_input(
             "Please enter option 1, 2, 3 or 4: ",
