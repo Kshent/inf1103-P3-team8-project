@@ -54,6 +54,7 @@ def main():
             try:
                 hotels = ai_manager_result["hotels"]  # LOGIC MANAGER USE THIS
                 email = user_input_details["email_address"]
+                print(hotels)
 
                 DataManager.save({email: hotels})
             except TypeError:
