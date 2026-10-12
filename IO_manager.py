@@ -110,42 +110,42 @@ def validate_location(location: str) -> tuple[bool, str]:
 def validate_price_range(
     price_range: str
 ) -> tuple[bool, str, dict[str, int | float | str] | None]:
-    """
-    Validate traveller budget range in SGD.
-
-    Examples:
-        100-250
-        100 - 250
-        100,250
-    """
 
     if not isinstance(price_range, str) or not price_range.strip():
         return False, "Price range cannot be empty.", None
 
-    # Remove whitespace to support flexible user formatting.
-    cleaned_value = re.sub(r"\s+", "", price_range)
+    # Normalise common SGD formats
+    cleaned_value = price_range.upper()
 
-    # Accept either hyphen or comma as a separator.
+    cleaned_value = cleaned_value.replace("SGD", "")
+    cleaned_value = cleaned_value.replace("S$", "")
+    cleaned_value = cleaned_value.replace("$", "")
+
+    # Remove spaces
+    cleaned_value = re.sub(r"\s+", "", cleaned_value)
+
+    # Accept:
+    # 100-250
+    # 100,250
+    # 100to250
     match = re.fullmatch(
-        r"(\d+(?:\.\d+)?)[,-](\d+(?:\.\d+)?)",
+        r"(\d+(?:\.\d+)?)(?:-|,|TO)(\d+(?:\.\d+)?)",
         cleaned_value
     )
 
     if not match:
         return (
             False,
-            "Enter the price range in this format: 100-250.",
+            "Enter a valid SGD price range, for example 100-250 or SGD 100-SGD 250.",
             None
         )
 
     minimum_price = float(match.group(1))
     maximum_price = float(match.group(2))
 
-    # Hotel prices must be positive values.
     if minimum_price <= 0 or maximum_price <= 0:
         return False, "Prices must be greater than zero.", None
 
-    # Logical validation to ensure valid range ordering.
     if minimum_price > maximum_price:
         return (
             False,
@@ -153,11 +153,9 @@ def validate_price_range(
             None
         )
 
-    # Protect against unrealistic budget values.
     if maximum_price > 1_000_000:
         return False, "The maximum price is too high.", None
 
-    # Return structured budget information for later layers.
     return True, "", {
         "min": round(minimum_price, 2),
         "max": round(maximum_price, 2),
