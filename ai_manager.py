@@ -10,9 +10,9 @@ import ai_filter as filtering
 load_dotenv(".env")
 
 
-PRIMARY_MODEL = "gemini-3.6-flash"
+PRIMARY_MODEL = "gemini-3.5-flash"
 BACKUP_MODEL = "gemini-3.7-flash"
-TERTIARY_MODEL = "gemini-3.5-flash-lite"
+TERTIARY_MODEL = "gemini-3.6-flash-lite"
 
 MODEL_FALLBACKS = [
     PRIMARY_MODEL,
@@ -39,6 +39,7 @@ EXPECTED_HOTEL_FIELDS = [
     "distance_to_preferences",
     "nearby_food",
     "nearby_activities",
+
 ]
 
 
@@ -124,6 +125,7 @@ def build_prompt(record):
     )
 
     return f"""
+
 You are a hotel-recommendation engine.
 
 Reply with STRICT JSON ONLY.
@@ -177,6 +179,7 @@ If specified is true:
 Example:
 
 "distance_to_preferences": [
+
     {{
         "target": "National University of Singapore",
         "distance_m": 850
@@ -378,12 +381,11 @@ Hotel field rules:
 Accuracy rules:
 
 - Do NOT invent or guess information.
-
 - Do NOT fabricate hotel names, prices, ratings,
   amenities, distances, food options or activities.
-
 - If information cannot be reliably provided,
   use the allowed null or empty-list value instead.
+
 """.strip()
 
 
