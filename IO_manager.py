@@ -77,7 +77,7 @@ def validate_location(location: str) -> tuple[bool, str]:
         return False, (
             "Location contains invalid characters. "
             "Please enter a valid country or city name."
-
+        )
 
     # Validate against known country/city names using geonamescache.
     try:
@@ -103,7 +103,6 @@ def validate_location(location: str) -> tuple[bool, str]:
     except Exception:
         # Fallback if geonamescache is unavailable.
         return True, ""
-        )
 
     return True, ""
 
