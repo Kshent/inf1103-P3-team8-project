@@ -608,5 +608,731 @@
                 ]
             }
         ]
+    ],
+    "broo@gmail.com": [
+        [
+            {
+                "name": "Hotel Boss",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 160.0,
+                "rating": 3.8,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Non-smoking rooms"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Zam Zam Restaurant",
+                    "Golden Mile Complex Food Centre",
+                    "North Bridge Road Market & Food Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kampong Glam",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Sultan Mosque",
+                        "distance_m": 650
+                    }
+                ]
+            },
+            {
+                "name": "V Hotel Lavender",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 175.0,
+                "rating": 3.9,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Luggage storage"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Lavender Food Square",
+                    "Jalan Besar Eateries",
+                    "Aperia Mall Dining"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "City Square Mall",
+                        "distance_m": 700
+                    },
+                    {
+                        "name": "Mustafa Centre",
+                        "distance_m": 1000
+                    }
+                ]
+            },
+            {
+                "name": "YOTEL0riginate Singapore Orchard Road",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 195.0,
+                "rating": 4.1,
+                "amenities": [
+                    "Free WiFi",
+                    "Gym",
+                    "Restaurant",
+                    "Air conditioning"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Newton Food Centre",
+                    "Orchard Road Food Courts",
+                    "Takashimaya Food Hall"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Orchard Road Shopping Belt",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Emerald Hill",
+                        "distance_m": 350
+                    }
+                ]
+            },
+            {
+                "name": "ibis Singapore Novena",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free WiFi",
+                    "Restaurant",
+                    "Bar",
+                    "Laundry service"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Pek Kio Market and Food Centre",
+                    "Balestier Road Bak Kut Teh",
+                    "Whampoa Makan Place"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Sun Yat Sen Nanyang Memorial Hall",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Novena Square Mall",
+                        "distance_m": 800
+                    }
+                ]
+            },
+            {
+                "name": "Hotel G Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 185.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free WiFi",
+                    "Fitness Centre",
+                    "Restaurant",
+                    "Bar"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Bugis Junction Dining",
+                    "Geylang Lorong 9 Fresh Frog Porridge",
+                    "Middle Road Eateries"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Art Museum",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "National Library Singapore",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Champion Hotel",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 120.0,
+                "rating": 3.7,
+                "amenities": [
+                    "Free WiFi",
+                    "Air conditioning",
+                    "Daily housekeeping"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Joo Chiat Road Peranakan Eateries",
+                    "Dunman Food Centre",
+                    "Geylang Serai Market"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Joo Chiat Heritage Shophouses",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "East Coast Park",
+                        "distance_m": 1500
+                    }
+                ]
+            },
+            {
+                "name": "ibis budget Singapore Clarke Quay",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 140.0,
+                "rating": 3.6,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Non-smoking rooms"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Hong Lim Market & Food Centre",
+                    "Clarke Quay Restaurants",
+                    "Chinatown Complex Food Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Clarke Quay Riverside",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Fort Canning Park",
+                        "distance_m": 600
+                    }
+                ]
+            },
+            {
+                "name": "lyf Farrer Park Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 170.0,
+                "rating": 4.2,
+                "amenities": [
+                    "Free WiFi",
+                    "Shared Kitchen",
+                    "Fitness Centre",
+                    "Laundromat"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Pek Kio Market",
+                    "City Square Mall Food Court",
+                    "Mustafa Centre eateries"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Mustafa Centre",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Little India",
+                        "distance_m": 600
+                    }
+                ]
+            },
+            {
+                "name": "Venue Hotel The Lily",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 115.0,
+                "rating": 3.6,
+                "amenities": [
+                    "Free WiFi",
+                    "Air conditioning",
+                    "Flat-screen TV"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Katong Laksa",
+                    "Dunman Food Centre",
+                    "Joo Chiat food stalls"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Katong Antique House",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Marine Parade Central",
+                        "distance_m": 900
+                    }
+                ]
+            },
+            {
+                "name": "Santa Grand Hotel Lavender",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 145.0,
+                "rating": 3.7,
+                "amenities": [
+                    "Free WiFi",
+                    "Outdoor Pool",
+                    "Laundry service"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Bendemeer Market & Food Centre",
+                    "Kitchener Road coffee shops",
+                    "Jalan Besar bistros"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Mustafa Centre",
+                        "distance_m": 900
+                    },
+                    {
+                        "name": "ICA Building",
+                        "distance_m": 600
+                    }
+                ]
+            }
+        ]
+    ],
+    "a22@gmail.com": [
+        [
+            {
+                "name": "Impiana KLCC Hotel",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 120.0,
+                "rating": 4.2,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Gymnasium",
+                    "Spa",
+                    "Breakfast Included",
+                    "High Floor Rooms"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1400
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 500
+                    }
+                ],
+                "nearby_food": [
+                    "Feast Village Starhill Gallery",
+                    "Lot 10 Hutong Food Court",
+                    "Madam Kwan's Pavilion KL"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "KLCC Park",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Petronas Twin Towers",
+                        "distance_m": 800
+                    }
+                ]
+            },
+            {
+                "name": "Parkroyal Serviced Suites Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 135.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Free WiFi",
+                    "Roof Terrace",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Breakfast Included",
+                    "High Floor Rooms"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1500
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 400
+                    }
+                ],
+                "nearby_food": [
+                    "Jalan Alor Food Street",
+                    "Wai Kee BBQ Pork",
+                    "Feast Village"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Jalan Alor Night Market",
+                        "distance_m": 350
+                    },
+                    {
+                        "name": "Starhill Gallery",
+                        "distance_m": 450
+                    }
+                ]
+            },
+            {
+                "name": "Verdant Hill Hotel Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 105.0,
+                "rating": 4.1,
+                "amenities": [
+                    "Free WiFi",
+                    "Outdoor Pool",
+                    "Fitness Centre",
+                    "Breakfast Included",
+                    "Upper Floor Views"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 2200
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 900
+                    }
+                ],
+                "nearby_food": [
+                    "Tenerife",
+                    "Opium KL",
+                    "Bijan Bar & Restaurant"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Changkat Bukit Bintang",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 900
+                    },
+                    {
+                        "name": "KL Forest Eco Park",
+                        "distance_m": 600
+                    }
+                ]
+            },
+            {
+                "name": "Novotel Kuala Lumpur City Centre",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 125.0,
+                "rating": 4.1,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Breakfast Included",
+                    "High Floor City Views"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1300
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 300
+                    }
+                ],
+                "nearby_food": [
+                    "The Courtyard",
+                    "Minangeraya",
+                    "Quivo Pavilion"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Aquaria KLCC",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "KLCC Park",
+                        "distance_m": 600
+                    }
+                ]
+            },
+            {
+                "name": "Royale Chulan Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 115.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free WiFi",
+                    "Large Swimming Pool",
+                    "Spa",
+                    "Gym",
+                    "Breakfast Included",
+                    "Upper Floors"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 900
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 1100
+                    }
+                ],
+                "nearby_food": [
+                    "Warisan Nasi Kukus",
+                    "Aliyaa Island Restaurant & Bar",
+                    "Beriya House"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Tun Razak Exchange (TRX)",
+                        "distance_m": 900
+                    },
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 1100
+                    },
+                    {
+                        "name": "Royal Selangor Golf Club",
+                        "distance_m": 800
+                    }
+                ]
+            },
+            {
+                "name": "Melia Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 110.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free WiFi",
+                    "Outdoor Pool",
+                    "Fitness Centre",
+                    "Breakfast Included",
+                    "High Floor Rooms"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1800
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 1000
+                    }
+                ],
+                "nearby_food": [
+                    "Hakka Restaurant",
+                    "ICC Pudu",
+                    "Feast Village"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Berjaya Times Square Theme Park",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Sungei Wang Plaza",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 1000
+                    }
+                ]
+            },
+            {
+                "name": "Ramada Suites by Wyndham KLCC",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 118.0,
+                "rating": 4.1,
+                "amenities": [
+                    "Free WiFi",
+                    "Infinity Pool",
+                    "Fitness Centre",
+                    "Breakfast Included",
+                    "High Floor Suites"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1600
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 650
+                    }
+                ],
+                "nearby_food": [
+                    "TC's Bar & Restaurant",
+                    "Hubba Bubba",
+                    "Healy Mac's Irish Pub"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 650
+                    },
+                    {
+                        "name": "Zouk Club Kuala Lumpur",
+                        "distance_m": 700
+                    },
+                    {
+                        "name": "KLCC Park",
+                        "distance_m": 900
+                    }
+                ]
+            },
+            {
+                "name": "Dorsett Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 122.0,
+                "rating": 4.2,
+                "amenities": [
+                    "Free WiFi",
+                    "Outdoor Swimming Pool",
+                    "Gym",
+                    "Breakfast Included",
+                    "High Floor Rooms"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1100
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 450
+                    }
+                ],
+                "nearby_food": [
+                    "Bungkus Kaw Kaw",
+                    "QS Restoran",
+                    "The Cobalt Room"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 450
+                    },
+                    {
+                        "name": "Starhill Gallery",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Tun Razak Exchange (TRX)",
+                        "distance_m": 1100
+                    }
+                ]
+            },
+            {
+                "name": "Swiss-Garden Hotel Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 102.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Breakfast Included",
+                    "High Floor Views"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 2100
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 1200
+                    }
+                ],
+                "nearby_food": [
+                    "Jalan Alor Street Food",
+                    "ICC Pudu",
+                    "Sek Yuen Restaurant"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Petaling Street Flea Market",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Jalan Alor Night Market",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 1200
+                    }
+                ]
+            },
+            {
+                "name": "ANCOVA Hotel Bukit Bintang",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 105.0,
+                "rating": 4.1,
+                "amenities": [
+                    "Free WiFi",
+                    "Breakfast Included",
+                    "Modern Rooms",
+                    "Upper Floor City View"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1500
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 800
+                    }
+                ],
+                "nearby_food": [
+                    "Sungei Wang Food Court",
+                    "Feast Village",
+                    "Lot 10 Hutong"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Plaza Low Yat",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 800
+                    },
+                    {
+                        "name": "Sungei Wang Plaza",
+                        "distance_m": 500
+                    }
+                ]
+            }
+        ]
     ]
 }
