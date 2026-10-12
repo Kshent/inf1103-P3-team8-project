@@ -292,13 +292,17 @@ def show_main_menu(
         output_function("1: Find a suitable hotel for your overseas travel needs!")
         output_function("2: View your previous hotel records")
         output_function("3: Admin login (NOT FOR USERS)")
+        output_function("4: Quit")
 
-        choice = _safe_input("Please enter option 1, 2 or 3: ", input_function)
+        choice = _safe_input(
+            "Please enter option 1, 2, 3 or 4: ",
+            input_function
+        )
 
-        if choice in ("1", "2", "3"):
+        if choice in ("1", "2", "3","4"):
             return choice
 
-        output_function("Invalid option. Please enter 1, 2 or 3")
+        output_function("Invalid option. Please enter 1, 2, 3 or 4")
 
 
 
@@ -325,14 +329,36 @@ def display_message(message, output_function=print):
     output_function(message)
 
 
+#updated to allow new ai json strucuture to be displayed in IO manager
 def display_hotels(hotels, output_function=print):
     for number, hotel in enumerate(hotels, start=1):
         output_function(f"\n  {number}. {hotel['name']}")
         output_function(f"     {hotel['city']}, {hotel['country']}")
-        output_function(f"     SGD {hotel['price_per_night_sgd']} per night | Rating: {hotel['rating']}")
-        output_function(f"     Amenities: {', '.join(hotel['amenities'])}")
-        output_function(f"     Neaby food options: {', '.join(hotel['nearby_food'])}")
-        output_function(f"     Neaby activities: {', '.join(hotel['nearby_activities'])}")
+        output_function(
+            f"     SGD {hotel['price_per_night_sgd']} per night | "
+            f"Rating: {hotel['rating']}")
+        output_function(
+            f"     Amenities: {', '.join(hotel['amenities'])}")
+        output_function(
+            f"     Nearby food options: {', '.join(hotel['nearby_food'])}")
+        activities = hotel.get("nearby_activities", [])
+        formatted_activities = []
+        for activity in activities:
+            if isinstance(activity, dict):
+                name = activity.get("name", "Unknown")
+                distance = activity.get("distance_m")
+                if distance is not None:
+                    formatted_activities.append(
+                        f"{name} ({distance}m)"
+                    )
+                else:
+                    formatted_activities.append(name)
+            else:
+                # Supports older saved records
+                formatted_activities.append(str(activity))
+        output_function(
+            f"     Nearby activities: {', '.join(formatted_activities)}"
+        )
         #need to output logic manager distance to preferences too later on
 
 

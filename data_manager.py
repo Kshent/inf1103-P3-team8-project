@@ -15,7 +15,14 @@ def _read_file():
 
     try:
         with open(RECORDS_FILE, "r", encoding="utf-8") as file:
-            data = json.load(file)
+            #new change to handle empty file, if the file is empty, return empty dict
+            content = file.read().strip()
+
+            if not content:
+                return {}
+            
+            data = json.loads(content)
+            ##
     except (json.JSONDecodeError, OSError) as error:
         logger.error("Could not read %s: %s", RECORDS_FILE, error)
         return {}
