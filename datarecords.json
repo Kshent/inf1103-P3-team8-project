@@ -1,0 +1,612 @@
+{
+    "asdf@gmail.com": [
+        [
+            {
+                "name": "Hotel Boss",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 160.0,
+                "rating": 3.8,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Non-smoking Rooms",
+                    "24-hour Front Desk"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Zam Zam Restaurant",
+                    "Golden Mile Complex Food Centre",
+                    "Beach Road Scissor-Cut Curry Rice"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kampong Glam",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Sultan Mosque",
+                        "distance_m": 650
+                    }
+                ]
+            },
+            {
+                "name": "V Hotel Lavender",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 175.0,
+                "rating": 3.9,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Luggage Storage",
+                    "Tour Desk"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Lavender Food Square",
+                    "Tai Wah Pork Noodle",
+                    "Jalan Besar Eateries"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "City Square Mall",
+                        "distance_m": 700
+                    },
+                    {
+                        "name": "Sri Srinivasa Perumal Temple",
+                        "distance_m": 900
+                    }
+                ]
+            },
+            {
+                "name": "YOTELPAD Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 195.0,
+                "rating": 4.2,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Outdoor Pool",
+                    "Gym",
+                    "Restaurant",
+                    "Air Conditioning"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Orchard Road Food Courts",
+                    "Newton Food Centre",
+                    "Tyen Grills"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Orchard Road Shopping District",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Emerald Hill",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Hotel G Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 185.0,
+                "rating": 4.1,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Fitness Centre",
+                    "Restaurants",
+                    "Bar",
+                    "Air Conditioning"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Gyn Khao Bistro",
+                    "Two Men Bagel House",
+                    "Middle Road Hawker Stalls"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Art Museum",
+                        "distance_m": 350
+                    },
+                    {
+                        "name": "National Museum of Singapore",
+                        "distance_m": 650
+                    }
+                ]
+            },
+            {
+                "name": "ibis Singapore Novena",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 145.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Restaurant",
+                    "Bar",
+                    "Laundry Service",
+                    "Free Parking"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Balestier Bak Kut Teh",
+                    "Whampoa Hawker Centre",
+                    "Founder Bak Kut Teh"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Sun Yat Sen Nanyang Memorial Hall",
+                        "distance_m": 450
+                    },
+                    {
+                        "name": "Novena Square",
+                        "distance_m": 900
+                    }
+                ]
+            },
+            {
+                "name": "Value Hotel Thomson",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 115.0,
+                "rating": 3.5,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Swimming Pool",
+                    "24-Hour Front Desk",
+                    "Air Conditioning",
+                    "Daily Housekeeping"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Zhongshan Mall Eateries",
+                    "Loyang Way Big Prawn Noodle",
+                    "Balestier Road Food Stalls"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Zhongshan Park",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Thomson Medical Centre",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Venue Hotel The Lily",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 125.0,
+                "rating": 3.7,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Non-smoking Rooms",
+                    "Elevator",
+                    "Luggage Storage",
+                    "Flat-screen TV"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Joo Chiat Peranakan Cuisine",
+                    "328 Katong Laksa",
+                    "Dunman Food Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Joo Chiat Heritage Shophouses",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "East Coast Park",
+                        "distance_m": 1500
+                    }
+                ]
+            },
+            {
+                "name": "Fragrance Hotel - Classic",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 105.0,
+                "rating": 3.3,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air Conditioning",
+                    "Tour Desk",
+                    "Elevator",
+                    "Cable TV"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Old Airport Road Food Centre",
+                    "Sims Vista Market",
+                    "Geylang Lorong 9 Beef Hor Fun"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Sports Hub",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Kallang Riverside Park",
+                        "distance_m": 1400
+                    }
+                ]
+            },
+            {
+                "name": "Champion Hotel",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 135.0,
+                "rating": 3.8,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air Conditioning",
+                    "Daily Housekeeping",
+                    "Front Desk Safe",
+                    "Luggage Storage"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Katong Mei Chin Boneless Chicken Rice",
+                    "Chin Mee Chin Confectionery",
+                    "Dunman Food Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Katong Antique House",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "I12 Katong",
+                        "distance_m": 700
+                    }
+                ]
+            },
+            {
+                "name": "Arcadia Hotel",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 150.0,
+                "rating": 3.6,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air Conditioning",
+                    "24-Hour Front Desk",
+                    "Luggage Storage",
+                    "Non-smoking Rooms"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Bendemeer Market & Food Centre",
+                    "Sungei Road Laksa",
+                    "Swe Boon Kee"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "City Square Mall",
+                        "distance_m": 900
+                    },
+                    {
+                        "name": "Mustafa Centre",
+                        "distance_m": 1100
+                    }
+                ]
+            }
+        ]
+    ],
+    "kshent@gmail.com": [
+        [
+            {
+                "name": "The Apurva Kempinski Bali",
+                "city": "Bali",
+                "country": "Indonesia",
+                "price_per_night_sgd": 380.0,
+                "rating": 4.8,
+                "amenities": [
+                    "Outdoor Pool",
+                    "Spa",
+                    "Fitness Center",
+                    "Beach Access",
+                    "Free WiFi",
+                    "Multiple Restaurants"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Cucina",
+                    "Reef Beach Club",
+                    "Kubu Water Palace"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Geger Beach",
+                        "distance_m": 800
+                    },
+                    {
+                        "name": "Pura Geger Dalem Pemutih",
+                        "distance_m": 950
+                    }
+                ]
+            },
+            {
+                "name": "Capella Ubud",
+                "city": "Bali",
+                "country": "Indonesia",
+                "price_per_night_sgd": 395.0,
+                "rating": 4.9,
+                "amenities": [
+                    "Tent Pool Villas",
+                    "Spa",
+                    "Fitness Tent",
+                    "Outdoor Pool",
+                    "Free Breakfast",
+                    "Airport Shuttle"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Mads Lange",
+                    "Api Jiwa",
+                    "Kelapa Mask"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pura Tirta Empat",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Local Rice Terraces",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Mandapa, a Ritz-Carlton Reserve",
+                "city": "Bali",
+                "country": "Indonesia",
+                "price_per_night_sgd": 390.0,
+                "rating": 4.9,
+                "amenities": [
+                    "Riverfront Pool",
+                    "Spa",
+                    "Butler Service",
+                    "Yoga Studio",
+                    "Fine Dining"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Suhara",
+                    "Kubutambahan",
+                    "The Library"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Ayung River",
+                        "distance_m": 100
+                    },
+                    {
+                        "name": "Neka Art Museum",
+                        "distance_m": 2500
+                    }
+                ]
+            },
+            {
+                "name": "Hotel Indonesia Kempinski Jakarta",
+                "city": "Jakarta",
+                "country": "Indonesia",
+                "price_per_night_sgd": 320.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Outdoor Pool",
+                    "Luxury Spa",
+                    "Executive Lounge",
+                    "Fitness Center",
+                    "Multiple Restaurants"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Signatures Restaurant",
+                    "Paulaner Bräuhaus",
+                    "OKU"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Grand Indonesia Mall",
+                        "distance_m": 100
+                    },
+                    {
+                        "name": "Welcome Monument",
+                        "distance_m": 300
+                    }
+                ]
+            },
+            {
+                "name": "Fairmont Jakarta",
+                "city": "Jakarta",
+                "country": "Indonesia",
+                "price_per_night_sgd": 310.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Outdoor Pool",
+                    "Spa",
+                    "Fitness Center",
+                    "Free WiFi",
+                    "Bars and Lounges"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Sapori Deli",
+                    "VIEW Restaurant & Bar",
+                    "Spectrum"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Gelora Bung Karno Stadium",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Plaza Senayan",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "The Dharmawangsa Jakarta",
+                "city": "Jakarta",
+                "country": "Indonesia",
+                "price_per_night_sgd": 350.0,
+                "rating": 4.8,
+                "amenities": [
+                    "Indoor Pool",
+                    "Outdoor Pool",
+                    "Luxury Spa",
+                    "Tennis Courts",
+                    "Library"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Jakarta Restaurant",
+                    "Sriwijaya",
+                    "The Courtyard"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Dharmawangsa Square",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Pondok Indah Mall",
+                        "distance_m": 3500
+                    }
+                ]
+            },
+            {
+                "name": "Plataran Borobudur Resort & Spa",
+                "city": "Magelang",
+                "country": "Indonesia",
+                "price_per_night_sgd": 330.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Infinity Pool",
+                    "Spa",
+                    "Yoga Classes",
+                    "Free Breakfast",
+                    "Cultural Tours"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Stupa Restaurant",
+                    "Patra Restaurant",
+                    "Dapoer Gending"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Borobudur Temple",
+                        "distance_m": 2000
+                    },
+                    {
+                        "name": "Punthuk Setumbu",
+                        "distance_m": 3000
+                    }
+                ]
+            },
+            {
+                "name": "Hyatt Regency Yogyakarta",
+                "city": "Yogyakarta",
+                "country": "Indonesia",
+                "price_per_night_sgd": 305.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Golf Course",
+                    "Laguna Pool",
+                    "Spa",
+                    "Tennis Courts",
+                    "Fitness Center"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Kemangi Bistro",
+                    "Merapi Lounge",
+                    "Sate Klathak Pak Bari"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Merapi Golf Course",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Tugu Monument",
+                        "distance_m": 5000
+                    }
+                ]
+            },
+            {
+                "name": "The Westin Resort Nusa Dua",
+                "city": "Bali",
+                "country": "Indonesia",
+                "price_per_night_sgd": 340.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Multiple Pools",
+                    "Heavenly Spa",
+                    "Beachfront",
+                    "Kids Club",
+                    "Fitness Studio"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Prego",
+                    "Seasonal Tastes",
+                    "Ikan Restaurant"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Bali Collection Shopping Center",
+                        "distance_m": 700
+                    },
+                    {
+                        "name": "Nusa Dua Beach",
+                        "distance_m": 100
+                    }
+                ]
+            },
+            {
+                "name": "Sheraton Grand Jakarta Gandaria City Hotel",
+                "city": "Jakarta",
+                "country": "Indonesia",
+                "price_per_night_sgd": 315.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Outdoor Pool",
+                    "Spa",
+                    "Fitness Center",
+                    "Club Lounge",
+                    "Free WiFi"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Anigre",
+                    "Bistro 66",
+                    "Gandaria City Dining Options"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Gandaria City Mall",
+                        "distance_m": 50
+                    },
+                    {
+                        "name": "Radio Dalam Street",
+                        "distance_m": 1200
+                    }
+                ]
+            }
+        ]
+    ]
+}
