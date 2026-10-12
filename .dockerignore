@@ -6,3 +6,4 @@ __pycache__/
 *.py[cod]
 logs/
 datarecords.json
+logic_test_results.json

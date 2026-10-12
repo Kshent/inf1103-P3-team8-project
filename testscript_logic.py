@@ -367,8 +367,7 @@ def run_all_tests():
     }
 
     output_file = (
-        Path(__file__).resolve().parent
-        / "logic_test_results.json"
+        Path("/data") / "logic_test_results.json"
     )
 
     with open(output_file, "w", encoding="utf-8") as file:

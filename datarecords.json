@@ -613,5 +613,187 @@
                 ]
             }
         ]
+    ],
+    "dasfa@gmail.com": [
+        [
+            {
+                "name": "ibis Singapore Novena",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Restaurant",
+                    "Bar",
+                    "Laundry"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Balestier Road Hawker Centre",
+                    "Founder Bak Kut Teh",
+                    "Wheeler's Yard"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Sun Yat Sen Nanyang Memorial Hall",
+                        "distance_m": 450
+                    },
+                    {
+                        "name": "Novena Square",
+                        "distance_m": 700
+                    }
+                ]
+            },
+            {
+                "name": "Citadines Rochor Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 180.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Kitchenette",
+                    "Swimming Pool",
+                    "Gym",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Tekka Centre",
+                    "Swee Choon Tim Sum Restaurant",
+                    "Albert Centre Market and Food Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Little India",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "LASALLE College of the Arts",
+                        "distance_m": 250
+                    }
+                ]
+            },
+            {
+                "name": "Dao by Dorsett AMTD Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 199.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Apartment-style rooms",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Pet Friendly"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Amoy Street Food Centre",
+                    "Maxwell Food Centre",
+                    "Lau Pa Sat"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Tanjong Pagar Centre",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Singapore City Gallery",
+                        "distance_m": 500
+                    }
+                ]
+            }
+        ]
+    ],
+    "car@gmail.com": [
+        [
+            {
+                "name": "The Kampung Ubud Hotel",
+                "city": "Ubud",
+                "country": "Indonesia",
+                "price_per_night_sgd": 120.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Outdoor swimming pool",
+                    "Free Wi-Fi",
+                    "Spa",
+                    "Breakfast included"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Locavore",
+                    "Clear Cafe",
+                    "Warung Ibu Oka"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Ubud Monkey Forest",
+                        "distance_m": 850
+                    },
+                    {
+                        "name": "Ubud Palace",
+                        "distance_m": 1200
+                    }
+                ]
+            },
+            {
+                "name": "Sereh Cottage Ubud",
+                "city": "Ubud",
+                "country": "Indonesia",
+                "price_per_night_sgd": 125.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Outdoor pool",
+                    "Balinese architecture",
+                    "Airport transfer",
+                    "Free breakfast"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Alchemy Bali",
+                    "Sayuri Healing Food",
+                    "Mozaic Restaurant"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Campuhan Ridge Walk",
+                        "distance_m": 1500
+                    },
+                    {
+                        "name": "Ubud Art Market",
+                        "distance_m": 2000
+                    }
+                ]
+            },
+            {
+                "name": "Puri Santrian",
+                "city": "Sanur",
+                "country": "Indonesia",
+                "price_per_night_sgd": 160.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Two outdoor pools",
+                    "Spa",
+                    "Private beach area",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "The Porch Cafe",
+                    "Massimo Italian Restaurant",
+                    "Artotel Beach Club"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Sanur Beach",
+                        "distance_m": 50
+                    },
+                    {
+                        "name": "Le Mayeur Museum",
+                        "distance_m": 2500
+                    }
+                ]
+            }
+        ]
     ]
 }
