@@ -63,9 +63,6 @@ def main():
 
             ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
-            #This will output as dictionary. Logic manager access this dictionary process your logic etc.
-            print(ai_manager_result) ##
-
             # STEP 3: Process hotels using Logic Manager
             logic_result = LogicManager.process_hotels(
                 original_ai_output,
@@ -86,6 +83,7 @@ def main():
                 for hotel in original_ai_output["hotels"]
             }
 
+
             # Keep only the Top 3, in their ranked order
             top_three_dict = {
                 "top_hotels": [
@@ -94,9 +92,9 @@ def main():
                 ]
             }
 
-            print("\n=== TOP 3 HOTELS (DICTIONARY OUTPUT) ===")
+            IOManager.display_message("\n=== TOP 3 HOTELS (DICTIONARY OUTPUT) ===")
             print(top_three_dict)
-            print("=== END OF TOP 3 HOTELS (DICTIONARY OUTPUT) ===\n")
+            IOManager.display_message("\n=== END OF TOP 3 HOTELS (DICTIONARY OUTPUT) ===")
 
             # DATA MANAGER: save the top 3 in the same format as the printed dictionary
             if top_three_dict["top_hotels"]:
