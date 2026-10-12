@@ -1,0 +1,310 @@
+{
+    "123@gmail.com": [
+        [
+            {
+                "name": "Marina Bay Sands",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 399.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Free WiFi",
+                    "Rooftop Infinity Pool",
+                    "Bathtub",
+                    "Breakfast included",
+                    "High floor rooms available",
+                    "Casino"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 0
+                    }
+                ],
+                "nearby_food": [
+                    "CUT by Wolfgang Puck",
+                    "Bread Street Kitchen",
+                    "LAVO Italian Restaurant & Rooftop Bar"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "ArtScience Museum",
+                        "distance_m": 100
+                    },
+                    {
+                        "name": "Gardens by the Bay",
+                        "distance_m": 400
+                    }
+                ]
+            },
+            {
+                "name": "PARKROYAL COLLECTION Marina Bay",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 310.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free WiFi",
+                    "Mineral Water Swimming Pool",
+                    "Bathtub",
+                    "Breakfast included",
+                    "High floor rooms available",
+                    "Garden Atrium"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 750
+                    }
+                ],
+                "nearby_food": [
+                    "Peppermint",
+                    "Peach Blossoms",
+                    "The Portman Bar"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Marina Square",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Singapore Flyer",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Pan Pacific Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 350.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Bathtub",
+                    "Breakfast included",
+                    "High floor rooms available",
+                    "Fitness Center"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 850
+                    }
+                ],
+                "nearby_food": [
+                    "Edge",
+                    "Hai Tien Lo",
+                    "Makansutra Gluttons Bay"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Flyer",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Esplanade - Theatres on the Bay",
+                        "distance_m": 500
+                    }
+                ]
+            }
+        ],
+        [
+            {
+                "name": "Centara Grand Hotel Osaka (Inspired Alternative - Busan Context)",
+                "city": "Busan",
+                "country": "South Korea",
+                "price_per_night_sgd": 260.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Grand Entrance Lobby",
+                    "Fitness Center",
+                    "Spa",
+                    "Multiple Dining Options"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Seomyeon Food Alley",
+                    "Gukje Market Food Stalls"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Seomyeon Medical Street",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Busan Citizens Park",
+                        "distance_m": 1100
+                    }
+                ]
+            },
+            {
+                "name": "Glad Mapo",
+                "city": "Seoul",
+                "country": "South Korea",
+                "price_per_night_sgd": 210.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Spacious Minimalist Lobby",
+                    "Fitness Center",
+                    "Restaurant",
+                    "Bar"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Mapo Ribs Alley",
+                    "Tosokchon Samgyetang Branch"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Hyochung Park",
+                        "distance_m": 900
+                    },
+                    {
+                        "name": "Seoul Mapo Bridge",
+                        "distance_m": 1200
+                    }
+                ]
+            },
+            {
+                "name": "Lotte City Hotel Mapo",
+                "city": "Seoul",
+                "country": "South Korea",
+                "price_per_night_sgd": 220.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Grand Lobby",
+                    "Fitness Center",
+                    "Indoor Pool",
+                    "Free Wi-Fi",
+                    "Restaurant"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Mapo Jinmi Sikdang",
+                    "Gongdeok Market Jokbal Alley"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Gongdeok Market",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Yeouido Hangang Park",
+                        "distance_m": 1500
+                    }
+                ]
+            }
+        ]
+    ],
+    "ads@gmail.com": [
+        [
+            {
+                "name": "The Royal Park Canvas Osaka Kitahama",
+                "city": "Osaka",
+                "country": "Japan",
+                "price_per_night_sgd": 140.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Fitness center",
+                    "Lounge",
+                    "Air conditioning",
+                    "Luggage storage"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Motokura Kitahama",
+                    "Tully's Coffee",
+                    "Northshore Cafe",
+                    "Gyoza Ohsho"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Nakanoshima Park",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Osaka Museum of Housing and Living",
+                        "distance_m": 2100
+                    },
+                    {
+                        "name": "Osaka Castle",
+                        "distance_m": 2500
+                    }
+                ]
+            },
+            {
+                "name": "Vessel Inn Namba",
+                "city": "Osaka",
+                "country": "Japan",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Breakfast buffet",
+                    "Air conditioning",
+                    "Welcome drinks",
+                    "Laundry"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Dotonbori Ichiran",
+                    "Takoyaki Wanaka",
+                    "Kani Doraku",
+                    "Chibo Dotonbori"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Dotonbori",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Shinsaibashi Shopping Arcade",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Namba Parks",
+                        "distance_m": 800
+                    }
+                ]
+            },
+            {
+                "name": "Hotel Resol Trinity Hakata",
+                "city": "Fukuoka",
+                "country": "Japan",
+                "price_per_night_sgd": 135.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Public bath",
+                    "Air conditioning",
+                    "Massage services",
+                    "Luggage storage"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Nakasu Yatai Food Stalls",
+                    "Ichiran Main Shop",
+                    "Shin Shin Ramen",
+                    "Motsunabe Rakutenchi"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kawabata Shopping Arcade",
+                        "distance_m": 150
+                    },
+                    {
+                        "name": "Kushida Shrine",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Canal City Hakata",
+                        "distance_m": 600
+                    }
+                ]
+            }
+        ]
+    ]
+}
