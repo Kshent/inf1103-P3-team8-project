@@ -306,5 +306,126 @@
                 ]
             }
         ]
+    ],
+    "adsf@gmail.com": [
+        [
+            {
+                "name": "PARKROYAL Serviced Suites Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Kitchenette",
+                    "Swimming Pool",
+                    "Gymnasium",
+                    "Steam Room",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1400
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 450
+                    }
+                ],
+                "nearby_food": [
+                    "Jalan Alor Street Food",
+                    "Wong Ah Wah Chicken Wings",
+                    "Lot 10 Hutong"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Jalan Alor Night Market",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Bintang Walk",
+                        "distance_m": 350
+                    }
+                ]
+            },
+            {
+                "name": "Pullman Kuala Lumpur City Centre Hotel & Residences",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 165.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Lagoon-Style Swimming Pool",
+                    "Tennis Court",
+                    "Full-Service Spa",
+                    "Executive Lounge",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1000
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 500
+                    }
+                ],
+                "nearby_food": [
+                    "Song Fa Bak Kut Teh Pavilion",
+                    "Tsujiri Pavilion",
+                    "Cili Kampung"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Aquaria KLCC",
+                        "distance_m": 700
+                    }
+                ]
+            },
+            {
+                "name": "Impiana KLCC Hotel",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 145.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Swimming Pool",
+                    "Spa",
+                    "Fitness Centre",
+                    "Free Wi-Fi",
+                    "Bridge Access to Pavilion KL"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1100
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 300
+                    }
+                ],
+                "nearby_food": [
+                    "Pavilion Food Republic",
+                    "Lot 10 Hutong Food Court",
+                    "Feast Village"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Aquaria KLCC",
+                        "distance_m": 450
+                    }
+                ]
+            }
+        ]
     ]
 }

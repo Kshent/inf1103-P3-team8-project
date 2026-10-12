@@ -18,11 +18,11 @@ AI Manager and Data Manager respectively.
 """
 
 
-print("Loading I/O Manager...")
 
 import re
 from typing import Any, Callable
 
+from geonamescache import GeonamesCache
 
 def _safe_input(
     prompt: str,
@@ -77,6 +77,32 @@ def validate_location(location: str) -> tuple[bool, str]:
         return False, (
             "Location contains invalid characters. "
             "Please enter a valid country or city name."
+
+
+    # Validate against known country/city names using geonamescache.
+    try:
+        geonames = GeonamesCache()
+        normalized = " ".join(location.split()).lower()
+
+        countries = geonames.get_countries()
+        for country_code, country_data in countries.items():
+            country_name = str(country_data.get("name", "")).lower()
+            if normalized == country_name or normalized == country_code.lower():
+                return True, ""
+
+        cities = geonames.get_cities()
+        for city_data in cities.values():
+            city_name = str(city_data.get("name", "")).lower()
+            if normalized == city_name:
+                return True, ""
+
+        return False, (
+            "Location not found. Please enter a valid country or city name."
+        )
+
+    except Exception:
+        # Fallback if geonamescache is unavailable.
+        return True, ""
         )
 
     return True, ""
