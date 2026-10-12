@@ -1,9 +1,12 @@
 import os
+import uuid
 import logging
 from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
 import IO_manager as IOManager
+import logic_manager as LogicManager
+import result_display as ResultDisplay
 
 load_dotenv(".env")
 
@@ -42,38 +45,71 @@ def main():
                 logging.error("Input cancelled by user: %s", e)
                 return
 
-
             ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
+            ai_manager_result = AIManager.data_process(user_input_details, ai_manager_connection)
 
-            ai_manager_result = AIManager.data_process(user_input_details,ai_manager_connection)
-
-            # FIX FROM AI BRANCH
+            # Prevent crash if AI Manager/API fails
             if ai_manager_result is None:
-                IOManager.display_message(
-                    "We encountered an issue fetching hotel data. Please try again."
-                )
+                print("Hotel recommendation service is currently unavailable. Please try again later.")
                 continue
 
-
-            # AI Manager output remains unchanged
-            hotels = ai_manager_result["hotels"]
-
-            # Logic Manager will eventually use this
             email = user_input_details["email_address"]
 
-            #added this for testing purpose after ai and data managers integration, to display the hotels in the console
-            IOManager.display_hotels(hotels)
+            # STEP 1: Keep the original AI output for Logic Manager
+            original_ai_output = ai_manager_result
 
-            # Save AI hotel results through Data Manager
-            DataManager.save({
-                email: hotels
-            })
+            # Create a separate copy for displaying the AI output
+            ai_manager_result = ai_manager_result.copy()
 
+            ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
-            IOManager.display_message(
-            "Hotel recommendations saved successfully."
-        )
+            #This will output as dictionary. Logic manager access this dictionary process your logic etc.
+            print(ai_manager_result) ##
 
+            # STEP 3: Process hotels using Logic Manager
+            logic_result = LogicManager.process_hotels(
+                original_ai_output,
+                user_input_details
+            )
+
+            # STEP 4: Display neatly formatted Top 3 hotels
+            ResultDisplay.show_recommendations(
+                logic_result,
+                user_input_details
+            )
+
+            # STEP 5: Display Top 3 hotels using original AI data
+
+            # Match ranked hotels to the original AI hotel dictionaries
+            original_hotels_by_name = {
+                hotel["name"]: hotel
+                for hotel in original_ai_output["hotels"]
+            }
+
+            # Keep only the Top 3, in their ranked order
+            top_three_dict = {
+                "top_hotels": [
+                    original_hotels_by_name[hotel["name"]]
+                    for hotel in logic_result["top_hotels"]
+                ]
+            }
+
+            print("\n=== TOP 3 HOTELS (DICTIONARY OUTPUT) ===")
+            print(top_three_dict)
+            print("=== END OF TOP 3 HOTELS (DICTIONARY OUTPUT) ===\n")
+
+            # DATA MANAGER: save the top 3 in the same format as the printed dictionary
+            if top_three_dict["top_hotels"]:
+                DataManager.save({
+                    email: top_three_dict["top_hotels"]
+                })
+                IOManager.display_message(
+                    "Hotel recommendations saved successfully."
+                )
+            else:
+                IOManager.display_message(
+                    "No hotels matched your requirements, nothing was saved."
+                )
 
         elif menu_display == "2":
 
@@ -82,7 +118,6 @@ def main():
             IOManager.display_records(
                 DataManager.query(record_email)
             )
-
 
         elif menu_display == "3":
 
