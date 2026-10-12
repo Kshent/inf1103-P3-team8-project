@@ -1,0 +1,617 @@
+{
+    "123@gmail.com": [
+        [
+            {
+                "name": "Marina Bay Sands",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 399.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Free WiFi",
+                    "Rooftop Infinity Pool",
+                    "Bathtub",
+                    "Breakfast included",
+                    "High floor rooms available",
+                    "Casino"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 0
+                    }
+                ],
+                "nearby_food": [
+                    "CUT by Wolfgang Puck",
+                    "Bread Street Kitchen",
+                    "LAVO Italian Restaurant & Rooftop Bar"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "ArtScience Museum",
+                        "distance_m": 100
+                    },
+                    {
+                        "name": "Gardens by the Bay",
+                        "distance_m": 400
+                    }
+                ]
+            },
+            {
+                "name": "PARKROYAL COLLECTION Marina Bay",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 310.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free WiFi",
+                    "Mineral Water Swimming Pool",
+                    "Bathtub",
+                    "Breakfast included",
+                    "High floor rooms available",
+                    "Garden Atrium"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 750
+                    }
+                ],
+                "nearby_food": [
+                    "Peppermint",
+                    "Peach Blossoms",
+                    "The Portman Bar"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Marina Square",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Singapore Flyer",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Pan Pacific Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 350.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Free WiFi",
+                    "Swimming Pool",
+                    "Bathtub",
+                    "Breakfast included",
+                    "High floor rooms available",
+                    "Fitness Center"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 850
+                    }
+                ],
+                "nearby_food": [
+                    "Edge",
+                    "Hai Tien Lo",
+                    "Makansutra Gluttons Bay"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Flyer",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Esplanade - Theatres on the Bay",
+                        "distance_m": 500
+                    }
+                ]
+            }
+        ],
+        [
+            {
+                "name": "Centara Grand Hotel Osaka (Inspired Alternative - Busan Context)",
+                "city": "Busan",
+                "country": "South Korea",
+                "price_per_night_sgd": 260.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Grand Entrance Lobby",
+                    "Fitness Center",
+                    "Spa",
+                    "Multiple Dining Options"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Seomyeon Food Alley",
+                    "Gukje Market Food Stalls"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Seomyeon Medical Street",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Busan Citizens Park",
+                        "distance_m": 1100
+                    }
+                ]
+            },
+            {
+                "name": "Glad Mapo",
+                "city": "Seoul",
+                "country": "South Korea",
+                "price_per_night_sgd": 210.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Spacious Minimalist Lobby",
+                    "Fitness Center",
+                    "Restaurant",
+                    "Bar"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Mapo Ribs Alley",
+                    "Tosokchon Samgyetang Branch"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Hyochung Park",
+                        "distance_m": 900
+                    },
+                    {
+                        "name": "Seoul Mapo Bridge",
+                        "distance_m": 1200
+                    }
+                ]
+            },
+            {
+                "name": "Lotte City Hotel Mapo",
+                "city": "Seoul",
+                "country": "South Korea",
+                "price_per_night_sgd": 220.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Grand Lobby",
+                    "Fitness Center",
+                    "Indoor Pool",
+                    "Free Wi-Fi",
+                    "Restaurant"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Mapo Jinmi Sikdang",
+                    "Gongdeok Market Jokbal Alley"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Gongdeok Market",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Yeouido Hangang Park",
+                        "distance_m": 1500
+                    }
+                ]
+            }
+        ]
+    ],
+    "ads@gmail.com": [
+        [
+            {
+                "name": "The Royal Park Canvas Osaka Kitahama",
+                "city": "Osaka",
+                "country": "Japan",
+                "price_per_night_sgd": 140.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Fitness center",
+                    "Lounge",
+                    "Air conditioning",
+                    "Luggage storage"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Motokura Kitahama",
+                    "Tully's Coffee",
+                    "Northshore Cafe",
+                    "Gyoza Ohsho"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Nakanoshima Park",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Osaka Museum of Housing and Living",
+                        "distance_m": 2100
+                    },
+                    {
+                        "name": "Osaka Castle",
+                        "distance_m": 2500
+                    }
+                ]
+            },
+            {
+                "name": "Vessel Inn Namba",
+                "city": "Osaka",
+                "country": "Japan",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Breakfast buffet",
+                    "Air conditioning",
+                    "Welcome drinks",
+                    "Laundry"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Dotonbori Ichiran",
+                    "Takoyaki Wanaka",
+                    "Kani Doraku",
+                    "Chibo Dotonbori"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Dotonbori",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Shinsaibashi Shopping Arcade",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Namba Parks",
+                        "distance_m": 800
+                    }
+                ]
+            },
+            {
+                "name": "Hotel Resol Trinity Hakata",
+                "city": "Fukuoka",
+                "country": "Japan",
+                "price_per_night_sgd": 135.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Public bath",
+                    "Air conditioning",
+                    "Massage services",
+                    "Luggage storage"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Nakasu Yatai Food Stalls",
+                    "Ichiran Main Shop",
+                    "Shin Shin Ramen",
+                    "Motsunabe Rakutenchi"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kawabata Shopping Arcade",
+                        "distance_m": 150
+                    },
+                    {
+                        "name": "Kushida Shrine",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Canal City Hakata",
+                        "distance_m": 600
+                    }
+                ]
+            }
+        ]
+    ],
+    "adsf@gmail.com": [
+        [
+            {
+                "name": "PARKROYAL Serviced Suites Kuala Lumpur",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Kitchenette",
+                    "Swimming Pool",
+                    "Gymnasium",
+                    "Steam Room",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1400
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 450
+                    }
+                ],
+                "nearby_food": [
+                    "Jalan Alor Street Food",
+                    "Wong Ah Wah Chicken Wings",
+                    "Lot 10 Hutong"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Jalan Alor Night Market",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Bintang Walk",
+                        "distance_m": 350
+                    }
+                ]
+            },
+            {
+                "name": "Pullman Kuala Lumpur City Centre Hotel & Residences",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 165.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Lagoon-Style Swimming Pool",
+                    "Tennis Court",
+                    "Full-Service Spa",
+                    "Executive Lounge",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1000
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 500
+                    }
+                ],
+                "nearby_food": [
+                    "Song Fa Bak Kut Teh Pavilion",
+                    "Tsujiri Pavilion",
+                    "Cili Kampung"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Aquaria KLCC",
+                        "distance_m": 700
+                    }
+                ]
+            },
+            {
+                "name": "Impiana KLCC Hotel",
+                "city": "Kuala Lumpur",
+                "country": "Malaysia",
+                "price_per_night_sgd": 145.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Swimming Pool",
+                    "Spa",
+                    "Fitness Centre",
+                    "Free Wi-Fi",
+                    "Bridge Access to Pavilion KL"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "trx",
+                        "distance_m": 1100
+                    },
+                    {
+                        "target": "pavillion",
+                        "distance_m": 300
+                    }
+                ],
+                "nearby_food": [
+                    "Pavilion Food Republic",
+                    "Lot 10 Hutong Food Court",
+                    "Feast Village"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Pavilion Kuala Lumpur",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Aquaria KLCC",
+                        "distance_m": 450
+                    }
+                ]
+            }
+        ]
+    ],
+    "345@gmail.com": [
+        [
+            {
+                "name": "Novotel Singapore on Stevens",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 320.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Fitness Center",
+                    "Outdoor Swimming Pool",
+                    "Family Rooms",
+                    "Children's Pool",
+                    "Free WiFi",
+                    "Near Public Transport"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Winestone",
+                    "InAAsia",
+                    "L'Entrecôte Custom House"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Botanic Gardens",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Orchard Road Shopping District",
+                        "distance_m": 1500
+                    }
+                ]
+            },
+            {
+                "name": "Mercure Singapore On Stevens",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 305.0,
+                "rating": 4.2,
+                "amenities": [
+                    "Fitness Center",
+                    "Outdoor Infinity Pool",
+                    "Family Rooms",
+                    "Tennis Court",
+                    "Near Stevens MRT Station"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Winestone",
+                    "Fududo",
+                    "Mercure Lounge"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "DFS Galleria Scottswalk",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Singapore Botanic Gardens",
+                        "distance_m": 1300
+                    }
+                ]
+            },
+            {
+                "name": "Carlton City Hotel Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 340.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Fitness Center",
+                    "Outdoor Swimming Pool",
+                    "Family-Friendly Rooms",
+                    "Free WiFi",
+                    "Near Tanjong Pagar MRT Station"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Maxwell Food Centre",
+                    "Plate",
+                    "Tuxedo Cafe & Pâtisserie"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Tanjong Pagar Plaza",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Chinatown Heritage Centre",
+                        "distance_m": 850
+                    }
+                ]
+            }
+        ]
+    ],
+    "testing@gmail.com": [
+        [
+            {
+                "name": "ibis Singapore Novena",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Restaurant",
+                    "Bar",
+                    "Laundry Service"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Whampoa Makan Place",
+                    "Balestier Road Hoover Rojak",
+                    "Founder Bak Kut Teh"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Zhongshan Park",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Sun Yat Sen Nanyang Memorial Hall",
+                        "distance_m": 350
+                    }
+                ]
+            },
+            {
+                "name": "J8 Hotel",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 140.0,
+                "rating": 3.9,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Restaurant",
+                    "Laundry",
+                    "Air Conditioning"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Berseh Food Centre",
+                    "Swee Choon Tim Sum Restaurant",
+                    "Jalan Besar Hawker Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Mustafa Centre",
+                        "distance_m": 700
+                    },
+                    {
+                        "name": "Sri Srinivasa Perumal Temple",
+                        "distance_m": 600
+                    }
+                ]
+            },
+            {
+                "name": "Aqueen Hotel Lavender",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 135.0,
+                "rating": 3.7,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Restaurant",
+                    "24-Hour Front Desk",
+                    "Air Conditioning"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "North Bridge Road Market & Food Centre",
+                    "Lian He Ben Ji Claypot Rice",
+                    "Golden Mile Food Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "ICA Building",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Kampong Glam",
+                        "distance_m": 800
+                    }
+                ]
+            }
+        ]
+    ]
+}
