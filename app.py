@@ -6,7 +6,6 @@ import ai_manager as AIManager
 import data_manager as DataManager
 import IO_manager as IOManager
 import logic_manager as LogicManager
-import result_display as ResultDisplay
 
 load_dotenv(".env")
 
@@ -50,7 +49,9 @@ def main():
 
             # Prevent crash if AI Manager/API fails
             if ai_manager_result is None:
-                print("Hotel recommendation service is currently unavailable. Please try again later.")
+                IOManager.display_message(
+                    "Hotel recommendation service is currently unavailable. Please try again later."
+                )
                 continue
 
             email = user_input_details["email_address"]
@@ -64,7 +65,7 @@ def main():
             ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
             #This will output as dictionary. Logic manager access this dictionary process your logic etc.
-            print(ai_manager_result) ##
+            IOManager.display_ai_dictionary(ai_manager_result)
 
             # STEP 3: Process hotels using Logic Manager
             logic_result = LogicManager.process_hotels(
@@ -73,7 +74,7 @@ def main():
             )
 
             # STEP 4: Display neatly formatted Top 3 hotels
-            ResultDisplay.show_recommendations(
+            IOManager.display_recommendations(
                 logic_result,
                 user_input_details
             )
@@ -94,9 +95,7 @@ def main():
                 ]
             }
 
-            print("\n=== TOP 3 HOTELS (DICTIONARY OUTPUT) ===")
-            print(top_three_dict)
-            print("=== END OF TOP 3 HOTELS (DICTIONARY OUTPUT) ===\n")
+            IOManager.display_top_three_dictionary(top_three_dict)
 
             # DATA MANAGER: save the top 3 in the same format as the printed dictionary
             if top_three_dict["top_hotels"]:
