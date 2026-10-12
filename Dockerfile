@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir --disable-pip-version-check -r requirements.txt \
     && mkdir -p /data \
     && chown appuser:appuser /data
 
-COPY --chown=appuser:appuser app.py testScript.py ai_manager.py ai_filter.py data_manager.py IO_manager.py logic_manager.py result_display.py ./
+COPY --chown=appuser:appuser app.py testScript.py ai_manager.py ai_filter.py data_manager.py IO_manager.py logic_manager.py ./
 
 USER 10001:10001
 WORKDIR /data
