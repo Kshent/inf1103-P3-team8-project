@@ -17,8 +17,7 @@ Those responsibilities belong to the Logic Manager,
 AI Manager and Data Manager respectively.
 """
 
-
-print("Loading I/O Manager...")
+from geonamescache import GeonamesCache
 
 import re
 import textwrap
@@ -72,6 +71,31 @@ def validate_location(location: str) -> tuple[bool, str]:
     # Protect against excessively long user input.
     if len(location) > 100:
         return False, "Location must not exceed 100 characters."
+
+    # Validate against known country/city names using geonamescache.
+    try:
+        geonames = GeonamesCache()
+        normalized = " ".join(location.split()).lower()
+
+        countries = geonames.get_countries()
+        for country_code, country_data in countries.items():
+            country_name = str(country_data.get("name", "")).lower()
+            if normalized == country_name or normalized == country_code.lower():
+                return True, ""
+
+        cities = geonames.get_cities()
+        for city_data in cities.values():
+            city_name = str(city_data.get("name", "")).lower()
+            if normalized == city_name:
+                return True, ""
+
+        return False, (
+            "Location not found. Please enter a valid country or city name."
+        )
+
+    except Exception:
+        # Fallback if geonamescache is unavailable.
+        return True, ""
 
     # Validate destination text so cities and neighbourhoods are accepted.
     if not re.fullmatch(r"[^\W\d_][\w\s.,'’()-]*", location, re.UNICODE):

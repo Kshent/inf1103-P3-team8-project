@@ -455,7 +455,9 @@ This allows the core business rules to be tested independently of the live API.
 
 ## Docker
 
-The Phase 1 application is intended to run inside Docker.
+The application is an interactive CLI, so run the container with a terminal attached.
+The image does not contain `.env`; pass secrets at runtime. Search records and API
+error logs are written under `/data` and can be persisted in a named Docker volume.
 
 Build the image from the repository root:
 
@@ -463,16 +465,22 @@ Build the image from the repository root:
 docker build -t team8-hotel-recommender .
 ```
 
-Run it interactively while supplying the environment variables:
+Create a volume for saved records and logs:
 
 ```bash
-docker run --rm -it --env-file .env team8-hotel-recommender
+docker volume create team8-hotel-data
 ```
 
-The automated test script can also be executed inside the container:
+Run the app interactively, supplying the Gemini API key from `.env`:
 
 ```bash
-python test_logic_manager.py
+docker run --rm -it --env-file .env --mount source=team8-hotel-data,target=/data team8-hotel-recommender
+```
+
+Run the test script inside the same image:
+
+```bash
+docker run --rm team8-hotel-recommender python /app/testScript.py
 ```
 
 ---

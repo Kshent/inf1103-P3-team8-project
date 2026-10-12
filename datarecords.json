@@ -427,5 +427,100 @@
                 ]
             }
         ]
+    ],
+    "345@gmail.com": [
+        [
+            {
+                "name": "Novotel Singapore on Stevens",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 320.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Fitness Center",
+                    "Outdoor Swimming Pool",
+                    "Family Rooms",
+                    "Children's Pool",
+                    "Free WiFi",
+                    "Near Public Transport"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Winestone",
+                    "InAAsia",
+                    "L'Entrecôte Custom House"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Botanic Gardens",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Orchard Road Shopping District",
+                        "distance_m": 1500
+                    }
+                ]
+            },
+            {
+                "name": "Mercure Singapore On Stevens",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 305.0,
+                "rating": 4.2,
+                "amenities": [
+                    "Fitness Center",
+                    "Outdoor Infinity Pool",
+                    "Family Rooms",
+                    "Tennis Court",
+                    "Near Stevens MRT Station"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Winestone",
+                    "Fududo",
+                    "Mercure Lounge"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "DFS Galleria Scottswalk",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Singapore Botanic Gardens",
+                        "distance_m": 1300
+                    }
+                ]
+            },
+            {
+                "name": "Carlton City Hotel Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 340.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Fitness Center",
+                    "Outdoor Swimming Pool",
+                    "Family-Friendly Rooms",
+                    "Free WiFi",
+                    "Near Tanjong Pagar MRT Station"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Maxwell Food Centre",
+                    "Plate",
+                    "Tuxedo Cafe & Pâtisserie"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Tanjong Pagar Plaza",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Chinatown Heritage Centre",
+                        "distance_m": 850
+                    }
+                ]
+            }
+        ]
     ]
 }

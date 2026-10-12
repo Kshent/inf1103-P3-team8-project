@@ -2,10 +2,19 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt ./
 
-COPY . .
+RUN pip install --no-cache-dir --disable-pip-version-check -r requirements.txt \
+    && useradd --create-home --uid 10001 appuser \
+    && mkdir -p /data \
+    && chown appuser:appuser /data
 
-CMD ["python", "ai_manager.py"]
+COPY --chown=appuser:appuser app.py testScript.py ai_manager.py ai_filter.py data_manager.py IO_manager.py logic_manager.py result_display.py ./
+
+USER 10001:10001
+WORKDIR /data
+
+CMD ["python", "/app/app.py"]
