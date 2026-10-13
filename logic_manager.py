@@ -281,12 +281,12 @@ def build_requirements(ai_output, record):
         active.append("location")
     else:
         not_scored.append(
-            "Location was not scored: you did not ask to be near a place.")
+            "Location was not scored: You did not ask to be near a place.")
     if checks:
         active.append("preferences")
     else:
         not_scored.append(
-            "Amenity preferences were not scored: nothing you asked for "
+            "Amenity preferences were not scored: Nothing you asked for "
             "could be checked against the hotel data.")
     if not_scored:
         not_scored.append(
