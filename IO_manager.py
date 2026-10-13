@@ -408,7 +408,7 @@ HEAVY_LINE = "=" * 70
 LIGHT_LINE = "-" * 70
 
 RATING_FOOTER = (
-    "About the ratings: every rating shown is the customer review rating "
+    "About the ratings: Every rating shown is the customer review rating "
     "(the average of guest reviews, as reported by the AI). It is not the "
     "hotel's number of stars. Scores come from fixed rules applied to the hotel "
     "data shown above."
