@@ -5,6 +5,7 @@ from google import genai
 from google.genai import errors
 import logging
 import ai_filter as filtering
+from google.genai import types
 
 
 load_dotenv(".env")
@@ -404,9 +405,15 @@ def call_api(prompt, client):
         try:
 
             response = client.models.generate_content(
-                model=model,
-                contents=prompt
+            model=model,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                automatic_function_calling=
+                    types.AutomaticFunctionCallingConfig(
+                        disable=True
+                    )
             )
+        )
 
             if response.text:
                 return response.text
