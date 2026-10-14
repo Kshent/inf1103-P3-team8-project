@@ -285,16 +285,38 @@ Example:
 
 ```json
 {
-  "user@example.com": [
-    [
-      {
-        "name": "Example Hotel",
-        "city": "Singapore",
-        "country": "Singapore",
-        "price_per_night_sgd": 250
-      }
+    "user@gmail.com": [
+        [
+            {
+                "name": "ibis Singapore on Bencoolen",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 170.0,
+                "rating": 4.2,
+                "amenities": ["Free Wi-Fi", "Restaurant", "Laundry Service"],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 500
+                    }
+                ],
+                "nearby_food": ["Albert Centre Market and Food Centre", "Curry Times"],
+                "nearby_activities": [
+                    { "name": "Sri Krishnan Temple", "distance_m": 250 },
+                    { "name": "Kwan Im Thong Hood Cho Temple", "distance_m": 300 }
+                ]
+            },
+            { "name": "Venue Hotel The Lily", "...": "..." },
+            { "name": "Champion Hotel", "...": "..." }
+        ]
+    ],
+    "anotheruser@gmail.com": [
+        [
+            { "name": "The Local NYC", "...": "..." },
+            { "name": "HI New York City Hostel", "...": "..." },
+            { "name": "Central Park West Hostel", "...": "..." }
+        ]
     ]
-  ]
 }
 ```
 

@@ -1,189 +1,180 @@
 {
-    "kshent@gmail.com": [
+    "asdf@gmail.com": [
         [
             {
-                "name": "ibis Singapore on Bencoolen",
+                "name": "ibis Singapore Novena",
                 "city": "Singapore",
                 "country": "Singapore",
-                "price_per_night_sgd": 170.0,
-                "rating": 4.2,
+                "price_per_night_sgd": 150.0,
+                "rating": 4.0,
                 "amenities": [
                     "Free Wi-Fi",
                     "Restaurant",
-                    "Laundry Service",
-                    "Business Centre"
+                    "Bar",
+                    "Laundry Service"
                 ],
                 "distance_to_preferences": [],
                 "nearby_food": [
-                    "Albert Centre Market and Food Centre",
-                    "Curry Times",
-                    "Bencoolen Hokkien Mee"
+                    "Whampoa Hawker Centre",
+                    "Balestier Road Bak Kut Teh",
+                    "Founder Bak Kut Teh"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Sri Krishnan Temple",
-                        "distance_m": 250
+                        "name": "Sun Yat Sen Nanyang Memorial Hall",
+                        "distance_m": 500
                     },
                     {
-                        "name": " Kwan Im Thong Hood Cho Temple",
-                        "distance_m": 300
+                        "name": "Zhongshan Mall",
+                        "distance_m": 100
                     }
                 ]
             },
             {
-                "name": "Venue Hotel The Lily",
+                "name": "QI Hotel Singapore",
                 "city": "Singapore",
                 "country": "Singapore",
                 "price_per_night_sgd": 140.0,
-                "rating": 3.8,
-                "amenities": [
-                    "Free Wi-Fi",
-                    "Air Conditioning",
-                    "Non-smoking Rooms",
-                    "Elevator"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "328 Katong Laksa",
-                    "Chin Mee Chin Confectionery",
-                    "Dunman Food Centre"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "I12 Katong",
-                        "distance_m": 800
-                    },
-                    {
-                        "name": "East Coast Park",
-                        "distance_m": 1500
-                    }
-                ]
-            },
-            {
-                "name": "Champion Hotel",
-                "city": "Singapore",
-                "country": "Singapore",
-                "price_per_night_sgd": 130.0,
                 "rating": 3.7,
                 "amenities": [
                     "Free Wi-Fi",
                     "Air Conditioning",
-                    "Daily Housekeeping"
+                    "Flat-screen TV"
                 ],
                 "distance_to_preferences": [],
                 "nearby_food": [
-                    "Joo Chiat Prawn Mee",
-                    "Kim Choo Kueh Chang",
-                    "Sin Hoi Sai Eating House"
+                    "Chinatown Complex Food Centre",
+                    "Maximus Food Village",
+                    "Maxwell Food Centre"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Joo Chiat Complex",
+                        "name": "Buddha Tooth Relic Temple",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Chinatown Heritage Centre",
+                        "distance_m": 600
+                    }
+                ]
+            },
+            {
+                "name": "Hotel Boss",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 160.0,
+                "rating": 3.8,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Swimming Pool",
+                    "Fitness Centre",
+                    "Non-smoking Rooms"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Founder Bak Kut Teh",
+                    "Golden Mile Complex Food Centre",
+                    "Beach Road Scissor-Cut Curry Rice"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kampong Glam",
                         "distance_m": 600
                     },
                     {
-                        "name": "Katong Antique House",
-                        "distance_m": 750
+                        "name": "Sultan Mosque",
+                        "distance_m": 650
                     }
                 ]
             }
         ]
     ],
-    "testing@gmail.com": [
+    "kshent@gmail.com": [
         [
             {
-                "name": "The Local NYC",
-                "city": "New York",
-                "country": "United States",
-                "price_per_night_sgd": 140.0,
-                "rating": 4.4,
+                "name": "Jailhouse Accommodation",
+                "city": "Christchurch",
+                "country": "New Zealand",
+                "price_per_night_sgd": 110.0,
+                "rating": 4.5,
                 "amenities": [
-                    "Rooftop terrace",
-                    "Bar and Cafe",
-                    "Free Wi-Fi",
-                    "Laundry facilities"
+                    "Free WiFi",
+                    "Guest Kitchen",
+                    "Free Parking",
+                    "Lounge"
                 ],
                 "distance_to_preferences": [],
                 "nearby_food": [
-                    "Court Square Diner",
-                    "Addisleigh",
-                    "Casa Ensenada"
+                    "Addington Coffee Co-op",
+                    "The Ballymore's Bar & Kitchen",
+                    "Local Pizza"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "MoMA PS1",
-                        "distance_m": 800
+                        "name": "Hagley Park",
+                        "distance_m": 1500
                     },
                     {
-                        "name": "Gantry Plaza State Park",
-                        "distance_m": 1100
+                        "name": "Christchurch Botanic Gardens",
+                        "distance_m": 2200
                     }
                 ]
             },
             {
-                "name": "HI New York City Hostel",
-                "city": "New York",
-                "country": "United States",
-                "price_per_night_sgd": 110.0,
-                "rating": 4.3,
+                "name": "Haka Lodge Queenstown",
+                "city": "Queenstown",
+                "country": "New Zealand",
+                "price_per_night_sgd": 150.0,
+                "rating": 4.4,
                 "amenities": [
-                    "Free Wi-Fi",
-                    "Garden",
+                    "Free WiFi",
+                    "Communal Kitchen",
+                    "Ski Storage",
+                    "Balcony"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Fergburger",
+                    "Flame Bar & Grill",
+                    "Patagonia Chocolates"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Queenstown Gardens",
+                        "distance_m": 700
+                    },
+                    {
+                        "name": "Skyline Queenstown",
+                        "distance_m": 800
+                    }
+                ]
+            },
+            {
+                "name": "Nomads Auckland Backpackers",
+                "city": "Auckland",
+                "country": "New Zealand",
+                "price_per_night_sgd": 120.0,
+                "rating": 4.1,
+                "amenities": [
+                    "Free WiFi",
                     "Kitchen facilities",
-                    "Game room",
+                    "Lounge",
                     "Laundry"
                 ],
                 "distance_to_preferences": [],
                 "nearby_food": [
-                    "Tom's Restaurant",
-                    "Absolute Badels",
-                    "Hungarian Pastry Shop"
+                    "Federal Delicatessen",
+                    "SkyCity Restaurants",
+                    "Depot Eatery"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Riverside Park",
+                        "name": "Sky Tower",
                         "distance_m": 300
                     },
                     {
-                        "name": "Columbia University",
+                        "name": "Auckland Art Gallery Toi o Tamaki",
                         "distance_m": 600
-                    },
-                    {
-                        "name": "Cathedral of St. John the Divine",
-                        "distance_m": 700
-                    }
-                ]
-            },
-            {
-                "name": "Central Park West Hostel",
-                "city": "New York",
-                "country": "United States",
-                "price_per_night_sgd": 125.0,
-                "rating": 3.9,
-                "amenities": [
-                    "Free Wi-Fi",
-                    "Common Room",
-                    "Luggage Storage",
-                    "Air Conditioning"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Levain Bakery",
-                    "Shake Shack",
-                    "Jacob's Pickles"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Central Park",
-                        "distance_m": 200
-                    },
-                    {
-                        "name": "American Museum of Natural History",
-                        "distance_m": 400
-                    },
-                    {
-                        "name": "New-York Historical Society",
-                        "distance_m": 500
                     }
                 ]
             }
