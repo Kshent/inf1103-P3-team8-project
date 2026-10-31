@@ -1,27 +1,85 @@
 """
-I/O Manager
- 
+IO_Manager.py - Input/Output Manager for handling user interactions.
+
+
 Responsibilities:
 1. Collect traveller input from the CLI.
 2. Validate user-provided information.
-3. Format data for the AI Manager.
-4. Display hotel recommendations.
-5. Coordinate communication between all managers.
- 
-This layer must not contain:
-- Hotel ranking logic
-- AI recommendation logic
-- Database/file storage logic
- 
-Those responsibilities belong to the Logic Manager,
-AI Manager and Data Manager respectively.
+3. Display hotel recommendations and saved records.
+
+This layer must not contain hotel ranking logic, AI logic or file storage.
+It also does not import the other layers: it receives plain dictionaries
+(and, for admin login and profile choices, small objects/lists passed in by
+app.py) and returns plain dictionaries.
+ 
+Class map
+---------
+  InputSource (interface)   -> ConsoleInput, ScriptedInput
+  OutputSink (interface)    -> ConsoleOutput, BufferOutput
+  FieldValidator (abstract) -> LocationValidator, PriceRangeValidator,
+                               EmailValidator, PreferencesValidator,
+                               ChoiceValidator, IntegerRangeValidator
+  HotelFormatter            turns results into lines of text (no printing)
+  ConsoleView               asks questions and shows results
+ 
+ConsoleView only depends on the InputSource / OutputSink interfaces, so tests
+can drive it with ScriptedInput and BufferOutput instead of a real keyboard
+and screen.
 """
 
 from geonamescache import GeonamesCache
 
 import re
 import textwrap
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import Any, Callable
+
+# ===========================================================================
+# Input and output channels
+# ===========================================================================
+class InputCancelled(EOFError):
+    """Raised when the user cancels input."""
+
+class InputSource(ABC):
+    """Abstract base class for input sources."""
+
+    @abstractmethod
+    def read(self, prompt):
+        """Show the prompt and return the user's reply."""
+        pass
+
+class ConsoleInput(InputSource):
+    """Reads from the keyboard. Turns Ctrl-C / Ctrl-D into InputCancelled
+      so the application never crashed with a traceback."""
+
+    def __init__(self, input_function=input):
+        self.input_function = input_function
+
+    def read(self, prompt):
+        try:
+            value = self.input_function(prompt)
+        except (KeyboardInterrupt, EOFError):
+            raise InputCancelled("\nInput cancelled. Goodbye.") from None
+        if value is None:
+            raise InputCancelled("\nInput cancelled. Goodbye.")
+        return value.strip()
+
+class ScriptInput(InputSource):
+    """Returns pre-written answers one by one. Used for testing."""
+
+    def __init__(self, answers):
+        self.__answers = list(answers)
+        self.prompt = []       #every prompt that was shown
+
+
+    def read(self, prompt):
+        self.prompts.append(prompt)
+        if not self.__answers:
+            raise InputCancelled("\nInput cancelled. Goodbye.") 
+        return str(self.__answers.pop(0)).strip()   
+    
+        
 
 
 def _safe_input(
