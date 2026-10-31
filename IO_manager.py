@@ -29,6 +29,7 @@ and screen.
 
 from geonamescache import GeonamesCache
 
+from curses import raw
 import re
 import textwrap
 from abc import ABC, abstractmethod
@@ -78,8 +79,351 @@ class ScriptInput(InputSource):
         if not self.__answers:
             raise InputCancelled("\nInput cancelled. Goodbye.") 
         return str(self.__answers.pop(0)).strip()   
+
+
     
+class OutputSink(ABC):
+    """Abstract base class for output sinks."""
+
+    @abstractmethod
+    def write(self, text):
+     """Show one line of text."""
+
+
+class ConsoleOutput(OutputSink):
+    """Writes to the console."""
+
+    def __init__(self, output_function=print):
+        self.output_function = output_function
+
+    def write(self, text):
+        self.output_function(text)
+
+class BufferOutput(OutputSink):
+    """Collects output in a list. Used for testing."""
+
+    def __init__(self):
+        self.lines = []
+
+    def write(self, text):
+        self.lines.append(text)
+
+
+# ===========================================================================
+# Validators (abstract class with a template method)
+# ===========================================================================
+@dataclass(frozen=True)
+class ValidationResult:
+    ok:boolmessage: str = ""
+    value: Any = None
+
+
+class FieldValidator(ABC):
+    """validate() is the template: normalise the text, then run the subclass's own _check()."""
         
+    def validate(self, raw):
+        if not isinstance(raw, str):
+            return self._fail("Value must be text.")
+        return self._check(self._normalise(raw))
+
+    def _normalise(self, raw):
+        return raw.strip()
+
+    abstractmethod
+    def _check(self, text):
+        ...
+
+    @staticmethod
+    def _ok(value):
+        return ValidationResult(True, "", value)
+
+    @staticmethod
+    def _fail(message):
+        return ValidationResult(False, message, None)
+
+
+class LocationValidator(FieldValidator):
+        """Accepts country and city names, including multi-part destinations. 
+        The geonamescache name list is built once and the reused."""
+
+        _known_names = None
+        _lookup_failed = False
+
+        def _check(self, value):
+            if not value:
+                return self._fail("Location cannot be empty.")
+            if len(value) < 2:
+                return self._fail("Location must contain at least 2 characters.")
+            if len(value) > 100:
+                return self._fail("Location must not exceed 100 characters.")
+
+
+            names = self._names()
+            if names is None:        # geonamescache unavailable: accept
+                return self._ok(value)
+            if " ".join(value.split()).lower() in names:
+                return self._ok(value)
+                return self._fail(
+                    "Location validation is temporarily unavailable. "
+                    "Please try again later."
+                )
+
+        @classmethod
+        def _names(cls):
+            if cls._known_names is None and not cls._lookup_failed:
+            try:
+                from geonamescache import GeonamesCache
+                geonames = GeonamesCache()
+                names = set()
+                for code, country in geonames.get_countries().items():
+                    names.add(code.lower())
+                    names.add(str(country.get("name", "")).lower())
+                for city in geonames.get_cities().values():
+                    names.add(str(city.get("name", "")).lower())
+                cls._known_names = frozenset(names)
+            except Exception:          # noqa: BLE001 - fall back to accepting
+                cls._lookup_failed = True
+        return cls._known_names
+
+            
+class PriceRangeValidator(FieldValidator):
+    """Accepts a price range in SGD, e.g. 100-250 or 100,250."""
+
+    _PATTERN = re.compile(r"(\d+(?:\.\d+)?)(?:-|,|TO)(\d+(?:\.\d+)?)")
+ 
+    def _check(self, value):
+        if not value:
+            return self._fail("Price range cannot be empty.")
+ 
+        cleaned = value.upper().replace("SGD", "").replace("S$", "")
+        cleaned = re.sub(r"\s+", "", cleaned.replace("$", ""))
+        match = self._PATTERN.fullmatch(cleaned)
+        if not match:
+            return self._fail("Enter a valid SGD price range, for example "
+                              "100-250 or SGD 100-SGD 250.")
+ 
+        minimum = float(match.group(1))
+        maximum = float(match.group(2))
+        if minimum <= 0 or maximum <= 0:
+            return self._fail("Prices must be greater than zero.")
+        if minimum > maximum:
+            return self._fail("The minimum price cannot be higher than the "
+                              "maximum price.")
+        if maximum > 1_000_000:
+            return self._fail("The maximum price is too high.")
+ 
+        return self._ok({"min": round(minimum, 2), "max": round(maximum, 2),
+                         "currency": "SGD"})
+
+
+class EmailValidator(FieldValidator):
+    _PATTERN = re.compile(
+        r"^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+"
+        r"@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$")
+ 
+    def _check(self, value):
+        if not value:
+            return self._fail("Email address cannot be empty.")
+        if len(value) > 254:          # RFC limit
+            return self._fail("Email address is too long.")
+        if not self._PATTERN.fullmatch(value):
+            return self._fail("Please enter a valid email address.")
+        return self._ok(value)
+    
+
+class PreferencesValidator(FieldValidator):
+    """Preferences are optional: an empty answer is allowed."""
+ 
+    MAX_LENGTH = 2_000
+ 
+    def _check(self, value):
+        if len(value) > self.MAX_LENGTH:
+            return self._fail("Preferences must not exceed 2,000 characters.")
+        return self._ok(value)
+
+    
+class ChoiceValidator(FieldValidator):
+    def __init__(self, choices, message):
+        self.__choices = tuple(choices)
+        self.__message = message
+ 
+    def _check(self, value):
+        if value in self.__choices:
+            return self._ok(value)
+        return self._fail(self.__message)
+
+
+class IntegerRangeValidator(FieldValidator):
+    def __init__(self, low, high):
+        self.__low = low
+        self.__high = high
+ 
+    def _check(self, value):
+        if value.isdigit() and self.__low <= int(value) <= self.__high:
+            return self._ok(int(value))
+        return self._fail("Please enter a whole number from %d to %d."
+                          % (self.__low, self.__high))
+ 
+
+# ===========================================================================
+# Formatting (builds text, never prints)
+# ===========================================================================
+class HotelFormatter:
+    WIDTH = 78
+    HEAVY_LINE = "=" * 70
+    LIGHT_LINE = "-" * 70
+ 
+    RATING_FOOTER = (
+        "About the ratings: Every rating shown is the customer review rating "
+        "(the average of guest reviews, as reported by the AI). It is not the "
+        "hotel's number of stars. Scores come from fixed rules applied to the "
+        "hotel data shown above.")
+ 
+
+    # -- small helpers -----------------------------------------------------
+    def _wrap(self, text, indent):
+        return textwrap.fill(text, width=self.WIDTH, initial_indent=indent,
+                             subsequent_indent=indent)
+ 
+    @staticmethod
+    def _money(value):
+        return "S$%g" % value
+ 
+    @staticmethod
+    def _join(items):
+        return ", ".join(items) if items else "Not listed"
+ 
+    @staticmethod
+    def _activity_text(activity):
+        if isinstance(activity, dict):
+            name = activity.get("name", "")
+            distance = activity.get("distance_m")
+            if isinstance(distance, (int, float)):
+                return "%s (%s m)" % (name, "{:,}".format(int(distance)))
+            return str(name)
+        return str(activity)          # older saved records
+ 
+
+ 
+    # -- saved records -----------------------------------------------------
+    def hotel_list(self, hotels):
+        """Lines for a plain list of hotel dictionaries (saved records)."""
+        lines = []
+        for number, hotel in enumerate(hotels, start=1):
+            lines.append(f"\n  {number}. {hotel['name']}")
+            lines.append(f"     {hotel['city']}, {hotel['country']}")
+            lines.append(f"     SGD {hotel['price_per_night_sgd']} per night | "
+                         f"Rating: {hotel['rating']}")
+            lines.append(f"     Amenities: {', '.join(hotel['amenities'])}")
+            lines.append("     Nearby food options: "
+                         f"{', '.join(hotel['nearby_food'])}")
+            activities = [self._plain_activity(a)
+                          for a in hotel.get("nearby_activities", [])]
+            lines.append(f"     Nearby activities: {', '.join(activities)}")
+        return lines
+ 
+    @staticmethod
+    def _plain_activity(activity):
+        if isinstance(activity, dict):
+            name = activity.get("name", "Unknown")
+            distance = activity.get("distance_m")
+            return f"{name} ({distance}m)" if distance is not None else name
+        return str(activity)
+ 
+    def records(self, records):
+        if not records:
+            return ["\nNo records found."]
+        lines = []
+        for record in records:
+            lines.append(f"\nEmail: {record['email']}")
+            for number, hotels in enumerate(record["searches"], start=1):
+                lines.append(f"\n  --- Search {number} ---")
+                lines.extend(self.hotel_list(hotels))
+        return lines
+ 
+    # -- recommendation report ---------------------------------------------
+    def recommendation_report(self, result, record):
+        summary = result["summary"]
+        requirements = result["requirements"]
+        profile = result.get("profile")
+ 
+        lines = ["", self.HEAVY_LINE, "TOP HOTEL RECOMMENDATIONS",
+                 self.HEAVY_LINE,
+                 "Destination : %s" % record.get("destination"),
+                 "Budget      : %s - %s per night" % (
+                     self._money(record.get("budget_min")),
+                     self._money(record.get("budget_max"))),
+                 "Preferences : %s" % (record.get("preferences") or "None")]
+        if profile:
+            lines.append("Priorities  : %s" % profile["label"])
+        if requirements["targets"]:
+            lines.append("Near        : %s" % ", ".join(requirements["targets"]))
+        lines.append("Reviewed    : %d hotels | Shown: %d | Rejected: %d" % (
+            summary["received"], summary["returned"], summary["rejected"]))
+        lines.append(self.HEAVY_LINE)
+ 
+        if requirements["unverified"]:
+            lines.append(self._wrap(
+                "Could not be checked against hotel data (so not scored): "
+                + ", ".join(requirements["unverified"]) + ".", ""))
+        for note in requirements["not_scored"]:
+            lines.append(self._wrap(note, ""))
+ 
+        if not result["top_hotels"]:
+            lines += ["", "No hotels matched your requirements."]
+        for hotel in result["top_hotels"]:
+            lines.extend(self._hotel_block(hotel))
+ 
+        if result["rejected_hotels"]:
+            lines += ["", "REJECTED"]
+            for hotel in result["rejected_hotels"]:
+                lines.append(self._wrap(
+                    "x %s: %s" % (hotel["name"], hotel["reject_reason"]), "  "))
+            lines.append(self.LIGHT_LINE)
+ 
+        lines += ["", self._wrap(self.RATING_FOOTER, ""), ""]
+        return lines
+ 
+    def _hotel_block(self, hotel):
+        rating = hotel.get("rating")
+        rating_text = ("%.1f / 5" % rating
+                       if isinstance(rating, (int, float)) else "Not available")
+ 
+        lines = ["", "#%d  %s" % (hotel["rank"], hotel["name"]),
+                 "    SCORE: %d/%d - %s" % (hotel["score"], hotel["score_max"],
+                                             hotel["verdict"]),
+                 "    Price: %s per night" % self._money(
+                     hotel["price_per_night_sgd"]),
+                 "    Customer review rating: %s (average of guest reviews, "
+                 "not hotel stars)" % rating_text]
+        for item in hotel.get("distance_to_preferences") or []:
+            distance = item.get("distance_m")
+            if isinstance(distance, (int, float)):
+                lines.append("    Distance: %s m from %s" % (
+                    "{:,}".format(int(distance)), item.get("target")))
+        lines.append(self._wrap("Amenities: " + self._join(
+            hotel.get("amenities")), "    "))
+        lines.append(self._wrap("Nearby food: " + self._join(
+            hotel.get("nearby_food")), "    "))
+        lines.append(self._wrap("Nearby activities: " + self._join(
+            [self._activity_text(a)
+             for a in hotel.get("nearby_activities") or []]), "    "))
+ 
+        lines += ["", "    Why %d/%d:" % (hotel["score"], hotel["score_max"])]
+        for line in hotel["breakdown"]:
+            lines.append("      %-24s %2d / %2d" % (
+                line["category"], line["points"], line["max"]))
+            lines.append(self._wrap(line["reason"], "        "))
+        lines.append("      %-24s %2d / %2d" % (
+            "TOTAL", hotel["score"], hotel["score_max"]))
+ 
+        if hotel.get("notes"):
+            lines.append("")
+            for note in hotel["notes"]:
+                lines.append(self._wrap("Note: " + note, "    "))
+        lines.append(self.LIGHT_LINE)
+        return lines
+ 
 
 
 def _safe_input(
