@@ -5,15 +5,15 @@ from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
 import IO_manager as IOManager
-import logic_manager as LogicManager
 
+from logic_manager import LogicManager # i added this -zy
 load_dotenv(".env")
 
 ADMIN_USER = "team8"
 ADMIN_PASSWORD = "12345"
 
-
-# NO PRINTS AND INPUTS ALLOWED!
+# One LogicManager object, reused for every search
+logic_manager = LogicManager()
 
 def main():
 
@@ -29,7 +29,7 @@ def main():
 
                 mandatory_data = IOManager.request_mandatory_inputs()
                 user_prefs = IOManager.request_user_preferences()
-                    
+
                 final_search_payload = {
                         **mandatory_data,
                         "preferences": user_prefs
@@ -66,7 +66,9 @@ def main():
                 IOManager.display_ai_dictionary(ai_manager_result)
 
                 # STEP 3: Process hotels using Logic Manager
-                logic_result = LogicManager.process_hotels(
+                # Must receive the ORIGINAL output (it still has the "hotels" key).
+                # ai_manager_result is only the display copy, with a UUID key.
+                logic_result = logic_manager.process_hotels(
                     original_ai_output,
                     user_input_details
                 )
@@ -84,7 +86,6 @@ def main():
                     hotel["name"]: hotel
                     for hotel in original_ai_output["hotels"]
                 }
-
 
                 # Keep only the Top 3, in their ranked order
                 top_three_dict = {
