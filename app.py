@@ -1,6 +1,5 @@
 import os
 import uuid
-import logging
 from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
