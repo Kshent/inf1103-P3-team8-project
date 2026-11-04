@@ -16,19 +16,20 @@ ADMIN_PASSWORD = "12345"
 # NO PRINTS AND INPUTS ALLOWED!
 
 def main():
+    console = IOManager.ConsoleView()
 
     while True:
 
         try:
-            menu_display = IOManager.show_main_menu()
+            menu_display = console.show_main_menu()
 
             if menu_display == "1":
 
                 user_input_details = {}
 
 
-                mandatory_data = IOManager.request_mandatory_inputs()
-                user_prefs = IOManager.request_user_preferences()
+                mandatory_data = console.request_mandatory_inputs()
+                user_prefs = console.request_user_preferences()
                     
                 final_search_payload = {
                         **mandatory_data,
@@ -47,7 +48,7 @@ def main():
 
                 # Prevent crash if AI Manager/API fails
                 if ai_manager_result is None:
-                    IOManager.display_message(
+                    console.display_message(
                         "Hotel recommendation service is currently unavailable. Please try again later."
                     )
                     continue
@@ -63,7 +64,7 @@ def main():
                 ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
                 #This will output as dictionary. Logic manager access this dictionary process your logic etc.
-                IOManager.display_ai_dictionary(ai_manager_result)
+                console.display_ai_dictionary(ai_manager_result)
 
                 # STEP 3: Process hotels using Logic Manager
                 logic_result = LogicManager.process_hotels(
@@ -72,7 +73,7 @@ def main():
                 )
 
                 # STEP 4: Display neatly formatted Top 3 hotels
-                IOManager.display_recommendations(
+                console.display_recommendations(
                     logic_result,
                     user_input_details
                 )
@@ -94,43 +95,43 @@ def main():
                     ]
                 }
 
-                IOManager.display_top_three_dictionary(top_three_dict)
+                console.display_top_three_dictionary(top_three_dict)
 
                 # DATA MANAGER: save the top 3 in the same format as the printed dictionary
                 if top_three_dict["top_hotels"]:
                     DataManager.save({
                         email: top_three_dict["top_hotels"]
                     })
-                    IOManager.display_message(
+                    console.display_message(
                         "Hotel recommendations saved successfully."
                     )
                 else:
-                    IOManager.display_message(
+                    console.display_message(
                         "No hotels matched your requirements, nothing was saved."
                     )
 
             elif menu_display == "2":
 
-                record_email = IOManager.request_record_email()
+                record_email = console.request_record_email()
 
-                IOManager.display_records(
+                console.display_records(
                     DataManager.query(record_email)
                 )
 
             elif menu_display == "3":
 
-                if IOManager.admin_login(ADMIN_USER, ADMIN_PASSWORD):
+                if console.admin_login(ADMIN_USER, ADMIN_PASSWORD):
 
-                    IOManager.display_records(
+                    console.display_records(
                         DataManager.load()
                     )
 
             elif menu_display == "4":
-                IOManager.display_message("Thanks for using our app!")
+                console.display_message("Thanks for using our app!")
                 break
 
         except EOFError as error:
-            IOManager.display_message(str(error))
+            console.display_message(str(error))
             continue
 
 

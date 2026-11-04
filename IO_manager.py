@@ -28,7 +28,6 @@ and screen.
 """
 
 
-from curses import raw
 import re
 import textwrap
 from abc import ABC, abstractmethod
@@ -70,8 +69,7 @@ class ScriptInput(InputSource):
 
     def __init__(self, answers):
         self.__answers = list(answers)
-        self.prompt = []       #every prompt that was shown
-
+        self.prompts = []
 
     def read(self, prompt):
         self.prompts.append(prompt)
@@ -113,7 +111,8 @@ class BufferOutput(OutputSink):
 # ===========================================================================
 @dataclass(frozen=True)
 class ValidationResult:
-    ok:boolmessage: str = ""
+    ok: bool
+    message: str = ""
     value: Any = None
 
 
@@ -128,7 +127,7 @@ class FieldValidator(ABC):
     def _normalise(self, raw):
         return raw.strip()
 
-    abstractmethod
+    @abstractmethod
     def _check(self, text):
         ...
 
@@ -142,36 +141,34 @@ class FieldValidator(ABC):
 
 
 class LocationValidator(FieldValidator):
-        """Accepts country and city names, including multi-part destinations. 
-        The geonamescache name list is built once and the reused."""
+    """Accept country and city names using a cached geonamescache lookup."""
 
-        _known_names = None
-        _lookup_failed = False
+    _known_names = None
+    _lookup_failed = False
 
-        def _check(self, value):
-            if not value:
-                return self._fail("Location cannot be empty.")
-            if len(value) < 2:
-                return self._fail("Location must contain at least 2 characters.")
-            if len(value) > 100:
-                return self._fail("Location must not exceed 100 characters.")
+    def _check(self, value):
+        if not value:
+            return self._fail("Location cannot be empty.")
+        if len(value) < 2:
+            return self._fail("Location must contain at least 2 characters.")
+        if len(value) > 100:
+            return self._fail("Location must not exceed 100 characters.")
 
+        names = self._names()
+        if names is None:
+            return self._ok(value)
+        if " ".join(value.split()).lower() in names:
+            return self._ok(value)
+        return self._fail(
+            "Location not found. Please enter a valid country or city name."
+        )
 
-            names = self._names()
-            if names is None:        # geonamescache unavailable: accept
-                return self._ok(value)
-            if " ".join(value.split()).lower() in names:
-                return self._ok(value)
-                return self._fail(
-                    "Location validation is temporarily unavailable. "
-                    "Please try again later."
-                )
-
-        @classmethod
-        def _names(cls):
-            if cls._known_names is None and not cls._lookup_failed:
+    @classmethod
+    def _names(cls):
+        if cls._known_names is None and not cls._lookup_failed:
             try:
                 from geonamescache import GeonamesCache
+
                 geonames = GeonamesCache()
                 names = set()
                 for code, country in geonames.get_countries().items():
@@ -180,11 +177,11 @@ class LocationValidator(FieldValidator):
                 for city in geonames.get_cities().values():
                     names.add(str(city.get("name", "")).lower())
                 cls._known_names = frozenset(names)
-            except Exception:          # noqa: BLE001 - fall back to accepting
+            except ImportError:
                 cls._lookup_failed = True
         return cls._known_names
 
-            
+
 class PriceRangeValidator(FieldValidator):
     """Accepts a price range in SGD, e.g. 100-250 or 100,250."""
 
@@ -551,22 +548,21 @@ class ConsoleView:
                 return result.value.lower()
             self.__sink.write(f"Invalid input : {result.message}")
  
-    def admin_login(self, authenticator):
-        """Returns True if login succeeds, False if the user quits with Q.
-        `authenticator` is any object with check_username / check_password."""
+    def admin_login(self, admin_user, admin_password):
+        """Return True on successful login, False when the user enters Q."""
         while True:
             username = self.__source.read("Enter username or Q to exit: ")
             if username.upper() == "Q":
                 return False
-            if not authenticator.check_username(username):
+            if username != admin_user:
                 self.__sink.write("Wrong username")
                 continue
- 
+
             while True:
                 password = self.__source.read("Enter password or Q to exit: ")
                 if password.upper() == "Q":
                     return False
-                if not authenticator.check_password(password):
+                if password != admin_password:
                     self.__sink.write("Wrong password")
                     continue
                 return True
