@@ -4,7 +4,7 @@ import logging
 from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
-import IO_manager as IOManager
+import io_manager as IOManager
 import logic_manager as LogicManager
 
 load_dotenv(".env")
