@@ -215,16 +215,23 @@ def _parse_preferences(text, targets):
     return checks, unverified
 
 
-def _allocate_maxima(active):
+def _allocate_maxima(active, weights=None, total=BASE_POINTS):
     """Share BASE_POINTS across the scored categories using whole numbers
     that add up to exactly BASE_POINTS."""
-    total = sum(WEIGHTS[key] for key in active)
-    raw = {key: WEIGHTS[key] * BASE_POINTS / total for key in active}
-    maxima = {key: int(round(raw[key], 9)) for key in active}
-    leftover = BASE_POINTS - sum(maxima.values())
+    weights = weights or WEIGHTS
+    weight_total = sum(weights[key] for key in active)
+    if weight_total == 0:
+        weights = {key: 1 for key in active}
+        weight_total = len(active)
+    raw = {key: weights[key] * total / weight_total for key in active}
+    maxima = {key: int(raw[key]) for key in active}
+    leftover = total - sum(maxima.values())
     by_remainder = sorted(
         active,
-        key=lambda key: (-(raw[key] - maxima[key]), CATEGORY_ORDER.index(key)))
+        key=lambda key: (
+            -(raw[key] - maxima[key]),
+            CATEGORY_ORDER.index(key) if key in CATEGORY_ORDER
+            else len(CATEGORY_ORDER)))
     for key in by_remainder[:leftover]:
         maxima[key] += 1
     return maxima
@@ -264,7 +271,7 @@ def _amenity_matches(hotel, requirements):
 
 
 # 0. build_requirements - what the user actually asked for
-def build_requirements(ai_output, record):
+def build_requirements(ai_output, record, profile_weights=None):
     """Work out, once per search, what will be scored and how many points
     each category is worth. Returned as plain data so the output layer can
     explain it."""
@@ -293,13 +300,23 @@ def build_requirements(ai_output, record):
             "Points for unscored categories are shared across the scored "
             "ones, so every score is still out of 100.")
 
+    if profile_weights is None:
+        maxima = _allocate_maxima(active)
+    else:
+        bonus_max = profile_weights["bonus"]
+        maxima = _allocate_maxima(
+            active,
+            profile_weights,
+            BASE_POINTS + BONUS_POINTS - bonus_max)
+        maxima["bonus"] = bonus_max
+
     return {
         "budget_min": budget_min if _is_number(budget_min) else None,
         "budget_max": budget_max if _is_number(budget_max) else None,
         "targets": targets,
         "pref_checks": checks,
         "unverified": unverified,
-        "maxima": _allocate_maxima(active),
+        "maxima": maxima,
         "not_scored": not_scored,
     }
 
@@ -550,12 +567,14 @@ def calculate_score(hotel, requirements):
             _make_line("preferences", share, reason, maxima["preferences"]))
 
     share, reason = _bonus_component(hotel, requirements)
-    breakdown.append(_make_line("bonus", share, reason, BONUS_POINTS))
+    bonus_max = maxima.get("bonus", BONUS_POINTS)
+    breakdown.append(_make_line("bonus", share, reason, bonus_max))
 
     score = sum(line["points"] for line in breakdown)
     scored = dict(hotel)
     scored["score"] = score
-    scored["score_max"] = BASE_POINTS + BONUS_POINTS
+    scored["score_max"] = sum(maxima.values()) + (
+        0 if "bonus" in maxima else BONUS_POINTS)
     scored["verdict"] = _verdict(score)
     scored["breakdown"] = breakdown
     return scored
@@ -592,7 +611,7 @@ def get_top_three(ranked_hotels):
     return top
 
 # Entry point for the rest of the system
-def process_hotels(ai_output, record):
+def process_hotels(ai_output, record, profile=None):
     """Run the full logic pipeline. Does not modify ai_output or record.
 
     Returns a dict:
@@ -601,7 +620,8 @@ def process_hotels(ai_output, record):
       requirements    - what was scored and what could not be checked
       summary         - counts, so the output layer can explain a short result
     """
-    requirements = build_requirements(ai_output, record)
+    profile_weights = profile.weights if profile is not None else None
+    requirements = build_requirements(ai_output, record, profile_weights)
     valid = validate_hotels(ai_output)
     kept, rejected = filter_hotels(valid, requirements)
     scored = [calculate_score(hotel, requirements) for hotel in kept]
@@ -610,7 +630,7 @@ def process_hotels(ai_output, record):
     received = 0
     if isinstance(ai_output, dict) and isinstance(ai_output.get("hotels"), list):
         received = len(ai_output["hotels"])
-    return {
+    result = {
         "top_hotels": top,
         "rejected_hotels": rejected,
         "requirements": requirements,
@@ -621,3 +641,172 @@ def process_hotels(ai_output, record):
             "returned": len(top),
         },
     }
+    if profile is not None:
+        result["profile"] = {
+            "name": profile.name,
+            "label": profile.label,
+        }
+    return result
+
+
+class PriorityProfile:
+    """A named set of scoring weights chosen by the traveller."""
+
+    def __init__(self, name, label, weights):
+        self.name = name
+        self.label = label
+        self.weights = dict(weights)
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "label": self.label,
+            "weights": dict(self.weights),
+        }
+
+
+class ProfileFactory:
+    """Create built-in or validated custom scoring profiles."""
+
+    _CATEGORIES = [
+        {"key": "rating", "label": "Customer review rating"},
+        {"key": "price", "label": "Price"},
+        {"key": "location", "label": "Location"},
+        {"key": "preferences", "label": "Your preferences"},
+        {"key": "bonus", "label": "Top-match bonus"},
+    ]
+    _PROFILES = [
+        {
+            "name": "balanced",
+            "label": "Balanced",
+            "weights": {
+                "rating": 25, "price": 20, "location": 25,
+                "preferences": 20, "bonus": 10,
+            },
+        },
+        {
+            "name": "budget",
+            "label": "Budget focused",
+            "weights": {
+                "rating": 15, "price": 45, "location": 20,
+                "preferences": 10, "bonus": 10,
+            },
+        },
+        {
+            "name": "quality",
+            "label": "Quality focused",
+            "weights": {
+                "rating": 40, "price": 10, "location": 20,
+                "preferences": 20, "bonus": 10,
+            },
+        },
+    ]
+
+    @classmethod
+    def categories(cls):
+        return [dict(category) for category in cls._CATEGORIES]
+
+    @classmethod
+    def catalog(cls):
+        return [
+            {
+                "name": profile["name"],
+                "label": profile["label"],
+                "weights": dict(profile["weights"]),
+            }
+            for profile in cls._PROFILES
+        ]
+
+    @classmethod
+    def from_dict(cls, choice):
+        if not isinstance(choice, dict):
+            raise ValueError("A priority profile choice is required.")
+
+        name = choice.get("name")
+        weights = choice.get("weights")
+        if weights is None:
+            profile = next(
+                (item for item in cls._PROFILES if item["name"] == name),
+                None)
+            if profile is None:
+                raise ValueError("Unknown priority profile: %s" % name)
+            return PriorityProfile(
+                profile["name"], profile["label"], profile["weights"])
+
+        category_keys = {category["key"] for category in cls._CATEGORIES}
+        if (
+            not isinstance(weights, dict)
+            or set(weights) != category_keys
+            or any(type(value) is not int or value < 0
+                   for value in weights.values())
+            or sum(weights.values()) != 100
+        ):
+            raise ValueError(
+                "Profile weights must be non-negative integers adding up "
+                "to 100.")
+        built_in = next(
+            (item for item in cls._PROFILES if item["name"] == name),
+            None)
+        if built_in is not None:
+            if weights != built_in["weights"]:
+                raise ValueError(
+                    "Weights for a built-in profile cannot be changed.")
+            return PriorityProfile(
+                built_in["name"], built_in["label"], built_in["weights"])
+        return PriorityProfile("custom", "Custom", weights)
+
+
+class RecommendationResult:
+    """Scored output plus the original hotel dictionaries for saving."""
+
+    def __init__(self, result, ai_output):
+        self._result = result
+        self._hotels_by_name = {
+            hotel["name"]: hotel
+            for hotel in ai_output.get("hotels", [])
+            if isinstance(hotel, dict) and isinstance(hotel.get("name"), str)
+        }
+
+    def to_dict(self):
+        return self._result
+
+    def original_top_hotels(self):
+        return [
+            self._hotels_by_name[hotel["name"]]
+            for hotel in self._result["top_hotels"]
+            if hotel["name"] in self._hotels_by_name
+        ]
+
+
+class RecommendationEngine:
+    """Object-oriented adapter around the procedural scoring pipeline."""
+
+    @classmethod
+    def default(cls):
+        return cls()
+
+    def recommend(self, ai_output, record, profile):
+        return RecommendationResult(
+            process_hotels(ai_output, record, profile),
+            ai_output if isinstance(ai_output, dict) else {})
+
+
+class AdminAuthenticator:
+    """Check administrator credentials configured through environment vars."""
+
+    def __init__(self, username, password):
+        self._username = username
+        self._password = password
+
+    @classmethod
+    def from_environment(cls):
+        import os
+        return cls(
+            os.environ.get("ADMIN_USER", "team8"),
+            os.environ.get("ADMIN_PASSWORD", "12345"))
+
+    def check_username(self, username):
+        return username == self._username
+
+    def check_password(self, password):
+        return password == self._password

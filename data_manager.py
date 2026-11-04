@@ -71,3 +71,51 @@ def query(record_email):
         return []
 
     return [{"email": record_email, "searches": hotels}]
+
+
+class JsonRecordRepository:
+    """Repository adapter that retains the existing JSON records format."""
+
+    def save(self, email, hotels):
+        save({email: hotels})
+
+    def find_by_email(self, email):
+        return query(email.strip().lower())
+
+    def find_all(self):
+        return load()
+
+
+class JsonProfileRepository:
+    """Persist traveller scoring profiles separately from hotel records."""
+
+    def __init__(self, path="profiles.json"):
+        self._path = path
+
+    def _read_profiles(self):
+        if not os.path.exists(self._path):
+            return {}
+        try:
+            with open(self._path, "r", encoding="utf-8") as file:
+                profiles = json.load(file)
+        except (json.JSONDecodeError, OSError) as error:
+            logger.error("Could not read profiles from %s: %s",
+                         self._path, error)
+            return {}
+        if not isinstance(profiles, dict):
+            logger.error("%s has an unexpected format.", self._path)
+            return {}
+        return profiles
+
+    def load_profile(self, email):
+        return self._read_profiles().get(email.strip().lower())
+
+    def save_profile(self, email, profile):
+        profiles = self._read_profiles()
+        profiles[email.strip().lower()] = profile
+        try:
+            with open(self._path, "w", encoding="utf-8") as file:
+                json.dump(profiles, file, indent=4, ensure_ascii=False)
+        except OSError as error:
+            logger.error("Could not save profile to %s: %s",
+                         self._path, error)

@@ -287,6 +287,254 @@
                     }
                 ]
             }
+        ],
+        [
+            {
+                "name": "Lyf Funan Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 185,
+                "rating": 4.3,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "High floor rooms",
+                    "Breakfast available",
+                    "Fitness centre",
+                    "Shared kitchen"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1800
+                    }
+                ],
+                "nearby_food": [
+                    "Nasty Cookie Funan",
+                    "Tiong Bahru Bakery Funan",
+                    "Song Fa Bak Kut Teh"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "National Gallery Singapore",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Fort Canning Park",
+                        "distance_m": 500
+                    }
+                ]
+            }
+        ],
+        [
+            {
+                "name": "Carlton Hotel Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 210.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor Executive Rooms",
+                    "Swimming Pool",
+                    "Gym"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1300
+                    }
+                ],
+                "nearby_food": [
+                    "Cafe Mosaic",
+                    "Wah Lok Cantonese Restaurant",
+                    "Armenian Street Food"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Peranakan Museum",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "National Museum of Singapore",
+                        "distance_m": 750
+                    }
+                ]
+            },
+            {
+                "name": "Swissotel The Stamford",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 250.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor Rooms",
+                    "Swimming Pool",
+                    "Willow Stream Spa"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1000
+                    }
+                ],
+                "nearby_food": [
+                    "JAAN by Kirk Westaway",
+                    "Swiss Bake",
+                    "City Hall Kopitiam"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Raffles City Shopping Centre",
+                        "distance_m": 100
+                    },
+                    {
+                        "name": "St. Andrew's Cathedral",
+                        "distance_m": 350
+                    }
+                ]
+            },
+            {
+                "name": "Parkroyal on Beach Road",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 220.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor City Views",
+                    "Mineral Pool",
+                    "Wellness Spa"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1500
+                    }
+                ],
+                "nearby_food": [
+                    "Ginger",
+                    "Zam Zam",
+                    "Victory Restaurant"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kampong Glam",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Sultan Mosque",
+                        "distance_m": 450
+                    }
+                ]
+            }
+        ],
+        [
+            {
+                "name": "Parkroyal on Beach Road",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 210.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Mineral water swimming pool",
+                    "St. Gregory Spa",
+                    "High floor rooms available",
+                    "Fitness centre",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1500
+                    }
+                ],
+                "nearby_food": [
+                    "Ginger",
+                    "Tian Kee & local kopitiams",
+                    "Golden Mile Food Centre"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Haji Lane",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Sultan Mosque",
+                        "distance_m": 700
+                    }
+                ]
+            },
+            {
+                "name": "Pan Pacific Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 265.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Swimming pool",
+                    "Tennis courts",
+                    "Fitness centre",
+                    "High floor rooms available",
+                    "Spa"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 800
+                    }
+                ],
+                "nearby_food": [
+                    "Edge",
+                    "Keyaki",
+                    "Makansutra Gluttons Bay"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Singapore Flyer",
+                        "distance_m": 600
+                    },
+                    {
+                        "name": "Esplanade - Theatres on the Bay",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "The Ritz-Carlton, Millenia Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 299.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Outdoor swimming pool",
+                    "The Ritz-Carlton Spa",
+                    "High floor rooms available",
+                    "Fitness centre",
+                    "Art collection"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 850
+                    }
+                ],
+                "nearby_food": [
+                    "Colony",
+                    "Summer Pavilion",
+                    "Millenia Walk dining"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Millenia Walk",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Singapore Flyer",
+                        "distance_m": 500
+                    }
+                ]
+            }
         ]
     ]
 }
