@@ -6,7 +6,7 @@ import ai_manager as AIManager
 import data_manager as DataManager
 import IO_manager as IOManager
 
-from logic_manager import LogicManager # i added this -zy
+from logic_managerpart2 import LogicManager
 load_dotenv(".env")
 
 ADMIN_USER = "team8"
