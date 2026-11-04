@@ -28,15 +28,15 @@ hotel_formatter. Nothing in those imports console_view.
 Everything public is re-exported here, so other code can simply write
 `import io_manager as IOManager` and use IOManager.ConsoleView()."""
 
-from .exceptions import InputCancelled
-from .channels import (InputSource, ConsoleInput, ScriptedInput,
-                       OutputSink, ConsoleOutput, BufferOutput)
-from .validators import (ValidationResult, FieldValidator, LocationValidator,
-                         PriceRangeValidator, EmailValidator,
-                         PreferencesValidator, ChoiceValidator,
-                         WeightValidator)
-from .hotel_formatter import HotelFormatter
-from .console_view import ConsoleView
+from exceptions import InputCancelled
+from channels import (InputSource, ConsoleInput, ScriptedInput,
+                      OutputSink, ConsoleOutput, BufferOutput)
+from validators import (ValidationResult, FieldValidator, LocationValidator,
+                        PriceRangeValidator, EmailValidator,
+                        PreferencesValidator, ChoiceValidator,
+                        WeightValidator)
+from hotel_formatter import HotelFormatter
+from console_view import ConsoleView
 
 __all__ = ["InputCancelled",
            "InputSource",

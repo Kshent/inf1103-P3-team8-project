@@ -1,6 +1,6 @@
 """Reads answers from the keyboard."""
 
-from ..exceptions import InputCancelled
+from exceptions import InputCancelled
 from .input_source import InputSource
 
 
