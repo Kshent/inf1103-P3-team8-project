@@ -6,13 +6,13 @@ import ai_manager as AIManager
 import data_manager as DataManager
 import IO_manager as IOManager
 
-from logic_managerpart2 import LogicManager
+from logic_managerpart2 import LogicManager #i added this -zy
 load_dotenv(".env")
 
 ADMIN_USER = "team8"
 ADMIN_PASSWORD = "12345"
 
-# One LogicManager object, reused for every search
+# One object, reused for every search
 logic_manager = LogicManager()
 
 def main():
@@ -40,7 +40,6 @@ def main():
                 user_input_details["budget_max"] = final_search_payload["price_range"]["max"]
                 user_input_details["email_address"] = final_search_payload["email_address"]
                 user_input_details["preferences"] = final_search_payload["preferences"]
-
 
                 ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
                 ai_manager_result = AIManager.data_process(user_input_details, ai_manager_connection)
@@ -133,7 +132,6 @@ def main():
         except EOFError as error:
             IOManager.display_message(str(error))
             continue
-
 
 if __name__ == "__main__":
     main()
