@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
 import IO_manager as IOManager
-import logic_manager as LogicManager
-
+import logic_manager_part2.logic_manager as LogicManager
 load_dotenv(".env")
 
 ADMIN_USER = "team8"
@@ -67,10 +66,12 @@ def main():
                 console.display_ai_dictionary(ai_manager_result)
 
                 # STEP 3: Process hotels using Logic Manager
-                logic_result = LogicManager.process_hotels(
+                logic_manager = LogicManager.LogicManager()
+
+                logic_result = logic_manager.process_hotels(
                     original_ai_output,
                     user_input_details
-                )
+                    )
 
                 # STEP 4: Display neatly formatted Top 3 hotels
                 console.display_recommendations(
