@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
 import io_manager as IOManager
-import logic_manager as LogicManager
+import logic_managerpart2 as LogicManager
 
 load_dotenv(".env")
 

@@ -5,7 +5,7 @@ from .field_validator import FieldValidator
 from .location_validator import LocationValidator
 from .price_range_validator import PriceRangeValidator
 from .email_validator import EmailValidator
-from .preferences_validator import PreferencesValidator
+from .preferences_validators import PreferencesValidator
 from .choice_validator import ChoiceValidator
 from .weight_validator import WeightValidator
 
