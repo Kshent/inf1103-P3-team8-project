@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
 import io_manager as IOManager
-import logic_managerpart2 as LogicManager
+import logic_managerpart2.manager as LogicManager
 
 load_dotenv(".env")
 
@@ -66,11 +66,14 @@ def main():
                 #This will output as dictionary. Logic manager access this dictionary process your logic etc.
                 console.display_ai_dictionary(ai_manager_result)
 
+                logic_manager = LogicManager.LogicManager()
+
                 # STEP 3: Process hotels using Logic Manager
-                logic_result = LogicManager.process_hotels(
+                logic_result = logic_manager.process_hotels(
                     original_ai_output,
                     user_input_details
                 )
+
 
                 # STEP 4: Display neatly formatted Top 3 hotels
                 console.display_recommendations(
