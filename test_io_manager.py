@@ -4,7 +4,7 @@ import ast
 import pathlib
 import unittest
 
-import io_manager
+import io_manager_part2
 from io_manager import (ConsoleView, EmailValidator, InputReader,
                         InputValidator, LocationValidator, PriceRangeValidator)
 
