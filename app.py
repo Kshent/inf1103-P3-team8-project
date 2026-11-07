@@ -5,7 +5,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
-import IO_manager as IOManager
+import io_manager_part2.__init__ as IOManager
 import logic_manager_part2.logic_manager as LogicManager
 load_dotenv(Path(__file__).resolve().with_name(".env"))
 

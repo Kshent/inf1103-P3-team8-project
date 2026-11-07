@@ -1,0 +1,326 @@
+"""CLI boundary for the application: asks questions and shows results."""
+
+import textwrap
+from typing import Any, Callable
+
+from .email_validator import EmailValidator
+from .input_reader import InputReader
+from .input_validator import InputValidator
+from .location_validator import LocationValidator
+from .price_range_validator import PriceRangeValidator
+
+
+class ConsoleView:
+    """
+    CLI boundary for the application.
+
+    Composition: ConsoleView creates and owns its InputReader and validators.
+    Encapsulation: implementation details are held in underscore-prefixed fields.
+    """
+
+    RESULT_WIDTH = 78
+    HEAVY_LINE = "=" * 70
+    LIGHT_LINE = "-" * 70
+
+    RATING_FOOTER = (
+        "About the ratings: Every rating shown is the customer review rating "
+        "(the average of guest reviews, as reported by the AI). It is not the "
+        "hotel's number of stars. Scores come from fixed rules applied to the hotel "
+        "data shown above."
+    )
+
+    NOTE_TEXT = {
+        "rating_missing": "No customer review rating was available.",
+        "rating_may_be_stars": (
+            "The rating is a whole number, so it may be a hotel's number of stars "
+            "rather than an average of guest reviews. Please verify."
+        ),
+        "amenities_missing": "No amenities were listed.",
+        "distance_unknown": "Distance to a requested place is unknown.",
+    }
+
+    def __init__(
+        self,
+        input_function: Callable[[str], str] = input,
+        output_function: Callable[[Any], None] = print,
+    ):
+        self._reader = InputReader(input_function)
+        self._output = output_function
+
+        # Validators are composed into this view and used polymorphically.
+        self._location_validator: InputValidator = LocationValidator()
+        self._price_validator: InputValidator = PriceRangeValidator()
+        self._email_validator: InputValidator = EmailValidator()
+
+    def _write(self, message: Any) -> None:
+        self._output(message)
+
+    def _wrap(self, value: str, indent: str = "") -> str:
+        return textwrap.fill(
+            str(value),
+            width=self.RESULT_WIDTH,
+            initial_indent=indent,
+            subsequent_indent=indent,
+        )
+
+    @staticmethod
+    def _money(value: Any) -> str:
+        return "S$%g" % value
+
+    @staticmethod
+    def _join(items: list | None) -> str:
+        return ", ".join(items) if items else "Not listed"
+
+    @staticmethod
+    def _activity_text(activity: Any) -> str:
+        if isinstance(activity, dict):
+            name = activity.get("name", "")
+            distance = activity.get("distance_m")
+            if isinstance(distance, (int, float)):
+                return "%s (%s m)" % (name, "{:,}".format(int(distance)))
+            return str(name)
+        return str(activity)
+
+    def request_mandatory_inputs(self) -> dict[str, Any]:
+        """Collect destination, budget and email before hotel searching."""
+        self._write("\n=== Hotel Search ===")
+
+        while True:
+            location = self._reader.read(
+                "Enter your destination country or city: "
+            )
+            is_valid, error = self._location_validator.validate(location)
+            if is_valid:
+                break
+            self._write(f"Error: {error}")
+
+        while True:
+            price_input = self._reader.read(
+                "Enter your price range in SGD, for example 100-250: "
+            )
+            is_valid, error, price_range = self._price_validator.validate(price_input)
+            if is_valid:
+                break
+            self._write(f"Error: {error}")
+
+        while True:
+            email = self._reader.read("Enter your email address: ")
+            is_valid, error = self._email_validator.validate(email)
+            if is_valid:
+                break
+            self._write(f"Error: {error}")
+
+        return {
+            "location": location,
+            "price_range": price_range,
+            "email_address": email,
+        }
+
+    def request_user_preferences(self) -> str:
+        """Capture optional preferences for the AI Manager."""
+        self._write(
+            "\nDescribe your hotel preferences. "
+            "For example: near public transport, breakfast included, "
+            "quiet room and swimming pool."
+        )
+        while True:
+            preferences = self._reader.read("\nYour preferences: ")
+            if not preferences:
+                return ""
+            if len(preferences) > 2_000:
+                self._write(
+                    "Error: Preferences must not exceed 2,000 characters."
+                )
+                continue
+            return preferences
+
+    def show_main_menu(self) -> str:
+        """Display the main menu and return a valid option."""
+        while True:
+            self._write("\nWelcome to Team8's hotel recommendation app!\n")
+            self._write("\n----------------------------------------------")
+            self._write("1: Find a suitable hotel for your overseas travel needs!")
+            self._write("2: View your previous hotel records")
+            self._write("3: Admin login (NOT FOR USERS)")
+            self._write("4: Quit")
+
+            choice = self._reader.read("Please enter option 1, 2, 3 or 4: ")
+            if choice in ("1", "2", "3", "4"):
+                return choice
+            self._write("Invalid option. Please enter 1, 2, 3 or 4")
+
+    def request_record_email(self) -> str | None:
+        """Ask for the email associated with saved hotel records."""
+        while True:
+            email = self._reader.read("Enter your email or q to quit: ")
+            if email.lower() == "q":
+                self._write("Exiting view hotel records")
+                return None
+
+            is_valid, error = self._email_validator.validate(email)
+            if is_valid:
+                return email.lower()
+            self._write(f"Invalid input : {error}")
+
+    def display_message(self, message: str) -> None:
+        self._write(message)
+
+    def display_hotels(self, hotels: list[dict]) -> None:
+        """Display hotel records in the existing compact format."""
+        for number, hotel in enumerate(hotels, start=1):
+            self._write(f"\n  {number}. {hotel['name']}")
+            self._write(f"     {hotel['city']}, {hotel['country']}")
+            self._write(
+                f"     SGD {hotel['price_per_night_sgd']} per night | "
+                f"Rating: {hotel['rating']}"
+            )
+            self._write(f"     Amenities: {', '.join(hotel['amenities'])}")
+            self._write(f"     Nearby food options: {', '.join(hotel['nearby_food'])}")
+            activities = [
+                self._activity_text(item)
+                for item in hotel.get("nearby_activities", [])
+            ]
+            self._write(f"     Nearby activities: {', '.join(activities)}")
+
+    def display_records(self, records: list[dict]) -> None:
+        """Display records shaped like email/searches."""
+        if not records:
+            self._write("\nNo records found.")
+            return
+
+        for record in records:
+            self._write(f"\nEmail: {record['email']}")
+            for number, hotels in enumerate(record["searches"], start=1):
+                self._write(f"\n  --- Search {number} ---")
+                self.display_hotels(hotels)
+
+    def _show_hotel(self, hotel: dict) -> None:
+        rating = hotel.get("rating")
+        rating_text = (
+            "%.1f / 5" % rating
+            if isinstance(rating, (int, float))
+            else "Not available"
+        )
+
+        self._write("")
+        self._write("#%d  %s" % (hotel["rank"], hotel["name"]))
+        self._write("    SCORE: %d/%d - %s" % (
+            hotel["score"], hotel["score_max"], hotel["verdict"]
+        ))
+        self._write("    Price: %s per night" % self._money(
+            hotel["price_per_night_sgd"]
+        ))
+        self._write(
+            "    Customer review rating: %s (average of guest reviews, "
+            "not hotel stars)" % rating_text
+        )
+
+        for item in hotel.get("distance_to_preferences") or []:
+            distance = item.get("distance_m")
+            if isinstance(distance, (int, float)):
+                self._write("    Distance: %s m from %s" % (
+                    "{:,}".format(int(distance)), item.get("target")
+                ))
+
+        self._write(self._wrap("Amenities: " + self._join(hotel.get("amenities")), "    "))
+        self._write(self._wrap("Nearby food: " + self._join(hotel.get("nearby_food")), "    "))
+        activities = [
+            self._activity_text(item)
+            for item in hotel.get("nearby_activities") or []
+        ]
+        self._write(self._wrap("Nearby activities: " + self._join(activities), "    "))
+
+        self._write("")
+        self._write("    Why %d/%d:" % (hotel["score"], hotel["score_max"]))
+        for line in hotel["breakdown"]:
+            self._write("      %-24s %2d / %2d" % (
+                line["category"], line["points"], line["max"]
+            ))
+            self._write(self._wrap(line["reason"], "        "))
+        self._write("      %-24s %2d / %2d" % (
+            "TOTAL", hotel["score"], hotel["score_max"]
+        ))
+
+        if hotel.get("flags"):
+            self._write("")
+            for flag in hotel["flags"]:
+                self._write(self._wrap(
+                    "Note: " + self.NOTE_TEXT.get(flag, flag), "    "
+                ))
+        self._write(self.LIGHT_LINE)
+
+    def display_recommendations(self, result: dict, record: dict) -> None:
+        """Display the Logic Manager's ranked hotels and scoring details."""
+        summary = result["summary"]
+        requirements = result["requirements"]
+
+        self._write("")
+        self._write(self.HEAVY_LINE)
+        self._write("TOP HOTEL RECOMMENDATIONS")
+        self._write(self.HEAVY_LINE)
+        self._write("Destination : %s" % record.get("destination"))
+        self._write("Budget      : %s - %s per night" % (
+            self._money(record.get("budget_min")),
+            self._money(record.get("budget_max")),
+        ))
+        self._write("Preferences : %s" % (record.get("preferences") or "None"))
+        if requirements["targets"]:
+            self._write("Near        : %s" % ", ".join(requirements["targets"]))
+        self._write("Reviewed    : %d hotels | Shown: %d | Rejected: %d" % (
+            summary["received"], summary["returned"], summary["rejected"]
+        ))
+        self._write(self.HEAVY_LINE)
+
+        if requirements["unverified"]:
+            self._write(self._wrap(
+                "Could not be checked against hotel data (so not scored): "
+                + ", ".join(requirements["unverified"]) + "."
+            ))
+        for note in requirements["not_scored"]:
+            self._write(self._wrap(note))
+
+        if not result["top_hotels"]:
+            self._write("")
+            self._write("No hotels matched your requirements.")
+        for hotel in result["top_hotels"]:
+            self._show_hotel(hotel)
+
+        if result["rejected_hotels"]:
+            self._write("")
+            self._write("REJECTED")
+            for hotel in result["rejected_hotels"]:
+                self._write(self._wrap(
+                    "x %s: %s" % (hotel["name"], hotel["reject_reason"]), "  "
+                ))
+            self._write(self.LIGHT_LINE)
+
+        self._write("")
+        self._write(self._wrap(self.RATING_FOOTER))
+        self._write("")
+
+    def display_ai_dictionary(self, ai_dictionary: dict) -> None:
+        self._write(ai_dictionary)
+
+    def display_top_three_dictionary(self, top_three_dict: dict) -> None:
+        self._write("\n=== TOP 3 HOTELS (DICTIONARY OUTPUT) ===")
+        self._write(top_three_dict)
+        self._write("=== END OF TOP 3 HOTELS (DICTIONARY OUTPUT) ===\n")
+
+    def admin_login(self, admin_user: str, admin_password: str) -> bool:
+        """Return True on successful login, False when the user chooses Q."""
+        while True:
+            username = self._reader.read("Enter username or Q to exit: ")
+            if username.upper() == "Q":
+                return False
+            if username != admin_user:
+                self._write("Wrong username")
+                continue
+
+            while True:
+                password = self._reader.read("Enter password or Q to exit: ")
+                if password.upper() == "Q":
+                    return False
+                if password != admin_password:
+                    self._write("Wrong password")
+                    continue
+                return True
