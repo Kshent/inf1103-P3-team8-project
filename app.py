@@ -1,12 +1,13 @@
 import os
 import uuid
 import logging
+from pathlib import Path
 from dotenv import load_dotenv
 import ai_manager as AIManager
 import data_manager as DataManager
 import IO_manager as IOManager
 import logic_manager_part2.logic_manager as LogicManager
-load_dotenv(".env")
+load_dotenv(Path(__file__).resolve().with_name(".env"))
 
 ADMIN_USER = "team8"
 ADMIN_PASSWORD = "12345"
