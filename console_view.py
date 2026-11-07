@@ -1,8 +1,8 @@
 """Asks the traveller questions and shows results."""
 
-from channels import ConsoleInput, ConsoleOutput
-from hotel_formatter import HotelFormatter
-from validators import (
+from .channels import ConsoleInput, ConsoleOutput
+from .hotel_formatter import HotelFormatter
+from .validators import (
     LocationValidator,
     PriceRangeValidator,
     EmailValidator,
