@@ -18,6 +18,7 @@ from .location_validator import LocationValidator
 from .price_range_validator import PriceRangeValidator
 from .email_validator import EmailValidator
 from .input_reader import InputReader
+from .weight_validator import WeightValidator
 from .console_view import ConsoleView
 
 __all__ = [
@@ -26,5 +27,6 @@ __all__ = [
     "PriceRangeValidator",
     "EmailValidator",
     "InputReader",
+    "WeightValidator",
     "ConsoleView",
 ]
