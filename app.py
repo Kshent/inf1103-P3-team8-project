@@ -30,10 +30,12 @@ def main():
 
                 mandatory_data = console.request_mandatory_inputs()
                 user_prefs = console.request_user_preferences()
+                traveller_profile = console.request_traveller_profile()
                     
                 final_search_payload = {
                         **mandatory_data,
                         "preferences": user_prefs
+                        "priority_profile": traveller_profile
                 }
 
                 user_input_details["destination"] = final_search_payload["location"]
@@ -41,6 +43,7 @@ def main():
                 user_input_details["budget_max"] = final_search_payload["price_range"]["max"]
                 user_input_details["email_address"] = final_search_payload["email_address"]
                 user_input_details["preferences"] = final_search_payload["preferences"]
+                user_input_details["priority_profile"] = final_search_payload["priority_profile"]
 
 
                 ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
