@@ -1,5 +1,6 @@
 import os
 import json
+from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
 from google.genai import errors
@@ -8,7 +9,7 @@ import ai_filter as filtering
 from google.genai import types
 
 
-load_dotenv(".env")
+load_dotenv(Path(__file__).resolve().with_name(".env"))
 
 
 PRIMARY_MODEL = "gemini-3.6-flash"
@@ -113,21 +114,6 @@ def get_model(api_key=None):
         return None
 
     return genai.Client(api_key=api_key)
-
-
-class HotelAIService:
-    """Expose the existing Gemini workflow through the app2 service API."""
-
-    def __init__(self, client):
-        self._client = client
-
-    def fetch_candidates(self, record):
-        return data_process(record, self._client)
-
-
-def create_default_service(api_key=None):
-    """Create the default hotel recommendation service."""
-    return HotelAIService(get_model(api_key))
 
 
 def build_prompt(record):

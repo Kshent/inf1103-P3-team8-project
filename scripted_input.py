@@ -1,7 +1,7 @@
 """Returns pre-written answers (for tests and demos)."""
 
-from exceptions import InputCancelled
-from channels.input_source import InputSource
+from ..exceptions import InputCancelled
+from .channels.input_source import InputSource
 
 
 class ScriptedInput(InputSource):
