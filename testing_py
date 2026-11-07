@@ -1,0 +1,227 @@
+"""Smoke tests for the io_manager package (run from the repo root: python -m unittest discover -s tests -v)."""
+
+import ast
+import pathlib
+import unittest
+
+import io_manager_part2
+from io_manager_part2 import (ConsoleView, EmailValidator, InputReader,
+                        InputValidator, LocationValidator, PriceRangeValidator,
+                        WeightValidator)
+
+PACKAGE_DIR = pathlib.Path(io_manager_part2.__file__).parent
+
+
+def make_view(answers):
+    """A ConsoleView fed from a list of answers; returns (view, prompts, output)."""
+    remaining = list(answers)
+    prompts, output = [], []
+
+    def fake_input(prompt):
+        prompts.append(prompt)
+        if not remaining:
+            raise EOFError
+        return remaining.pop(0)
+
+    return ConsoleView(fake_input, output.append), prompts, output
+
+
+class PackageStructure(unittest.TestCase):
+    def test_public_classes_are_exported(self):
+        for name in ("InputValidator", "LocationValidator", "PriceRangeValidator",
+                     "EmailValidator", "InputReader", "WeightValidator", "ConsoleView"):
+            self.assertTrue(hasattr(io_manager, name), name)
+
+    def test_one_class_per_file(self):
+        for path in PACKAGE_DIR.glob("*.py"):
+            if path.name == "__init__.py":
+                continue
+            classes = [n for n in ast.parse(path.read_text()).body
+                       if isinstance(n, ast.ClassDef)]
+            self.assertEqual(len(classes), 1, path.name)
+
+    def test_validators_share_one_interface(self):
+        for cls in (LocationValidator, PriceRangeValidator, EmailValidator,
+                    WeightValidator):
+            self.assertTrue(issubclass(cls, InputValidator))
+
+
+class Validators(unittest.TestCase):
+    def test_location(self):
+        self.assertEqual(LocationValidator().validate("Singapore"), (True, ""))
+        self.assertFalse(LocationValidator().validate("")[0])
+        self.assertFalse(LocationValidator().validate("Qxzvland")[0])
+
+    def test_price_range(self):
+        ok, _, value = PriceRangeValidator().validate("SGD 100-SGD 250")
+        self.assertTrue(ok)
+        self.assertEqual(value, {"min": 100.0, "max": 250.0, "currency": "SGD"})
+        for bad in ("", "abc", "250-100", "0-5"):
+            self.assertFalse(PriceRangeValidator().validate(bad)[0], bad)
+
+    def test_email(self):
+        self.assertEqual(EmailValidator().validate("a@b.com"), (True, ""))
+        self.assertFalse(EmailValidator().validate("nope")[0])
+
+
+class Reader(unittest.TestCase):
+    def test_cancellation_raises_eof_with_message(self):
+        def cancel(_prompt):
+            raise KeyboardInterrupt
+        with self.assertRaises(EOFError) as caught:
+            InputReader(cancel).read("x")
+        self.assertIn("Input cancelled. Goodbye.", str(caught.exception))
+
+
+class View(unittest.TestCase):
+    def test_mandatory_inputs_retry_until_valid(self):
+        view, prompts, output = make_view(
+            ["Qxzvland", "Singapore", "abc", "100-250", "nope", "a@b.com"])
+        data = view.request_mandatory_inputs()
+        self.assertEqual(data["location"], "Singapore")
+        self.assertEqual(data["price_range"]["max"], 250.0)
+        self.assertEqual(data["email_address"], "a@b.com")
+        self.assertEqual(sum(1 for line in output if str(line).startswith("Error:")), 3)
+
+    def test_preferences_optional_and_limited(self):
+        self.assertEqual(make_view([""])[0].request_user_preferences(), "")
+        view, _, output = make_view(["x" * 2001, "quiet"])
+        self.assertEqual(view.request_user_preferences(), "quiet")
+        self.assertIn("Error: Preferences must not exceed 2,000 characters.", output)
+
+    def test_menu_rejects_bad_choices(self):
+        view, _, output = make_view(["9", "", "3"])
+        self.assertEqual(view.show_main_menu(), "3")
+        self.assertEqual(output.count("Invalid option. Please enter 1, 2, 3 or 4"), 2)
+
+    def test_record_email_q_returns_none(self):
+        self.assertIsNone(make_view(["q"])[0].request_record_email())
+        self.assertEqual(make_view(["bad", "A@B.com"])[0].request_record_email(), "a@b.com")
+
+    def test_admin_login(self):
+        self.assertTrue(make_view(["bob", "team8", "x", "12345"])[0].admin_login("team8", "12345"))
+        self.assertFalse(make_view(["q"])[0].admin_login("team8", "12345"))
+
+    def test_display_records(self):
+        view, _, output = make_view([])
+        view.display_records([])
+        self.assertEqual(output, ["\nNo records found."])
+        hotel = {"name": "H", "city": "C", "country": "K", "price_per_night_sgd": 100,
+                 "rating": 4.5, "amenities": ["Gym"], "nearby_food": ["Cafe"],
+                 "nearby_activities": [{"name": "Museum", "distance_m": 400}]}
+        view, _, output = make_view([])
+        view.display_records([{"email": "a@b.com", "searches": [[hotel]]}])
+        self.assertIn("\nEmail: a@b.com", output)
+        self.assertIn("     Nearby activities: Museum (400 m)", output)
+
+
+class WeightValidation(unittest.TestCase):
+    def test_accepts_whole_numbers_up_to_the_points_left(self):
+        self.assertEqual(WeightValidator(100).validate("0"), (True, "", 0))
+        self.assertEqual(WeightValidator(40).validate("40"), (True, "", 40))
+
+    def test_rejects_more_than_the_points_left(self):
+        ok, message, value = WeightValidator(40).validate("41")
+        self.assertFalse(ok)
+        self.assertIn("You only have 40 point(s) left to assign.", message)
+        self.assertIsNone(value)
+
+    def test_rejects_non_whole_numbers(self):
+        for bad in ("", "abc", "-5", "12.5", "1e2", " "):
+            ok, message, _ = WeightValidator(100).validate(bad)
+            self.assertFalse(ok, bad)
+            self.assertEqual(message, "Please enter a whole number from 0 to 100.")
+
+
+class TravellerProfileSelector(unittest.TestCase):
+    MENU_LINES = [
+        "\n=== Traveller Priorities ===",
+        "Choose how hotels are scored. Every option adds up to 100 points.\n",
+        "1: Balanced",
+        "2: Budget focused",
+        "3: Quality Focused",
+        "4: Customisation",
+        "(Customise the scoring weightages for customer review rating/ "
+        "price/ location/ amenities/ bonus)",
+    ]
+
+    def test_menu_text(self):
+        view, prompts, output = make_view([""])
+        view.request_traveller_profile()
+        self.assertEqual(output[:len(self.MENU_LINES)], self.MENU_LINES)
+        self.assertEqual(prompts, ["\nChoose 1-4 (press Enter for Balanced): "])
+
+    def test_fixed_options_return_their_name_and_no_weights(self):
+        expected = {"1": ("balanced", "Balanced"),
+                    "2": ("budget", "Budget focused"),
+                    "3": ("quality_focused", "Quality Focused")}
+        for number, (name, label) in expected.items():
+            profile = make_view([number])[0].request_traveller_profile()
+            self.assertEqual(profile, {"name": name, "label": label, "weights": None})
+
+    def test_enter_chooses_balanced(self):
+        profile = make_view([""])[0].request_traveller_profile()
+        self.assertEqual(profile["name"], "balanced")
+
+    def test_invalid_choice_is_asked_again(self):
+        view, _, output = make_view(["0", "5", "abc", "1.5", "2"])
+        self.assertEqual(view.request_traveller_profile()["name"], "budget")
+        self.assertEqual(output.count("Error: Please enter a number from 1 to 4."), 4)
+
+    def test_customisation_starts_from_the_default_display(self):
+        view, _, output = make_view(["4", "30", "20", "20", "20", "10"])
+        view.request_traveller_profile()
+        start = output.index("\nOption 4: Customisation (Customise the scoring weightages)")
+        self.assertEqual(output[start + 1:start + 8], [
+            "customer review rating: /0", "price: /0", "location: /0",
+            "amenities: /0", "bonus: /0", "\nTotal: /100",
+            "\nAssign the points for each criterion. They must add up to exactly 100."])
+
+    def test_customisation_shows_a_running_total(self):
+        view, prompts, output = make_view(["4", "30", "20", "20", "20", "10"])
+        profile = view.request_traveller_profile()
+        self.assertEqual(profile["name"], "custom")
+        self.assertEqual(profile["weights"], {"rating": 30, "price": 20, "location": 20,
+                                              "amenities": 20, "bonus": 10})
+        for line in ("    Running total: 30/100 (70 left)", "    Running total: 50/100 (50 left)",
+                     "    Running total: 70/100 (30 left)", "    Running total: 90/100 (10 left)",
+                     "    Running total: 100/100 (0 left)"):
+            self.assertIn(line, output)
+        self.assertIn("customer review rating: /30", output)
+        self.assertIn("\nTotal: 100/100", output)
+        self.assertIn("Selected profile: Customisation", output)
+        self.assertEqual(prompts[-1], "  bonus (0-10; 10 makes 100): ")
+
+    def test_customisation_cannot_go_above_100(self):
+        view, _, output = make_view(["4", "120", "60", "50", "40", "0", "0", "0"])
+        weights = view.request_traveller_profile()["weights"]
+        self.assertEqual(weights, {"rating": 60, "price": 40, "location": 0,
+                                   "amenities": 0, "bonus": 0})
+        self.assertIn("Error: That would take your total above 100. "
+                      "You only have 100 point(s) left to assign.", output)
+        self.assertIn("Error: That would take your total above 100. "
+                      "You only have 40 point(s) left to assign.", output)
+
+    def test_customisation_alerts_when_total_is_not_100_and_keeps_earlier_answers(self):
+        view, prompts, output = make_view(
+            ["4", "30", "20", "20", "20", "5", "", "", "", "", "10"])
+        weights = view.request_traveller_profile()["weights"]
+        self.assertEqual(weights, {"rating": 30, "price": 20, "location": 20,
+                                   "amenities": 20, "bonus": 10})
+        self.assertIn("\nAlert: your weightages add up to 95, not 100. "
+                      "5 point(s) are still unassigned. Please assign them again.", output)
+        self.assertIn("  customer review rating (0-100; Enter keeps 30): ", prompts)
+
+    def test_customisation_rejects_invalid_characters(self):
+        view, _, output = make_view(["4", "abc", "-5", "12.5", "", "100", "0", "0", "0", "0"])
+        self.assertEqual(view.request_traveller_profile()["weights"]["rating"], 100)
+        self.assertEqual(
+            output.count("Error: Please enter a whole number from 0 to 100."), 4)
+
+    def test_cancelling_during_the_selector_raises_eof(self):
+        with self.assertRaises(EOFError):
+            make_view(["4", "30"])[0].request_traveller_profile()
+
+
+if __name__ == "__main__":
+    unittest.main()
