@@ -39,6 +39,25 @@ class ConsoleView:
         "distance_unknown": "Distance to a requested place is unknown.",
     }
 
+
+    # Traveller profile selector: menu number, profile name, label shown.
+    # The names are what the Logic Manager receives.
+    PROFILE_OPTIONS = (
+        ("1", "balanced", "Balanced"),
+        ("2", "budget", "Budget focused"),
+        ("3", "quality_focused", "Quality Focused"),
+        ("4", "custom", "Customisation"),
+    )
+    PROFILE_TOTAL_POINTS = 100
+    WEIGHT_CRITERIA = (
+        ("rating", "customer review rating"),
+        ("price", "price"),
+        ("location", "location"),
+        ("amenities", "amenities"),
+        ("bonus", "bonus"),
+    )
+ 
+
     def __init__(
         self,
         input_function: Callable[[str], str] = input,
@@ -133,6 +152,104 @@ class ConsoleView:
                 )
                 continue
             return preferences
+
+
+
+    def request_traveller_profile(self) -> dict[str, Any]:
+        """Let the traveller choose how hotels are scored.
+ 
+        Returns {"name": ..., "label": ..., "weights": ...}. Options 1 to 3
+        return weights=None (the Logic Manager knows those profiles by name).
+        Option 4 returns the five weightages, which add up to exactly 100.
+        """
+        self._write("\n=== Traveller Priorities ===")
+        self._write(
+            "Choose how hotels are scored. Every option adds up to 100 points.\n"
+        )
+        for number, _name, label in self.PROFILE_OPTIONS:
+            self._write(f"{number}: {label}")
+        self._write(
+            "(Customise the scoring weightages for customer review rating/ "
+            "price/ location/ amenities/ bonus)"
+        )
+ 
+        choices = {number: (name, label) for number, name, label in self.PROFILE_OPTIONS}
+        while True:
+            choice = self._reader.read("\nChoose 1-4 (press Enter for Balanced): ")
+            if choice == "":
+                choice = "1"
+            if choice in choices:
+                break
+            self._write("Error: Please enter a number from 1 to 4.")
+ 
+        name, label = choices[choice]
+        weights = self._request_custom_weights() if name == "custom" else None
+        self._write(f"Selected profile: {label}")
+        return {"name": name, "label": label, "weights": weights}
+ 
+    def _show_weights(self, weights: dict[str, int], total: int | None = None) -> None:
+        for key, label in self.WEIGHT_CRITERIA:
+            self._write(f"{label}: /{weights[key]}")
+        shown_total = "" if total is None else total
+        self._write(f"\nTotal: {shown_total}/{self.PROFILE_TOTAL_POINTS}")
+ 
+    def _request_custom_weights(self) -> dict[str, int]:
+        """Option 4: ask for the points of each criterion with a running total.
+ 
+        Each answer is limited to the points still left. If the five answers
+        do not add up to exactly 100, the traveller is alerted and asked again
+        (Enter keeps the earlier answer).
+        """
+        limit = self.PROFILE_TOTAL_POINTS
+        self._write("\nOption 4: Customisation (Customise the scoring weightages)")
+        self._show_weights({key: 0 for key, _label in self.WEIGHT_CRITERIA})
+        self._write(
+            f"\nAssign the points for each criterion. "
+            f"They must add up to exactly {limit}."
+        )
+ 
+        previous: dict[str, int] = {}
+        while True:
+            weights: dict[str, int] = {}
+            running = 0
+            for position, (key, label) in enumerate(self.WEIGHT_CRITERIA):
+                remaining = limit - running
+                hint = f"0-{remaining}"
+                if position == len(self.WEIGHT_CRITERIA) - 1:
+                    hint += f"; {remaining} makes {limit}"
+                if key in previous:
+                    hint += f"; Enter keeps {previous[key]}"
+ 
+                validator = WeightValidator(remaining)
+                while True:
+                    answer = self._reader.read(f"  {label} ({hint}): ")
+                    if answer == "" and key in previous:
+                        answer = str(previous[key])
+                    is_valid, error, points = validator.validate(answer)
+                    if is_valid:
+                        break
+                    self._write(f"Error: {error}")
+ 
+                weights[key] = points
+                running += points
+                self._write(
+                    f"    Running total: {running}/{limit} ({limit - running} left)"
+                )
+ 
+            if running == limit:
+                self._write("\nYour scoring weightages:")
+                self._show_weights(weights, running)
+                return weights
+ 
+            self._write(
+                f"\nAlert: your weightages add up to {running}, not {limit}. "
+                f"{limit - running} point(s) are still unassigned. "
+                "Please assign them again."
+            )
+            previous = weights
+ 
+
+
 
     def show_main_menu(self) -> str:
         """Display the main menu and return a valid option."""
