@@ -28,14 +28,41 @@ def main():
                 user_input_details = {}
 
 
+                
                 mandatory_data = console.request_mandatory_inputs()
                 user_prefs = console.request_user_preferences()
-                traveller_profile = console.request_traveller_profile()
+
+                # Create Logic Manager boss
+                logic_manager = LogicManager.LogicManager()
+
+                # Ask Logic which scoring categories are applicable
+                allowed_keys = logic_manager.available_weight_keys(
+                    user_prefs
+                )
+
+                # IO collects the traveller style and custom weights
+                while True:
+
+                    traveller_profile = console.request_traveller_profile(
+                        allowed_keys=allowed_keys
+                    )
+
+                    try:
+                        selected_profile = logic_manager.resolve_profile(
+                            traveller_profile,
+                            user_prefs
+                        )
+                        break
+
+                    except ValueError as error:
+                        console.display_message(
+                            f"Invalid weightages: {error}"
+                        )
                     
                 final_search_payload = {
                         **mandatory_data,
-                        "preferences": user_prefs
-                        "priority_profile": traveller_profile
+                        "preferences": user_prefs,
+                        "priority_profile": selected_profile
                 }
 
                 user_input_details["destination"] = final_search_payload["location"]
@@ -70,12 +97,10 @@ def main():
                 console.display_ai_dictionary(ai_manager_result)
 
                 # STEP 3: Process hotels using Logic Manager
-                logic_manager = LogicManager.LogicManager()
-
                 logic_result = logic_manager.process_hotels(
                     original_ai_output,
                     user_input_details
-                    )
+                )
 
                 # STEP 4: Display neatly formatted Top 3 hotels
                 console.display_recommendations(
