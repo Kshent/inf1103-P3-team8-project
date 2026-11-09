@@ -19,6 +19,7 @@ from .hotel import Hotel
 from .requirements import Requirements
 from .hotel_filter import HotelFilter
 from .hotel_scorer import HotelScorer
+from .profile_factory import ProfileFactory
 
 
 class LogicManager:
@@ -32,6 +33,10 @@ class LogicManager:
 
     def __init__(self, config=None):
         self.config = config if config is not None else ScoringConfig()
+
+        self._profile_factory = ProfileFactory()
+        self.selected_profile = None
+
         # Set up fresh for every search (see begin_search)
         self.requirements = None
         self.hotel_filter = None
@@ -39,18 +44,107 @@ class LogicManager:
         self.hotels = []
         self.last_result = None
 
+
+    
+    def available_weight_keys(self, preferences):
+
+        return Requirements.available_weight_keys(
+            preferences,
+            self.config.requirements_settings()
+        )
+
+    
+    
+    def resolve_profile(self, choice, preferences=None):
+
+        # Ask ProfileFactory to resolve and validate the weights
+        selected = self._profile_factory.resolve(choice)
+
+        # Additional validation for customisation
+        if preferences is not None and selected["name"] == "custom":
+            allowed = self.available_weight_keys(preferences)
+            for key, points in selected["weights"].items():
+                if key not in allowed and points != 0:
+                    raise ValueError(
+                        f"{key} cannot be scored. "
+                        "Its weightage must be 0."
+                    )
+        return selected
+  
+    
     def begin_search(self, ai_output, record):
-        """Build this search's Requirements, HotelFilter and HotelScorer, so
-        nothing carries over from the previous search."""
+
+        # Step 1: Get the selected traveller profile
+        profile_choice = record.get("priority_profile")
+
+        if profile_choice is None:
+            profile_choice = {
+                "name": "balanced",
+                "weights": None
+            }
+
+        self.selected_profile = self.resolve_profile(
+            profile_choice,
+            record.get("preferences", "")
+        )
+
+        # Step 2: Get the selected weightages
+        weights = self.selected_profile["weights"]
+
+        base_points = 100 - weights["bonus"]
+
+        # Presets redistribute; custom does not
+        redistribute = self.selected_profile["name"] != "custom"
+
+        # Step 3: Prepare Requirements settings
+        requirements_settings = self.config.requirements_settings().copy()
+
+        requirements_settings["base_points"] = base_points
+
+        requirements_settings["weights"] = {
+            "rating": weights["rating"],
+            "price": weights["price"],
+            "location": weights["location"],
+            "preferences": weights["preferences"]
+        }
+
+        requirements_settings["redistribute_unscored"] = redistribute
+
+        # Step 4: Create Requirements
         self.requirements = Requirements(
-            ai_output, record, self.config.requirements_settings())
+            ai_output,
+            record,
+            requirements_settings
+        )
+
         req = self.requirements
+
+        # Step 5: Create HotelFilter
         self.hotel_filter = HotelFilter(
-            self.config.filter_settings(), req.budget_max, req.targets)
+            self.config.filter_settings(),
+            req.budget_max,
+            req.targets
+        )
+
+        # Step 6: Prepare HotelScorer settings
+        scorer_settings = self.config.scorer_settings().copy()
+
+        scorer_settings["base_points"] = base_points
+        scorer_settings["bonus_points"] = weights["bonus"]
+        scorer_settings["allocated_weights"] = weights.copy()
+        scorer_settings["redistribute_unscored"] = redistribute
+
+        # Step 7: Create HotelScorer
         self.scorer = HotelScorer(
-            self.config.scorer_settings(), req.maxima, req.targets,
-            req.pref_checks, req.budget_min, req.budget_max)
+            scorer_settings,
+            req.maxima,
+            req.targets,
+            req.pref_checks,
+            req.budget_min,
+            req.budget_max
+        )
         self.hotels = []
+
 
     def validate_hotels(self, ai_output):
         """Return the usable hotels (as Hotel objects) from the ai_manager
