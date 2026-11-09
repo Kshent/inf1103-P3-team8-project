@@ -8,6 +8,7 @@ from .input_reader import InputReader
 from .input_validator import InputValidator
 from .location_validator import LocationValidator
 from .price_range_validator import PriceRangeValidator
+from .weight_validator import WeightValidator
 
 
 class ConsoleView:
@@ -53,7 +54,7 @@ class ConsoleView:
         ("rating", "customer review rating"),
         ("price", "price"),
         ("location", "location"),
-        ("amenities", "amenities"),
+        ("amenities", "preferences"),
         ("bonus", "bonus"),
     )
  
@@ -155,7 +156,7 @@ class ConsoleView:
 
 
 
-    def request_traveller_profile(self) -> dict[str, Any]:
+    def request_traveller_profile(self, allowed_keys=None) -> dict[str, Any]:
         """Let the traveller choose how hotels are scored.
  
         Returns {"name": ..., "label": ..., "weights": ...}. Options 1 to 3
@@ -169,8 +170,9 @@ class ConsoleView:
         for number, _name, label in self.PROFILE_OPTIONS:
             self._write(f"{number}: {label}")
         self._write(
-            "(Customise the scoring weightages for customer review rating/ "
-            "price/ location/ amenities/ bonus)"
+            "(Customise the scoring weightages for customer review rating, " 
+            "price, location, preferences, and bonus points.\n" 
+            "The total must add up to exactly /100.)"
         )
  
         choices = {number: (name, label) for number, name, label in self.PROFILE_OPTIONS}
@@ -183,7 +185,11 @@ class ConsoleView:
             self._write("Error: Please enter a number from 1 to 4.")
  
         name, label = choices[choice]
-        weights = self._request_custom_weights() if name == "custom" else None
+        weights = (
+            self._request_custom_weights(allowed_keys)
+            if name == "custom"
+            else None
+        )
         self._write(f"Selected profile: {label}")
         return {"name": name, "label": label, "weights": weights}
  
@@ -193,61 +199,122 @@ class ConsoleView:
         shown_total = "" if total is None else total
         self._write(f"\nTotal: {shown_total}/{self.PROFILE_TOTAL_POINTS}")
  
-    def _request_custom_weights(self) -> dict[str, int]:
-        """Option 4: ask for the points of each criterion with a running total.
- 
-        Each answer is limited to the points still left. If the five answers
-        do not add up to exactly 100, the traveller is alerted and asked again
-        (Enter keeps the earlier answer).
-        """
+    
+    def _request_custom_weights(self, allowed_keys=None) -> dict[str, int]:
+        """Collect custom scoring weightages that total exactly 100."""
+
         limit = self.PROFILE_TOTAL_POINTS
-        self._write("\nOption 4: Customisation (Customise the scoring weightages)")
-        self._show_weights({key: 0 for key, _label in self.WEIGHT_CRITERIA})
+
+        # All five scoring criteria
+        all_keys = {
+            key for key, label in self.WEIGHT_CRITERIA
+        }
+
+        if allowed_keys is None:
+            allowed_keys = all_keys
+        else:
+            allowed_keys = set(allowed_keys)
+
+            # Logic Manager uses "preferences",
+            # but IO Manager uses "amenities"
+            if "preferences" in allowed_keys:
+                allowed_keys.add("amenities")
+
+        # Only ask users to allocate points to applicable criteria
+        active_criteria = [
+            (key, label)
+            for key, label in self.WEIGHT_CRITERIA
+            if key in allowed_keys
+        ]
+
+        # Identify categories that will be skipped
+        skipped = [
+            label
+            for key, label in self.WEIGHT_CRITERIA
+            if key not in allowed_keys
+        ]
+
         self._write(
-            f"\nAssign the points for each criterion. "
+            "\nOption 4: Customisation "
+            "(Customise the scoring weightages)"
+        )
+
+        self._show_weights({
+            key: 0 for key, label in self.WEIGHT_CRITERIA
+        })
+
+        if skipped:
+            self._write(
+                "\nNot applicable (automatically 0 points): "
+                + ", ".join(skipped)
+            )
+
+        self._write(
+            f"\nAssign the points for each applicable criterion. "
             f"They must add up to exactly {limit}."
         )
- 
+
         previous: dict[str, int] = {}
+
         while True:
-            weights: dict[str, int] = {}
+
+            # Always initialise all five categories to 0
+            weights: dict[str, int] = {
+                key: 0 for key, label in self.WEIGHT_CRITERIA
+            }
+
             running = 0
-            for position, (key, label) in enumerate(self.WEIGHT_CRITERIA):
+
+            # Prompt only for available categories
+            for position, (key, label) in enumerate(active_criteria):
+
                 remaining = limit - running
                 hint = f"0-{remaining}"
-                if position == len(self.WEIGHT_CRITERIA) - 1:
+
+                if position == len(active_criteria) - 1:
                     hint += f"; {remaining} makes {limit}"
+
                 if key in previous:
                     hint += f"; Enter keeps {previous[key]}"
- 
+
                 validator = WeightValidator(remaining)
+
                 while True:
-                    answer = self._reader.read(f"  {label} ({hint}): ")
+                    answer = self._reader.read(
+                        f"  {label} ({hint}): "
+                    )
+
                     if answer == "" and key in previous:
                         answer = str(previous[key])
+
                     is_valid, error, points = validator.validate(answer)
+
                     if is_valid:
                         break
+
                     self._write(f"Error: {error}")
- 
+
                 weights[key] = points
                 running += points
+
                 self._write(
-                    f"    Running total: {running}/{limit} ({limit - running} left)"
+                    f"    Running total: {running}/{limit} "
+                    f"({limit - running} left)"
                 )
- 
+
             if running == limit:
                 self._write("\nYour scoring weightages:")
                 self._show_weights(weights, running)
                 return weights
- 
+
             self._write(
-                f"\nAlert: your weightages add up to {running}, not {limit}. "
+                f"\nAlert: your weightages add up to {running}, "
+                f"not {limit}. "
                 f"{limit - running} point(s) are still unassigned. "
                 "Please assign them again."
             )
+
             previous = weights
- 
 
 
 
