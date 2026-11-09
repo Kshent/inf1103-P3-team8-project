@@ -11,9 +11,13 @@ class Requirements:
     needs as plain data."""
 
     def __init__(self, ai_output, record, settings):
+        
         self._base_points = settings["base_points"]
-        self._weights = settings["weights"]
+        self._weights = settings["weights"].copy()
         self._category_order = settings["category_order"]
+        self._redistribute_unscored = settings.get(
+            "redistribute_unscored", True
+        )
         self._proximity_words = settings["proximity_words"]
         self._preference_groups = settings["preference_groups"]
         self._generic_place_words = settings["generic_place_words"]
@@ -40,10 +44,21 @@ class Requirements:
             self._not_scored.append(
                 "Amenity preferences were not scored: Nothing you asked for "
                 "could be checked against the hotel data.")
+        
         if self._not_scored:
-            self._not_scored.append(
-                "Points for unscored categories are shared across the scored "
-                "ones, so every score is still out of 100.")
+
+            if self._redistribute_unscored:
+                self._not_scored.append(
+                    "Points for unscored categories are shared "
+                    "across the applicable categories."
+                )
+
+            else:
+                self._not_scored.append(
+                    "Custom weightages are not redistributed. "
+                    "Unavailable categories receive 0 points."
+                )
+
 
         self._maxima = self.allocate_maxima(active)
 
@@ -94,6 +109,31 @@ class Requirements:
     @staticmethod
     def has_any(text, terms):
         return any(Requirements.has_term(text, term) for term in terms)
+    
+    
+    @classmethod
+    def available_weight_keys(cls, preferences, settings):
+
+        # These three categories are always available
+        allowed = {"rating", "price", "bonus"}
+
+        if not isinstance(preferences, str) or not preferences.strip():
+            return allowed
+
+        text = preferences.lower()
+
+        # Location: user wants to be near somewhere
+        if cls.has_any(text, settings["proximity_words"]):
+            allowed.add("location")
+
+        # Preferences: user mentions an amenity we can check
+        for label, triggers, terms in settings["preference_groups"]:
+            if cls.has_any(text, triggers):
+                allowed.add("preferences")
+                break
+
+        return allowed
+        
 
     # Reading the user's wishes
     @staticmethod
@@ -152,21 +192,38 @@ class Requirements:
                 unverified.append(phrase)
         return checks, unverified
 
+    
     def allocate_maxima(self, active):
-        """Share the base points across the scored categories using whole
-        numbers that add up to exactly the base points."""
+        # Option 4: Do not redistribute user-selected maximums
+        if not self._redistribute_unscored:
+            return {
+                key: self._weights[key]
+                for key in active
+            }
+        # Options 1-3: Redistribute unavailable base points
         total = sum(self._weights[key] for key in active)
-        raw = {key: self._weights[key] * self._base_points / total
-               for key in active}
-        maxima = {key: int(round(raw[key], 9)) for key in active}
+        if total == 0:
+            return {key: 0 for key in active}
+        raw = {
+            key: self._weights[key] * self._base_points / total
+            for key in active
+        }
+        maxima = {
+            key: int(round(raw[key], 9))
+            for key in active
+        }
         leftover = self._base_points - sum(maxima.values())
         by_remainder = sorted(
             active,
-            key=lambda key: (-(raw[key] - maxima[key]),
-                             self._category_order.index(key)))
+            key=lambda key: (
+                -(raw[key] - maxima[key]),
+                self._category_order.index(key)
+            )
+        )
         for key in by_remainder[:leftover]:
             maxima[key] += 1
         return maxima
+
 
     def to_dict(self):
         """Plain data for the output layer."""

@@ -1,18 +1,22 @@
 import os
 import uuid
 import logging
+from pathlib import Path
 from dotenv import load_dotenv
 import ai_manager as AIManager
+import data_manager as DataManager
 from data_layer.data_manager import DataManager, RECORDS_FILE
 from data_layer.json_storage import JsonStorage
 from data_layer.memory_storage import MemoryStorage
-import IO_manager as IOManager
+import io_manager_part2.__init__ as IOManager
 import logic_manager_part2.logic_manager as LogicManager
-load_dotenv(".env")
+load_dotenv(Path(__file__).resolve().with_name(".env"))
 
 ADMIN_USER = "team8"
 ADMIN_PASSWORD = "12345"
 
+
+# NO PRINTS AND INPUTS ALLOWED!
 
 def main():
     console = IOManager.ConsoleView()
@@ -35,12 +39,41 @@ def main():
                 user_input_details = {}
 
 
+                
                 mandatory_data = console.request_mandatory_inputs()
                 user_prefs = console.request_user_preferences()
+
+                # Create Logic Manager boss
+                logic_manager = LogicManager.LogicManager()
+
+                # Ask Logic which scoring categories are applicable
+                allowed_keys = logic_manager.available_weight_keys(
+                    user_prefs
+                )
+
+                # IO collects the traveller style and custom weights
+                while True:
+
+                    traveller_profile = console.request_traveller_profile(
+                        allowed_keys=allowed_keys
+                    )
+
+                    try:
+                        selected_profile = logic_manager.resolve_profile(
+                            traveller_profile,
+                            user_prefs
+                        )
+                        break
+
+                    except ValueError as error:
+                        console.display_message(
+                            f"Invalid weightages: {error}"
+                        )
                     
                 final_search_payload = {
                         **mandatory_data,
-                        "preferences": user_prefs
+                        "preferences": user_prefs,
+                        "priority_profile": selected_profile
                 }
 
                 user_input_details["destination"] = final_search_payload["location"]
@@ -48,6 +81,7 @@ def main():
                 user_input_details["budget_max"] = final_search_payload["price_range"]["max"]
                 user_input_details["email_address"] = final_search_payload["email_address"]
                 user_input_details["preferences"] = final_search_payload["preferences"]
+                user_input_details["priority_profile"] = final_search_payload["priority_profile"]
 
 
                 ai_manager_connection = AIManager.get_model(api_key=os.environ.get("GEMINI_API_KEY"))
@@ -74,12 +108,10 @@ def main():
                 console.display_ai_dictionary(ai_manager_result)
 
                 # STEP 3: Process hotels using Logic Manager
-                logic_manager = LogicManager.LogicManager()
-
                 logic_result = logic_manager.process_hotels(
                     original_ai_output,
                     user_input_details
-                    )
+                )
 
                 # STEP 4: Display neatly formatted Top 3 hotels
                 console.display_recommendations(
@@ -94,6 +126,7 @@ def main():
                     hotel["name"]: hotel
                     for hotel in original_ai_output["hotels"]
                 }
+
 
                 # Keep only the Top 3, in their ranked order
                 top_three_dict = {

@@ -1,5 +1,6 @@
 import os
 import json
+from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
 from google.genai import errors
@@ -8,7 +9,7 @@ import ai_filter as filtering
 from google.genai import types
 
 
-load_dotenv(".env")
+load_dotenv(Path(__file__).resolve().with_name(".env"))
 
 
 PRIMARY_MODEL = "gemini-3.6-flash"
