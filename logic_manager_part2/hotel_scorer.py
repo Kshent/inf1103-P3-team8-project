@@ -24,6 +24,8 @@ class HotelScorer:
         # From the rulebook
         self.base_points = settings["base_points"]
         self.bonus_points = settings["bonus_points"]
+        self.allocated_weights = settings.get("allocated_weights", {})
+        self.redistribute_unscored = settings.get("redistribute_unscored", True)
         self.labels = settings["labels"]
         self.bonus_min_rating = settings["bonus_min_rating"]
         self.bonus_max_distance_m = settings["bonus_max_distance_m"]
@@ -217,15 +219,37 @@ class HotelScorer:
         breakdown.append(self.make_line(
             "price", share, reason, self.maxima["price"]))
 
+        
+        # Location scoring
         if "location" in self.maxima:
             share, reason = self.location_component(facts)
             breakdown.append(self.make_line(
-                "location", share, reason, self.maxima["location"]))
+                "location", share, reason, self.maxima["location"]
+            ))
 
+        elif not self.redistribute_unscored:
+            breakdown.append(self.make_line(
+                "location",
+                0.0,
+                "Not scored: no requested nearby place.",
+                self.allocated_weights["location"]
+            ))
+
+        # Preferences scoring
         if "preferences" in self.maxima:
             share, reason = self.preferences_component(facts)
             breakdown.append(self.make_line(
-                "preferences", share, reason, self.maxima["preferences"]))
+                "preferences", share, reason,
+                self.maxima["preferences"]
+            ))
+
+        elif not self.redistribute_unscored:
+            breakdown.append(self.make_line(
+                "preferences",
+                0.0,
+                "Not scored: no checkable amenity was requested.",
+                self.allocated_weights["preferences"]
+            ))
 
         share, reason = self.bonus_component(facts)
         breakdown.append(self.make_line(
