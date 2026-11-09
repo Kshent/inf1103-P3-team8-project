@@ -4,13 +4,6 @@ from data_layer.user_record import UserRecord
 RECORDS_FILE = "datarecords.json"
 
 
-# OOP - Classes and objects: app.py creates one DataManager object and
-# uses it for every save, view and admin request.
-# SOLID - SRP: DataManager only coordinates saving, loading and querying
-# records. Reading/writing is done by Storage, the email rule by
-# UserRecord, and checking hotels by Search/Hotel.
-# SOLID - OCP: it only depends on the Storage interface, so a new storage
-# type (e.g. a database) can be added without changing this class.
 class DataManager:
     """Saves, loads and queries hotel search records.
 
@@ -23,36 +16,26 @@ class DataManager:
     """
 
     def __init__(self, storage):
-        # OOP - Association: the storage is created in app.py and passed in.
-        # DataManager only keeps a reference to it and uses it.
-        # OOP - Encapsulation: private (__), only DataManager uses it.
-        # SOLID - LSP: any Storage can be passed in (JsonStorage or
-        # MemoryStorage) and DataManager behaves correctly with each.
         self.__storage = storage
 
-    # OOP - Encapsulation: private helper, not part of the public interface.
+
     def __load_users(self):
         """Turn the stored dict into UserRecord objects, keyed by email."""
         users = {}
-        # OOP - Polymorphism: read() runs JsonStorage or MemoryStorage
-        # behaviour depending on the object passed in, with no type checks.
         for email, searches in self.__storage.read().items():
             if not isinstance(searches, list):
                 continue
-            # OOP - Classes and objects: a UserRecord object per email.
+
             user = UserRecord(email)
             for hotels in searches:
                 if isinstance(hotels, list):
-                    # OOP - Aggregation: the Search is created here, then
-                    # added to the UserRecord.
                     search = Search(hotels)
                     user.add_search(search)
-            # Skip users whose saved searches were all unreadable
+
             if not user.is_empty():
                 users[user.email] = user
         return users
 
-    # OOP - Encapsulation: private helper, not part of the public interface.
     def __save_users(self, users):
         data = {user.email: user.to_dict()["searches"]
                 for user in users.values()}
@@ -68,14 +51,10 @@ class DataManager:
         users = self.__load_users()
 
         for email, hotels in record.items():
-            # OOP - Aggregation: the Search is built on its own first,
-            # so it exists before it becomes part of a UserRecord.
             search = Search(hotels)
-            # SOLID - SRP: the email rule lives in UserRecord, not here.
             key = UserRecord.normalise_email(email)
             if key not in users:
                 users[key] = UserRecord(key)
-            # OOP - Aggregation: the existing Search is added to the user.
             users[key].add_search(search)
 
         return self.__save_users(users)
@@ -91,3 +70,15 @@ class DataManager:
         # SOLID - SRP: the email rule lives in UserRecord, not here.
         user = self.__load_users().get(UserRecord.normalise_email(record_email))
         return [user.to_dict()] if user else []
+
+    def query_by_country(self, record_email, country):
+        """Return the records for one email, keeping only the hotels whose
+        country contains the given text (not case sensitive, so "singa"
+        finds Singapore). Returns [] if nothing matches."""
+        if not record_email or not country:
+            return []
+        user = self.__load_users().get(UserRecord.normalise_email(record_email))
+        if not user:
+            return []
+        record = user.to_dict_for_country(country)
+        return [record] if record["searches"] else []
