@@ -4,7 +4,6 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 import ai_manager as AIManager
-import data_manager as DataManager
 from data_layer.data_manager import DataManager, RECORDS_FILE
 from data_layer.json_storage import JsonStorage
 from data_layer.memory_storage import MemoryStorage
@@ -155,9 +154,38 @@ def main():
 
                 record_email = console.request_record_email()
 
-                console.display_records(
-                    data_manager.query(record_email)
-                )
+                records = data_manager.query(record_email)
+
+                # Nothing saved for this email, so no need to ask how to view it
+                if not records:
+                    console.display_records(records)
+                    continue
+
+                if console.request_record_view_option() == "1":
+
+                    country_records = None
+                    while country_records is None:
+
+                        country = console.request_record_country()
+
+                        if country is None:
+                            break
+
+                        found = data_manager.query_by_country(record_email, country)
+                        if found:
+                            country_records = found
+
+                        else:
+                            console.display_message(
+                                f"\nNo hotel records found for a country matching '{country}'."
+                            )
+
+                    if country_records is None:
+                        continue
+                    records = country_records
+
+
+                console.display_records(records)
 
             elif menu_display == "3":
 
