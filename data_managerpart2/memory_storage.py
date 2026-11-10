@@ -1,6 +1,6 @@
 import copy
 
-from data_layer.storage import Storage
+from data_managerpart2.storage import Storage
 
 
 class MemoryStorage(Storage):

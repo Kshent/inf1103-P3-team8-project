@@ -1,5 +1,5 @@
-from data_layer.search import Search
-from data_layer.user_record import UserRecord
+from data_managerpart2.search import Search
+from data_managerpart2.user_record import UserRecord
 
 RECORDS_FILE = "datarecords.json"
 

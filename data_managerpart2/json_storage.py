@@ -18,7 +18,7 @@
 
 import json
 
-from data_layer.file_storage import FileStorage
+from data_managerpart2.file_storage import FileStorage
 
 
 class JsonStorage(FileStorage):

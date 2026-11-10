@@ -1,4 +1,4 @@
-from data_layer.hotel import Hotel
+from data_managerpart2.hotel import Hotel
 
 
 class Search:

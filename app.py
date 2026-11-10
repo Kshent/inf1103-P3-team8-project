@@ -4,9 +4,9 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 import ai_manager as AIManager
-from data_layer.data_manager import DataManager, RECORDS_FILE
-from data_layer.json_storage import JsonStorage
-from data_layer.memory_storage import MemoryStorage
+from data_managerpart2.data_manager import DataManager, RECORDS_FILE
+from data_managerpart2.json_storage import JsonStorage
+from data_managerpart2.memory_storage import MemoryStorage
 import io_manager_part2.__init__ as IOManager
 import logic_manager_part2.logic_manager as LogicManager
 load_dotenv(Path(__file__).resolve().with_name(".env"))

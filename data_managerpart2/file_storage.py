@@ -63,7 +63,7 @@ import os
 import logging
 from abc import abstractmethod
 
-from data_layer.storage import Storage
+from data_managerpart2.storage import Storage
 
 logger = logging.getLogger(__name__)
 
