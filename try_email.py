@@ -7,7 +7,7 @@ from email.message import EmailMessage
 logger = logging.getLogger(__name__)
 load_dotenv()
 
-
+#push for email testing
 class EmailSender:
     """Sends plain-text emails through an SMTP server (Gmail by default).
 
