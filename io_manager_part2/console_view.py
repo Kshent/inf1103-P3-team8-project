@@ -9,6 +9,7 @@ from .input_validator import InputValidator
 from .location_validator import LocationValidator
 from .price_range_validator import PriceRangeValidator
 from .weight_validator import WeightValidator
+from .country_search_validator import CountrySearchValidator
 
 
 class ConsoleView:
@@ -71,6 +72,8 @@ class ConsoleView:
         self._location_validator: InputValidator = LocationValidator()
         self._price_validator: InputValidator = PriceRangeValidator()
         self._email_validator: InputValidator = EmailValidator()
+        self._country_validator: InputValidator = CountrySearchValidator()
+        
 
     def _write(self, message: Any) -> None:
         self._output(message)
