@@ -346,6 +346,33 @@ class ConsoleView:
                 return email.lower()
             self._write(f"Invalid input : {error}")
 
+    def request_record_view_option(self) -> str:
+        """Ask how to view saved records: by country or all of them."""
+        while True:
+            self._write("\n1: View your hotel records based on country")
+            self._write("2: View all your hotel records")
+
+            choice = self._reader.read("Please enter option 1 or 2: ")
+            if choice in ("1", "2"):
+                return choice
+            self._write("Invalid option. Please enter 1 or 2")
+
+    def request_record_country(self) -> str | None:
+        """Ask for a full or partial country, e.g. "singa" for Singapore."""
+        while True:
+            country = self._reader.read(
+                "Enter a country (e.g. singa for Singapore) or q to quit: "
+            )
+            if country.lower() == "q":
+                self._write("Exiting view hotel records")
+                return None
+
+            is_valid, error = self._country_validator.validate(country)
+            if is_valid:
+                return " ".join(country.split())
+            self._write(f"Invalid input : {error}")
+            
+
     def display_message(self, message: str) -> None:
         self._write(message)
 

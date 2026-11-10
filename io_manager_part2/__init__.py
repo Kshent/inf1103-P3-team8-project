@@ -20,6 +20,7 @@ from .email_validator import EmailValidator
 from .input_reader import InputReader
 from .weight_validator import WeightValidator
 from .console_view import ConsoleView
+from .country_search_validator import CountrySearchValidator
 
 __all__ = [
     "InputValidator",
@@ -29,4 +30,5 @@ __all__ = [
     "InputReader",
     "WeightValidator",
     "ConsoleView",
+    "CountrySearchValidator",   
 ]
