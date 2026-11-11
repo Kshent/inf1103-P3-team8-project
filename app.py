@@ -7,6 +7,7 @@ import ai_manager as AIManager
 from data_managerpart2.data_manager import DataManager, RECORDS_FILE
 from data_managerpart2.json_storage import JsonStorage
 from data_managerpart2.memory_storage import MemoryStorage
+from data_managerpart2.send_email import EmailSender
 import io_manager_part2.__init__ as IOManager
 import logic_manager_part2.logic_manager as LogicManager
 load_dotenv(Path(__file__).resolve().with_name(".env"))
@@ -19,6 +20,9 @@ ADMIN_PASSWORD = "12345"
 
 def main():
     console = IOManager.ConsoleView()
+    sender = EmailSender(os.environ.get("EMAIL_ADDRESS"), os.environ.get("EMAIL_APP_PASSWORD"))
+
+
 
     # DATA_STORAGE=memory runs without saving to disk (e.g. for a demo);
     # anything else uses the JSON records file.
@@ -139,6 +143,13 @@ def main():
 
                 # DATA MANAGER: save the top 3 in the same format as the printed dictionary
                 if top_three_dict["top_hotels"]:
+
+                    sender.send(
+                        to_address=email,
+                        subject="Your Hotel Recommendations for " + user_input_details["destination"],
+                        body=f"Here are the top 3 hotels you might like!\n\n{top_three_dict['top_hotels']}"
+                    )
+
                     data_manager.save({
                         email: top_three_dict["top_hotels"]
                     })
