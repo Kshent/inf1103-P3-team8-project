@@ -1,180 +1,301 @@
 {
-    "asdf@gmail.com": [
+    "kshent@gmail.com": [
         [
             {
-                "name": "ibis Singapore Novena",
+                "name": "Ibis Singapore on Bencoolen",
                 "city": "Singapore",
                 "country": "Singapore",
-                "price_per_night_sgd": 150.0,
-                "rating": 4.0,
+                "price_per_night_sgd": 165.0,
+                "rating": 4.1,
                 "amenities": [
                     "Free Wi-Fi",
                     "Restaurant",
                     "Bar",
+                    "Free Parking",
                     "Laundry Service"
                 ],
-                "distance_to_preferences": [],
+                "distance_to_preferences": [
+                    {
+                        "target": "Bugis MRT Station",
+                        "distance_m": 450
+                    }
+                ],
                 "nearby_food": [
-                    "Whampoa Hawker Centre",
-                    "Balestier Road Bak Kut Teh",
-                    "Founder Bak Kut Teh"
+                    "TASTE Restaurant",
+                    "Sim Lim Square Food Court",
+                    "Fortune Centre Vegetarian Food"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Sun Yat Sen Nanyang Memorial Hall",
-                        "distance_m": 500
+                        "name": "Bugis Junction",
+                        "distance_m": 400
                     },
                     {
-                        "name": "Zhongshan Mall",
-                        "distance_m": 100
+                        "name": "National Library Singapore",
+                        "distance_m": 450
                     }
                 ]
             },
             {
-                "name": "QI Hotel Singapore",
-                "city": "Singapore",
-                "country": "Singapore",
-                "price_per_night_sgd": 140.0,
-                "rating": 3.7,
-                "amenities": [
-                    "Free Wi-Fi",
-                    "Air Conditioning",
-                    "Flat-screen TV"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Chinatown Complex Food Centre",
-                    "Maximus Food Village",
-                    "Maxwell Food Centre"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Buddha Tooth Relic Temple",
-                        "distance_m": 500
-                    },
-                    {
-                        "name": "Chinatown Heritage Centre",
-                        "distance_m": 600
-                    }
-                ]
-            },
-            {
-                "name": "Hotel Boss",
+                "name": "Summer View Hotel",
                 "city": "Singapore",
                 "country": "Singapore",
                 "price_per_night_sgd": 160.0,
-                "rating": 3.8,
+                "rating": 4.0,
                 "amenities": [
                     "Free Wi-Fi",
-                    "Swimming Pool",
-                    "Fitness Centre",
-                    "Non-smoking Rooms"
+                    "Restaurant",
+                    "Air Conditioning",
+                    "24-Hour Front Desk"
                 ],
-                "distance_to_preferences": [],
+                "distance_to_preferences": [
+                    {
+                        "target": "Bugis MRT Station",
+                        "distance_m": 500
+                    }
+                ],
                 "nearby_food": [
-                    "Founder Bak Kut Teh",
-                    "Golden Mile Complex Food Centre",
-                    "Beach Road Scissor-Cut Curry Rice"
+                    "Ajisen Ramen",
+                    "Curry Times",
+                    "Albert Centre Food Centre"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Kampong Glam",
+                        "name": "Malay Heritage Centre",
                         "distance_m": 600
                     },
                     {
+                        "name": "Bugis Street Market",
+                        "distance_m": 350
+                    }
+                ]
+            },
+            {
+                "name": "Santa Grand Hotel Bugis",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 155.0,
+                "rating": 3.9,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Outdoor Swimming Pool",
+                    "Rooftop Terrace",
+                    "24-Hour Front Desk"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Bugis MRT Station",
+                        "distance_m": 450
+                    }
+                ],
+                "nearby_food": [
+                    "Zam Zam Singapore",
+                    "Victory Restaurant",
+                    "Sultan Turkish Restaurant"
+                ],
+                "nearby_activities": [
+                    {
                         "name": "Sultan Mosque",
-                        "distance_m": 650
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Haji Lane",
+                        "distance_m": 300
                     }
                 ]
             }
         ]
     ],
-    "kshent@gmail.com": [
+    "kshent.sgs@gmail.com": [
         [
             {
-                "name": "Jailhouse Accommodation",
-                "city": "Christchurch",
-                "country": "New Zealand",
-                "price_per_night_sgd": 110.0,
-                "rating": 4.5,
+                "name": "Grand Fiesta Americana Querétaro",
+                "city": "Querétaro",
+                "country": "Mexico",
+                "price_per_night_sgd": 182.0,
+                "rating": 4.6,
                 "amenities": [
-                    "Free WiFi",
-                    "Guest Kitchen",
-                    "Free Parking",
-                    "Lounge"
+                    "Outdoor Pool",
+                    "Fitness Center",
+                    "Restaurant",
+                    "Free Parking"
                 ],
                 "distance_to_preferences": [],
                 "nearby_food": [
-                    "Addington Coffee Co-op",
-                    "The Ballymore's Bar & Kitchen",
-                    "Local Pizza"
+                    "Hacienda La Laborcilla",
+                    "Sonora Grill Querétaro"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Hagley Park",
+                        "name": "Aqueduct of Querétaro",
                         "distance_m": 1500
                     },
                     {
-                        "name": "Christchurch Botanic Gardens",
-                        "distance_m": 2200
+                        "name": "Plaza de Armas",
+                        "distance_m": 2300
                     }
                 ]
             },
             {
-                "name": "Haka Lodge Queenstown",
-                "city": "Queenstown",
-                "country": "New Zealand",
-                "price_per_night_sgd": 150.0,
-                "rating": 4.4,
+                "name": "NH Collection Monterrey San Pedro",
+                "city": "Monterrey",
+                "country": "Mexico",
+                "price_per_night_sgd": 188.0,
+                "rating": 4.5,
                 "amenities": [
+                    "Fitness Center",
+                    "Restaurant",
                     "Free WiFi",
-                    "Communal Kitchen",
-                    "Ski Storage",
-                    "Balcony"
+                    "Bar"
                 ],
                 "distance_to_preferences": [],
                 "nearby_food": [
-                    "Fergburger",
-                    "Flame Bar & Grill",
-                    "Patagonia Chocolates"
+                    "Cara de Vaca",
+                    "Pangea"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Queenstown Gardens",
-                        "distance_m": 700
+                        "name": "Parque Rufino Tamayo",
+                        "distance_m": 1100
                     },
                     {
-                        "name": "Skyline Queenstown",
+                        "name": "Macroplaza",
+                        "distance_m": 4500
+                    }
+                ]
+            },
+            {
+                "name": "Barceló México Reforma",
+                "city": "Mexico City",
+                "country": "Mexico",
+                "price_per_night_sgd": 190.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free WiFi",
+                    "Indoor Pool",
+                    "Fitness Center",
+                    "Spa",
+                    "Restaurant"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "El Cardenal",
+                    "Taquería El Cafan"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Monumento a la Revolución",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "Palacio de Bellas Artes",
+                        "distance_m": 1200
+                    }
+                ]
+            }
+        ],
+        [
+            {
+                "name": "Anchor Down Motel",
+                "city": "Whitianga",
+                "country": "New Zealand",
+                "price_per_night_sgd": 200.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Outdoor Pool",
+                    "Free WiFi",
+                    "Free Parking",
+                    "Barbecue Facilities"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Beach",
+                        "distance_m": 300
+                    }
+                ],
+                "nearby_food": [
+                    "The Pepper Tree Restaurant",
+                    "Grace O'Malley's",
+                    "Whitianga Takeaways"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Buffalo Beach",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Whitianga Harbour Ferry",
                         "distance_m": 800
                     }
                 ]
             },
             {
-                "name": "Nomads Auckland Backpackers",
-                "city": "Auckland",
+                "name": "Waterfront Motel Nelson",
+                "city": "Nelson",
                 "country": "New Zealand",
-                "price_per_night_sgd": 120.0,
-                "rating": 4.1,
+                "price_per_night_sgd": 208.0,
+                "rating": 4.5,
                 "amenities": [
                     "Free WiFi",
-                    "Kitchen facilities",
-                    "Lounge",
-                    "Laundry"
+                    "Kitchenette",
+                    "Sea Views",
+                    "Free Parking",
+                    "Laundry Facilities"
                 ],
-                "distance_to_preferences": [],
+                "distance_to_preferences": [
+                    {
+                        "target": "Beach",
+                        "distance_m": 150
+                    }
+                ],
                 "nearby_food": [
-                    "Federal Delicatessen",
-                    "SkyCity Restaurants",
-                    "Depot Eatery"
+                    "The Boatshed Cafe",
+                    "Saltwater Seafood",
+                    "Styx Mill Restaurant"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Sky Tower",
-                        "distance_m": 300
+                        "name": "Tahunanui Beach Reserve",
+                        "distance_m": 150
                     },
                     {
-                        "name": "Auckland Art Gallery Toi o Tamaki",
-                        "distance_m": 600
+                        "name": "Natureland Wildlife Trust",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Kaikoura Beach Motel",
+                "city": "Kaikoura",
+                "country": "New Zealand",
+                "price_per_night_sgd": 202.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Beachfront",
+                    "Free WiFi",
+                    "Kitchenette",
+                    "Free Parking",
+                    "BBQ Facilities"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Beach",
+                        "distance_m": 30
+                    }
+                ],
+                "nearby_food": [
+                    "Kaikoura Seafood BBQ Kiosk",
+                    "Pier Hotel Restaurant",
+                    "Caves Restaurant"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Whale Watch Kaikoura",
+                        "distance_m": 1100
+                    },
+                    {
+                        "name": "Kaikoura Peninsula Walkway",
+                        "distance_m": 1500
                     }
                 ]
             }
