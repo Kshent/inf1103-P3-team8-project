@@ -865,6 +865,7 @@ def render_saved_records(
                                     'text-sm text-slate-500'
                                 )
 
+
                             ui.label(
                                 (
                                     f"S$"
