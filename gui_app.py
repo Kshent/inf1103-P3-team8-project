@@ -1,17 +1,23 @@
 from nicegui import ui
 
-import gui.homepage
-import gui.menu_page
+from gui.gui_controller import GuiController
+from gui.pages import register_pages
 
 
-def main():
+# Create manager/controller objects.
+# This is NOT UI, so it is okay at global scope.
+controller = GuiController()
 
-    ui.run(
-        title='SmartStay',
-        port=8080,
-        reload=False
-    )
+
+# Register all @ui.page routes.
+register_pages(controller)
 
 
 if __name__ in {'__main__', '__mp_main__'}:
-    main()
+
+    ui.run(
+        title='Hotel Recommendation System',
+        favicon='🏨',
+        port=8080,
+        reload=False,
+    )
