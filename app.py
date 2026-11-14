@@ -13,6 +13,7 @@ import logic_manager_part2.logic_manager as LogicManager
 load_dotenv(Path(__file__).resolve().with_name(".env"))
 
 class HotelRecommenderApp:
+
     ADMIN_USER = "team8"
     ADMIN_PASSWORD = "12345"
 
@@ -53,99 +54,75 @@ class HotelRecommenderApp:
                 self.console.display_message(str(error))
                 continue
 
-    #   option 1: search for hotels
-    def search_hotels(self):
-        user_input_details = {}
-
-        mandatory_data = self.console.request_mandatory_inputs()
-        user_prefs = self.console.request_user_preferences()
-
-        # Create Logic Manager
-        self.logic_manager = LogicManager.LogicManager()
-
+    # option 1: search for hotels
+    def choose_profile(self, user_prefs):
+        """IO collects the traveller style and custom weights; Logic checks
+        them. Asks again until Logic accepts."""
         # Ask Logic which scoring categories are applicable
         allowed_keys = self.logic_manager.available_weight_keys(user_prefs)
 
-        # IO collects the traveller style and custom weights
         while True:
-
             traveller_profile = self.console.request_traveller_profile(
                 allowed_keys=allowed_keys
             )
 
             try:
-                selected_profile = self.logic_manager.resolve_profile(
+                return self.logic_manager.resolve_profile(
                     traveller_profile,
                     user_prefs
                 )
-                break
 
             except ValueError as error:
                 self.console.display_message(
                     f"Invalid weightages: {error}"
                 )
 
+    @staticmethod
+    def build_search_details(mandatory_data, user_prefs, selected_profile):
+        """Turn what the user typed into the dictionary the AI and Logic use."""
         final_search_payload = {
             **mandatory_data,
             "preferences": user_prefs,
             "priority_profile": selected_profile
         }
 
+        user_input_details = {}
         user_input_details["destination"] = final_search_payload["location"]
         user_input_details["budget_min"] = final_search_payload["price_range"]["min"]
         user_input_details["budget_max"] = final_search_payload["price_range"]["max"]
         user_input_details["email_address"] = final_search_payload["email_address"]
         user_input_details["preferences"] = final_search_payload["preferences"]
         user_input_details["priority_profile"] = final_search_payload["priority_profile"]
+        return user_input_details
 
-        ai_manager_result = self.ai_manager.generate_candidates(
-            user_input_details)
-
-        # Prevent crash if AI Manager/API fails
-        if ai_manager_result is None:
-            self.console.display_message(
-                "Hotel recommendation service is currently unavailable. Please try again later."
-            )
-            return
-
-        email = user_input_details["email_address"]
-        original_ai_output = ai_manager_result # Keep the original AI output for Logic Manager
-        ai_manager_result = ai_manager_result.copy() # Create a separate copy for displaying the AI output
+    def show_ai_output(self, original_ai_output):
+        """Show the AI's answer. Works on a copy, so the original (which
+        Logic needs) keeps its 'hotels' key."""
+        ai_manager_result = original_ai_output.copy()
         ai_manager_result[str(uuid.uuid4())] = ai_manager_result.pop("hotels")
 
         # This will output as dictionary
         self.console.display_ai_dictionary(ai_manager_result)
 
-        # Process hotels using Logic Manager
-        logic_result = self.logic_manager.process_hotels(
-            original_ai_output,
-            user_input_details
-        )
-
-        # Display neatly formatted Top 3 hotels
-        self.console.display_recommendations(
-            logic_result,
-            user_input_details
-        )
-
-        # Match ranked hotels to the original AI hotel dictionaries
+    @staticmethod
+    def original_top_three(original_ai_output, logic_result):
+        """Match the ranked hotels to the original AI hotel dictionaries,
+        keeping only the Top 3 in their ranked order."""
         original_hotels_by_name = {
             hotel["name"]: hotel
             for hotel in original_ai_output["hotels"]
         }
-
-        # Keep only the Top 3, in their ranked order
-        top_three_dict = {
+        return {
             "top_hotels": [
                 original_hotels_by_name[hotel["name"]]
                 for hotel in logic_result["top_hotels"]
             ]
         }
 
-        self.console.display_top_three_dictionary(top_three_dict)
+    def save_and_send(self, top_three_dict, user_input_details):
+        """Email the Top 3 and save them. Says so if there was nothing."""
+        email = user_input_details["email_address"]
 
-        # DATA MANAGER: save the top 3 in the same format as the printed
-        # dictionary
         if top_three_dict["top_hotels"]:
 
             self.sender.send(
@@ -165,9 +142,57 @@ class HotelRecommenderApp:
                 "No hotels matched your requirements, nothing was saved."
             )
 
+    def search_hotels(self):
+        mandatory_data = self.console.request_mandatory_inputs()
+        user_prefs = self.console.request_user_preferences()
+
+        # Create Logic Manager boss
+        self.logic_manager = LogicManager.LogicManager()
+
+        selected_profile = self.choose_profile(user_prefs)
+        user_input_details = self.build_search_details(
+            mandatory_data, user_prefs, selected_profile)
+
+        ai_manager_result = self.ai_manager.generate_candidates(
+            user_input_details)
+
+        # Prevent crash if AI Manager/API fails
+        if ai_manager_result is None:
+            self.console.display_message(
+                "Hotel recommendation service is currently unavailable. Please try again later."
+            )
+            return
+
+        # Keep the original AI output for Logic Manager
+        original_ai_output = ai_manager_result
+
+        self.show_ai_output(original_ai_output)
+
+        # Process hotels using Logic Manager
+        logic_result = self.logic_manager.process_hotels(
+            original_ai_output,
+            user_input_details
+        )
+
+        # Display neatly formatted Top 3 hotels
+        self.console.display_recommendations(
+            logic_result,
+            user_input_details
+        )
+
+        # Display Top 3 hotels using original AI data
+        top_three_dict = self.original_top_three(
+            original_ai_output, logic_result)
+        self.console.display_top_three_dictionary(top_three_dict)
+
+        # DATA MANAGER: save the top 3 in the same format as the printed
+        # dictionary
+        self.save_and_send(top_three_dict, user_input_details)
+
     # option 2: view saved records for one email
     def view_my_records(self):
         record_email = self.console.request_record_email()
+
         records = self.data_manager.query(record_email)
 
         # Nothing saved for this email, so no need to ask how to view it
@@ -179,9 +204,7 @@ class HotelRecommenderApp:
 
             country_records = None
             while country_records is None:
-
                 country = self.console.request_record_country()
-
                 if country is None:
                     break
 
@@ -189,7 +212,6 @@ class HotelRecommenderApp:
                     record_email, country)
                 if found:
                     country_records = found
-
                 else:
                     self.console.display_message(
                         f"\nNo hotel records found for a country matching '{country}'."
