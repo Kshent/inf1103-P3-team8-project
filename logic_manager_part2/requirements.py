@@ -38,12 +38,18 @@ class Requirements:
         else:
             self._not_scored.append(
                 "Location was not scored: You did not ask to be near a place.")
+            
         if self._pref_checks:
             active.append("preferences")
+        elif self._unverified:
+            self._not_scored.append(
+                "Amenity preferences were not scored: None of the "
+                "preferences you gave can be checked against the hotel "
+                "data.")
         else:
             self._not_scored.append(
-                "Amenity preferences were not scored: Nothing you asked for "
-                "could be checked against the hotel data.")
+                "Amenity preferences were not scored: You did not ask for "
+                "any amenities.")
         
         if self._not_scored:
 
