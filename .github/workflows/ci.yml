@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt flake8
+
+      # Fails on syntax errors and undefined names only, not on style.
+      - name: Check for syntax errors and undefined names
+        run: >
+          flake8 app.py gui_app.py ai_manager data_managerpart2 gui
+          io_manager_part2 logic_manager_part2 tests
+          --select=E9,F63,F7,F82 --show-source --statistics
+
+      # Catches broken imports between the managers. No API key or email
+      # password is needed just to import.
+      - name: Check that both apps can be imported
+        run: |
+          python -c "import app"
+          python -c "import gui_app"
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
