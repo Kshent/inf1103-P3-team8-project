@@ -159,12 +159,21 @@ class Requirements:
         return [part.strip() for part in parts if part and part.strip()]
 
     def mentions_target(self, phrase):
-        """True if the phrase is about one of the places the AI extracted."""
         words = set(re.findall(r"[a-z0-9]+", phrase.lower()))
         for target in self._targets:
-            key = (set(re.findall(r"[a-z0-9]+", target.lower()))
-                   - self._generic_place_words)
+
+            target_words = re.findall(
+                r"[a-z0-9]+", target.lower()
+            )
+            key = set(target_words) - self._generic_place_words
             if key and key & words:
+                return True
+            initials = "".join(
+                word[0]
+                for word in target_words
+                if word not in {"the", "of", "and"}
+            )
+            if len(initials) >= 2 and initials in words:
                 return True
         return False
 
