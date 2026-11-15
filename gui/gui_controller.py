@@ -14,7 +14,7 @@ from data_managerpart2.data_manager import (
 )
 from data_managerpart2.json_storage import JsonStorage
 from data_managerpart2.memory_storage import MemoryStorage
-from data_managerpart2.send_email import EmailSender
+from emails.send_email import EmailSender
 
 import logic_manager_part2.logic_manager as LogicManager
 
