@@ -37,7 +37,7 @@ class Requirements:
             active.append("location")
         else:
             self._not_scored.append(
-                "Location was not scored: You did not ask to be near a place.")
+                "Location was not scored — no specific nearby place was requested.")
             
         if self._pref_checks:
             active.append("preferences")
@@ -48,8 +48,7 @@ class Requirements:
                 "data.")
         else:
             self._not_scored.append(
-                "Amenity preferences were not scored: You did not ask for "
-                "any amenities.")
+                "Amenity preferences were not scored: No Amenities were requested.")
         
         if self._not_scored:
 
