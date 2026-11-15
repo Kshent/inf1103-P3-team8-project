@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from nicegui import run
 
-from ai_manager.ai_factory import AIManagerFactory
+from ai_managerpart2.ai_factory import AIManagerFactory
 
 from data_managerpart2.data_manager import (
     DataManager,
