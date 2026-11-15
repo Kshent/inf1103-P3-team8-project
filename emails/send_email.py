@@ -25,7 +25,7 @@ class EmailSender:
     def is_configured(self):
         return bool(self.__sender_address and self.__app_password)
 
-    def send(self, to_address, subject, body):
+    def send(self, to_address, subject, body, html_body=None):
         """Send one email. Returns True on success, False on failure."""
         if not self.is_configured():
             logger.error("Email is not set up: EMAIL_ADDRESS or "
@@ -38,6 +38,9 @@ class EmailSender:
             message["To"] = to_address
             message["Subject"] = subject
             message.set_content(body)
+
+            if html_body:
+                message.add_alternative(html_body, subtype='html')
 
             with smtplib.SMTP_SSL(self.__host, self.__port, timeout=15) as server:
                 server.login(self.__sender_address, self.__app_password)

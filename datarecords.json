@@ -299,6 +299,192 @@
                     }
                 ]
             }
+        ],
+        [
+            {
+                "name": "Renaissance Xi'an Hotel",
+                "city": "Xi'an",
+                "country": "China",
+                "price_per_night_sgd": 209.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Indoor swimming pool",
+                    "Fitness center",
+                    "Sauna",
+                    "Restaurant",
+                    "Lounge"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "De Fa Chang Dumpling Restaurant",
+                    "Muslim Street Food Stalls",
+                    "Biang Biang Noodles"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Xi'an City Wall",
+                        "distance_m": 2500
+                    },
+                    {
+                        "name": "Giant Wild Goose Pagoda",
+                        "distance_m": 4100
+                    }
+                ]
+            },
+            {
+                "name": "Sheraton Chengdu Lido Hotel",
+                "city": "Chengdu",
+                "country": "China",
+                "price_per_night_sgd": 206.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Indoor swimming pool",
+                    "Spa and wellness center",
+                    "Fitness center",
+                    "Multiple restaurants",
+                    "Bar"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Chen Mapo Tofu",
+                    "Long Chao Shou",
+                    "Panda Dumplings"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Tianfu Square",
+                        "distance_m": 800
+                    },
+                    {
+                        "name": "Kuanzhai Alley",
+                        "distance_m": 1600
+                    }
+                ]
+            },
+            {
+                "name": "Courtyard by Marriott Shanghai Jiading",
+                "city": "Shanghai",
+                "country": "China",
+                "price_per_night_sgd": 210.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Indoor swimming pool",
+                    "Fitness center",
+                    "Free parking",
+                    "Restaurant",
+                    "Meeting rooms"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Jiading Restaurant",
+                    "Local Dumpling House",
+                    "KFC"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Jiading Confucius Temple",
+                        "distance_m": 1500
+                    },
+                    {
+                        "name": "Autumn Dew Garden",
+                        "distance_m": 1800
+                    }
+                ]
+            }
+        ],
+        [
+            {
+                "name": "Taj Gateway Hotel, IT Expressway",
+                "city": "Chennai",
+                "country": "India",
+                "price_per_night_sgd": 145.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free WiFi",
+                    "Outdoor Pool",
+                    "Spa",
+                    "Fitness Center",
+                    "Restaurant",
+                    "Bar"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Buzz",
+                    "Sartoro",
+                    "The Spices"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "SIPCOT IT Park",
+                        "distance_m": 1000
+                    },
+                    {
+                        "name": "Muttukadu Lake",
+                        "distance_m": 9000
+                    }
+                ]
+            },
+            {
+                "name": "Lemon Tree Hotel, Vadodara",
+                "city": "Vadodara",
+                "country": "India",
+                "price_per_night_sgd": 105.0,
+                "rating": 4.2,
+                "amenities": [
+                    "Free WiFi",
+                    "Fitness Center",
+                    "Restaurant",
+                    "Conference Rooms",
+                    "24-hour Front Desk"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Citrus Cafe",
+                    "Mandarin",
+                    "Kebab Gali"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Sayaji Baug Zoo",
+                        "distance_m": 2500
+                    },
+                    {
+                        "name": "Lakshmi Vilas Palace",
+                        "distance_m": 4000
+                    }
+                ]
+            },
+            {
+                "name": "Fairfield by Marriott Bengaluru Outer Ring Road",
+                "city": "Bengaluru",
+                "country": "India",
+                "price_per_night_sgd": 115.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Free WiFi",
+                    "Fitness Center",
+                    "Outdoor Pool",
+                    "Restaurant",
+                    "Bar",
+                    "Meeting Rooms"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Kava",
+                    "Mocha",
+                    "TGI Fridays"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Ecospace Business Park",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Central Mall Bellandur",
+                        "distance_m": 2100
+                    }
+                ]
+            }
         ]
     ]
 }

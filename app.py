@@ -7,7 +7,10 @@ from ai_managerpart2.ai_factory import AIManagerFactory
 from data_managerpart2.data_manager import DataManager, RECORDS_FILE
 from data_managerpart2.json_storage import JsonStorage
 from data_managerpart2.memory_storage import MemoryStorage
-from data_managerpart2.send_email import EmailSender
+# from data_managerpart2.send_email import EmailSender
+# from data_managerpart2.recommendation_email import RecommendationEmail
+from emails.send_email import EmailSender
+from emails.recommendation_email import RecommendationEmail
 import io_manager_part2.__init__ as IOManager
 import logic_manager_part2.logic_manager as LogicManager
 load_dotenv(Path(__file__).resolve().with_name(".env"))
@@ -125,11 +128,25 @@ class HotelRecommenderApp:
 
         if top_three_dict["top_hotels"]:
 
-            self.sender.send(
-                to_address=email,
-                subject="Your Hotel Recommendations for " + user_input_details["destination"],
-                body=f"Here are the top 3 hotels you might like!\n\n{top_three_dict['top_hotels']}"
+            recommendation = RecommendationEmail(
+                user_input_details["destination"],
+                top_three_dict["top_hotels"]
             )
+            
+            sent = self.sender.send(
+                to_address=email,
+                subject=recommendation.subject(),
+                body=recommendation.plain_text(),
+                html_body=recommendation.html()
+            )
+            if sent:
+                self.console.display_message(
+                    "Your recommendations have been emailed to " + email + "."
+                )
+            else:
+                self.console.display_message(
+                    "Your recommendations could not be emailed."
+                )
 
             self.data_manager.save({
                 email: top_three_dict["top_hotels"]
