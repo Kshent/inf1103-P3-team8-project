@@ -1,666 +1,186 @@
 {
-    "kshent@gmail.com": [
+    "kshent.sgs@gmail.com": [
         [
             {
-                "name": "Ibis Singapore on Bencoolen",
+                "name": "ibis Styles Singapore On Macpherson",
                 "city": "Singapore",
                 "country": "Singapore",
-                "price_per_night_sgd": 165.0,
-                "rating": 4.1,
+                "price_per_night_sgd": 152.0,
+                "rating": 3.9,
                 "amenities": [
                     "Free Wi-Fi",
+                    "Outdoor swimming pool",
+                    "Fitness center",
                     "Restaurant",
-                    "Bar",
-                    "Free Parking",
-                    "Laundry Service"
+                    "Bar"
                 ],
-                "distance_to_preferences": [
-                    {
-                        "target": "Bugis MRT Station",
-                        "distance_m": 450
-                    }
-                ],
+                "distance_to_preferences": [],
                 "nearby_food": [
-                    "TASTE Restaurant",
-                    "Sim Lim Square Food Court",
-                    "Fortune Centre Vegetarian Food"
+                    "Circuit Road Market & Food Centre",
+                    "Chatterbox Kitchen Macpherson",
+                    "Umacoya Japanese Restaurant"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Bugis Junction",
-                        "distance_m": 400
+                        "name": "Geylang East Park",
+                        "distance_m": 850
                     },
                     {
-                        "name": "National Library Singapore",
-                        "distance_m": 450
+                        "name": "Paya Lebar Square",
+                        "distance_m": 1800
+                    },
+                    {
+                        "name": "Singapore Sports Hub",
+                        "distance_m": 3200
                     }
                 ]
             },
             {
-                "name": "Summer View Hotel",
-                "city": "Singapore",
-                "country": "Singapore",
-                "price_per_night_sgd": 160.0,
-                "rating": 4.0,
-                "amenities": [
-                    "Free Wi-Fi",
-                    "Restaurant",
-                    "Air Conditioning",
-                    "24-Hour Front Desk"
-                ],
-                "distance_to_preferences": [
-                    {
-                        "target": "Bugis MRT Station",
-                        "distance_m": 500
-                    }
-                ],
-                "nearby_food": [
-                    "Ajisen Ramen",
-                    "Curry Times",
-                    "Albert Centre Food Centre"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Malay Heritage Centre",
-                        "distance_m": 600
-                    },
-                    {
-                        "name": "Bugis Street Market",
-                        "distance_m": 350
-                    }
-                ]
-            },
-            {
-                "name": "Santa Grand Hotel Bugis",
+                "name": "Champion Hotel",
                 "city": "Singapore",
                 "country": "Singapore",
                 "price_per_night_sgd": 155.0,
                 "rating": 3.9,
                 "amenities": [
                     "Free Wi-Fi",
-                    "Outdoor Swimming Pool",
-                    "Rooftop Terrace",
-                    "24-Hour Front Desk"
+                    "Air conditioning",
+                    "24-hour front desk",
+                    "Elevator",
+                    "Daily housekeeping"
                 ],
-                "distance_to_preferences": [
-                    {
-                        "target": "Bugis MRT Station",
-                        "distance_m": 450
-                    }
-                ],
+                "distance_to_preferences": [],
                 "nearby_food": [
-                    "Zam Zam Singapore",
-                    "Victory Restaurant",
-                    "Sultan Turkish Restaurant"
+                    "Dunman Food Centre",
+                    "328 Katong Laksa",
+                    "Eng's Wantan Noodle"
                 ],
                 "nearby_activities": [
                     {
-                        "name": "Sultan Mosque",
+                        "name": "Joo Chiat Heritage Shophouses",
                         "distance_m": 200
                     },
                     {
-                        "name": "Haji Lane",
-                        "distance_m": 300
-                    }
-                ]
-            }
-        ]
-    ],
-    "kshent.sgs@gmail.com": [
-        [
-            {
-                "name": "Grand Fiesta Americana Querétaro",
-                "city": "Querétaro",
-                "country": "Mexico",
-                "price_per_night_sgd": 182.0,
-                "rating": 4.6,
-                "amenities": [
-                    "Outdoor Pool",
-                    "Fitness Center",
-                    "Restaurant",
-                    "Free Parking"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Hacienda La Laborcilla",
-                    "Sonora Grill Querétaro"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Aqueduct of Querétaro",
-                        "distance_m": 1500
+                        "name": "Katong Antique House",
+                        "distance_m": 850
                     },
                     {
-                        "name": "Plaza de Armas",
-                        "distance_m": 2300
-                    }
-                ]
-            },
-            {
-                "name": "NH Collection Monterrey San Pedro",
-                "city": "Monterrey",
-                "country": "Mexico",
-                "price_per_night_sgd": 188.0,
-                "rating": 4.5,
-                "amenities": [
-                    "Fitness Center",
-                    "Restaurant",
-                    "Free WiFi",
-                    "Bar"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Cara de Vaca",
-                    "Pangea"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Parque Rufino Tamayo",
-                        "distance_m": 1100
-                    },
-                    {
-                        "name": "Macroplaza",
-                        "distance_m": 4500
-                    }
-                ]
-            },
-            {
-                "name": "Barceló México Reforma",
-                "city": "Mexico City",
-                "country": "Mexico",
-                "price_per_night_sgd": 190.0,
-                "rating": 4.5,
-                "amenities": [
-                    "Free WiFi",
-                    "Indoor Pool",
-                    "Fitness Center",
-                    "Spa",
-                    "Restaurant"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "El Cardenal",
-                    "Taquería El Cafan"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Monumento a la Revolución",
-                        "distance_m": 400
-                    },
-                    {
-                        "name": "Palacio de Bellas Artes",
-                        "distance_m": 1200
-                    }
-                ]
-            }
-        ],
-        [
-            {
-                "name": "Anchor Down Motel",
-                "city": "Whitianga",
-                "country": "New Zealand",
-                "price_per_night_sgd": 200.0,
-                "rating": 4.6,
-                "amenities": [
-                    "Outdoor Pool",
-                    "Free WiFi",
-                    "Free Parking",
-                    "Barbecue Facilities"
-                ],
-                "distance_to_preferences": [
-                    {
-                        "target": "Beach",
-                        "distance_m": 300
-                    }
-                ],
-                "nearby_food": [
-                    "The Pepper Tree Restaurant",
-                    "Grace O'Malley's",
-                    "Whitianga Takeaways"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Buffalo Beach",
-                        "distance_m": 300
-                    },
-                    {
-                        "name": "Whitianga Harbour Ferry",
-                        "distance_m": 800
-                    }
-                ]
-            },
-            {
-                "name": "Waterfront Motel Nelson",
-                "city": "Nelson",
-                "country": "New Zealand",
-                "price_per_night_sgd": 208.0,
-                "rating": 4.5,
-                "amenities": [
-                    "Free WiFi",
-                    "Kitchenette",
-                    "Sea Views",
-                    "Free Parking",
-                    "Laundry Facilities"
-                ],
-                "distance_to_preferences": [
-                    {
-                        "target": "Beach",
-                        "distance_m": 150
-                    }
-                ],
-                "nearby_food": [
-                    "The Boatshed Cafe",
-                    "Saltwater Seafood",
-                    "Styx Mill Restaurant"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Tahunanui Beach Reserve",
-                        "distance_m": 150
-                    },
-                    {
-                        "name": "Natureland Wildlife Trust",
-                        "distance_m": 500
-                    }
-                ]
-            },
-            {
-                "name": "Kaikoura Beach Motel",
-                "city": "Kaikoura",
-                "country": "New Zealand",
-                "price_per_night_sgd": 202.0,
-                "rating": 4.3,
-                "amenities": [
-                    "Beachfront",
-                    "Free WiFi",
-                    "Kitchenette",
-                    "Free Parking",
-                    "BBQ Facilities"
-                ],
-                "distance_to_preferences": [
-                    {
-                        "target": "Beach",
-                        "distance_m": 30
-                    }
-                ],
-                "nearby_food": [
-                    "Kaikoura Seafood BBQ Kiosk",
-                    "Pier Hotel Restaurant",
-                    "Caves Restaurant"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Whale Watch Kaikoura",
-                        "distance_m": 1100
-                    },
-                    {
-                        "name": "Kaikoura Peninsula Walkway",
-                        "distance_m": 1500
-                    }
-                ]
-            }
-        ],
-        [
-            {
-                "name": "Renaissance Xi'an Hotel",
-                "city": "Xi'an",
-                "country": "China",
-                "price_per_night_sgd": 209.0,
-                "rating": 4.5,
-                "amenities": [
-                    "Indoor swimming pool",
-                    "Fitness center",
-                    "Sauna",
-                    "Restaurant",
-                    "Lounge"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "De Fa Chang Dumpling Restaurant",
-                    "Muslim Street Food Stalls",
-                    "Biang Biang Noodles"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Xi'an City Wall",
-                        "distance_m": 2500
-                    },
-                    {
-                        "name": "Giant Wild Goose Pagoda",
-                        "distance_m": 4100
-                    }
-                ]
-            },
-            {
-                "name": "Sheraton Chengdu Lido Hotel",
-                "city": "Chengdu",
-                "country": "China",
-                "price_per_night_sgd": 206.0,
-                "rating": 4.4,
-                "amenities": [
-                    "Indoor swimming pool",
-                    "Spa and wellness center",
-                    "Fitness center",
-                    "Multiple restaurants",
-                    "Bar"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Chen Mapo Tofu",
-                    "Long Chao Shou",
-                    "Panda Dumplings"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Tianfu Square",
-                        "distance_m": 800
-                    },
-                    {
-                        "name": "Kuanzhai Alley",
-                        "distance_m": 1600
-                    }
-                ]
-            },
-            {
-                "name": "Courtyard by Marriott Shanghai Jiading",
-                "city": "Shanghai",
-                "country": "China",
-                "price_per_night_sgd": 210.0,
-                "rating": 4.4,
-                "amenities": [
-                    "Indoor swimming pool",
-                    "Fitness center",
-                    "Free parking",
-                    "Restaurant",
-                    "Meeting rooms"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Jiading Restaurant",
-                    "Local Dumpling House",
-                    "KFC"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Jiading Confucius Temple",
-                        "distance_m": 1500
-                    },
-                    {
-                        "name": "Autumn Dew Garden",
+                        "name": "East Coast Park",
                         "distance_m": 1800
                     }
                 ]
+            },
+            {
+                "name": "ibis budget Singapore Bugis",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 155.0,
+                "rating": 3.7,
+                "amenities": [
+                    "Free Wi-Fi",
+                    "Air conditioning",
+                    "24-hour front desk",
+                    "Luggage storage",
+                    "Elevator"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "YY Kafei Dian",
+                    "Chin Chin Eating House",
+                    "Ah Chew Desserts"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Bugis Street Market",
+                        "distance_m": 400
+                    },
+                    {
+                        "name": "National Library Singapore",
+                        "distance_m": 250
+                    },
+                    {
+                        "name": "Raffles Hotel Arcade",
+                        "distance_m": 500
+                    }
+                ]
             }
         ],
         [
             {
-                "name": "Taj Gateway Hotel, IT Expressway",
-                "city": "Chennai",
-                "country": "India",
-                "price_per_night_sgd": 145.0,
-                "rating": 4.5,
+                "name": "Ystad Saltsjöbad",
+                "city": "Ystad",
+                "country": "Sweden",
+                "price_per_night_sgd": 210.0,
+                "rating": 4.4,
                 "amenities": [
-                    "Free WiFi",
+                    "Beachfront",
+                    "Spa",
+                    "Indoor Pool",
+                    "Sauna",
+                    "Free Breakfast"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "beach",
+                        "distance_m": 50
+                    }
+                ],
+                "nearby_food": [
+                    "Restaurant Lido",
+                    "Fritidsbaren",
+                    "Ystad Saltsjöbad Restaurant"
+                ],
+                "nearby_activities": []
+            },
+            {
+                "name": "Hotel Skansen",
+                "city": "Färjestaden",
+                "country": "Sweden",
+                "price_per_night_sgd": 205.0,
+                "rating": 4.3,
+                "amenities": [
                     "Outdoor Pool",
                     "Spa",
-                    "Fitness Center",
-                    "Restaurant",
-                    "Bar"
+                    "Beachfront",
+                    "Free Breakfast",
+                    "Terrace"
                 ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Buzz",
-                    "Sartoro",
-                    "The Spices"
-                ],
-                "nearby_activities": [
+                "distance_to_preferences": [
                     {
-                        "name": "SIPCOT IT Park",
-                        "distance_m": 1000
-                    },
-                    {
-                        "name": "Muttukadu Lake",
-                        "distance_m": 9000
+                        "target": "beach",
+                        "distance_m": 50
                     }
-                ]
+                ],
+                "nearby_food": [
+                    "Restaurang Skansen",
+                    "Hotel Skansen Bistro"
+                ],
+                "nearby_activities": []
             },
             {
-                "name": "Lemon Tree Hotel, Vadodara",
-                "city": "Vadodara",
-                "country": "India",
-                "price_per_night_sgd": 105.0,
-                "rating": 4.2,
-                "amenities": [
-                    "Free WiFi",
-                    "Fitness Center",
-                    "Restaurant",
-                    "Conference Rooms",
-                    "24-hour Front Desk"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Citrus Cafe",
-                    "Mandarin",
-                    "Kebab Gali"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Sayaji Baug Zoo",
-                        "distance_m": 2500
-                    },
-                    {
-                        "name": "Lakshmi Vilas Palace",
-                        "distance_m": 4000
-                    }
-                ]
-            },
-            {
-                "name": "Fairfield by Marriott Bengaluru Outer Ring Road",
-                "city": "Bengaluru",
-                "country": "India",
-                "price_per_night_sgd": 115.0,
+                "name": "Hotel Tylösand",
+                "city": "Halmstad",
+                "country": "Sweden",
+                "price_per_night_sgd": 215.0,
                 "rating": 4.3,
                 "amenities": [
-                    "Free WiFi",
-                    "Fitness Center",
+                    "Spa",
                     "Outdoor Pool",
-                    "Restaurant",
-                    "Bar",
-                    "Meeting Rooms"
+                    "Free WiFi",
+                    "Fitness Center",
+                    "Restaurant"
                 ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Kava",
-                    "Mocha",
-                    "TGI Fridays"
-                ],
-                "nearby_activities": [
+                "distance_to_preferences": [
                     {
-                        "name": "Ecospace Business Park",
-                        "distance_m": 500
-                    },
-                    {
-                        "name": "Central Mall Bellandur",
-                        "distance_m": 2100
-                    }
-                ]
-            }
-        ],
-        [
-            {
-                "name": "Onyado Nono Namba Natural Hot Spring",
-                "city": "Osaka",
-                "country": "Japan",
-                "price_per_night_sgd": 175.0,
-                "rating": 4.5,
-                "amenities": [
-                    "Breakfast included",
-                    "Indoor pool",
-                    "Hot spring bath",
-                    "Sauna"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Ichiran Dotonbori",
-                    "Dotonbori Konamon Museum"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Dotonbori",
-                        "distance_m": 300
-                    },
-                    {
-                        "name": "Shinsaibashi-suji Shopping Street",
-                        "distance_m": 500
-                    }
-                ]
-            },
-            {
-                "name": "Daiwa Roynet Hotel Okinawa Kokusaidori",
-                "city": "Naha",
-                "country": "Japan",
-                "price_per_night_sgd": 145.0,
-                "rating": 4.4,
-                "amenities": [
-                    "Breakfast included",
-                    "Pool access",
-                    "Free Wi-Fi",
-                    "Non-smoking rooms"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Makishi Public Market",
-                    "Danryu Ramen"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Kokusai Dori",
+                        "target": "beach",
                         "distance_m": 100
-                    },
-                    {
-                        "name": "Makishi Public Market",
-                        "distance_m": 600
                     }
-                ]
-            },
-            {
-                "name": "Daiwa Roynet Hotel Kyoto Ekimae",
-                "city": "Kyoto",
-                "country": "Japan",
-                "price_per_night_sgd": 165.0,
-                "rating": 4.3,
-                "amenities": [
-                    "Breakfast included",
-                    "Pool access",
-                    "Free Wi-Fi",
-                    "Laundry service"
                 ],
-                "distance_to_preferences": [],
                 "nearby_food": [
-                    "Kyoto Ramen Koji",
-                    "Nakamura Tokijiro Kyoto"
+                    "Tylöhus Restaurang",
+                    "Solgården",
+                    "Leifs Lounge"
                 ],
-                "nearby_activities": [
-                    {
-                        "name": "Kyoto Tower",
-                        "distance_m": 250
-                    },
-                    {
-                        "name": "Higashi Hongan-ji",
-                        "distance_m": 400
-                    }
-                ]
-            }
-        ]
-    ],
-    "h@gmail.com": [
-        [
-            {
-                "name": "lyf Farrer Park Singapore",
-                "city": "Singapore",
-                "country": "Singapore",
-                "price_per_night_sgd": 220.0,
-                "rating": 4.4,
-                "amenities": [
-                    "Shared kitchen",
-                    "Laundromat",
-                    "Fitness room",
-                    "Co-working spaces"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Pek Kio Market and Food Centre",
-                    "Mustafa Centre eateries",
-                    "City Square Mall food court"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "City Square Mall",
-                        "distance_m": 200
-                    },
-                    {
-                        "name": "Sri Srinivasa Perumal Temple",
-                        "distance_m": 450
-                    }
-                ]
-            },
-            {
-                "name": "Village Hotel Bugis",
-                "city": "Singapore",
-                "country": "Singapore",
-                "price_per_night_sgd": 210.0,
-                "rating": 4.0,
-                "amenities": [
-                    "Outdoor swimming pool",
-                    "Fitness centre",
-                    "Laundry service",
-                    "Lounge"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Bugis Street Market food stalls",
-                    "Zam Zam Restaurant",
-                    "Victory Restaurant"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Bugis Junction",
-                        "distance_m": 300
-                    },
-                    {
-                        "name": "Haji Lane",
-                        "distance_m": 400
-                    }
-                ]
-            },
-            {
-                "name": "The Nostalgia Hotel",
-                "city": "Singapore",
-                "country": "Singapore",
-                "price_per_night_sgd": 190.0,
-                "rating": 3.9,
-                "amenities": [
-                    "Free Wi-Fi",
-                    "Boutique rooms",
-                    "Concierge",
-                    "Lounge"
-                ],
-                "distance_to_preferences": [],
-                "nearby_food": [
-                    "Tiong Bahru Market",
-                    "Plain Vanilla Bakery",
-                    "Tiong Bahru Bakery"
-                ],
-                "nearby_activities": [
-                    {
-                        "name": "Tiong Bahru Heritage Trail",
-                        "distance_m": 250
-                    },
-                    {
-                        "name": "Kim Pong Park",
-                        "distance_m": 400
-                    }
-                ]
+                "nearby_activities": []
             }
         ]
     ]
