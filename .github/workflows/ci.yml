@@ -34,8 +34,8 @@ jobs:
       # Fails on syntax errors and undefined names only, not on style.
       - name: Check for syntax errors and undefined names
         run: >
-          flake8 app.py gui_app.py ai_manager data_managerpart2 gui
-          io_manager_part2 logic_manager_part2 tests
+          flake8 app.py gui_app.py ai_managerpart2 data_managerpart2 gui
+          io_manager_part2 logic_manager_part2 emails tests
           --select=E9,F63,F7,F82 --show-source --statistics
 
       # Catches broken imports between the managers. No API key or email
