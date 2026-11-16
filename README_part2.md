@@ -269,10 +269,3 @@ python -m unittest discover -s tests -v
 
 Do not commit `.env`, `datarecords.json` (real email addresses) or `logs/`.
 
-## Known limitations
-
-- In the console app, Ctrl-C / Ctrl-D (or closed input) prints a goodbye message but the menu loop continues instead of exiting.
-- The result of `DataManager.save()` is not checked, so "saved successfully" can appear even if writing failed (the email result *is* reported).
-- With Customisation, location/amenity points cannot be earned when the AI finds no place to measure against.
-- The GUI validates less strictly than the console.
-- Admin credentials are fixed demo values.
