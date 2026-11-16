@@ -15,6 +15,7 @@ from data_managerpart2.data_manager import (
 from data_managerpart2.json_storage import JsonStorage
 from data_managerpart2.memory_storage import MemoryStorage
 from emails.send_email import EmailSender
+from emails.recommendation_email import RecommendationEmail
 
 import logic_manager_part2.logic_manager as LogicManager
 
@@ -183,10 +184,12 @@ class GuiController:
 
         saved = False
 
+        emailed = None
+
         if top_three_original:
 
             # Save recommendations
-            await run.io_bound(
+            saved = await run.io_bound(
                 self.data_manager.save,
                 {
                     email:
@@ -194,21 +197,15 @@ class GuiController:
                 },
             )
 
-            saved = True
+            recommendation = RecommendationEmail(destination, top_three_original)
 
             # Send email
-            await run.io_bound(
+            emailed = await run.io_bound(
                 self.email_sender.send,
                 to_address=email,
-                subject=(
-                    'Your Hotel Recommendations for '
-                    + destination
-                ),
-                body=(
-                    'Here are the top 3 hotels '
-                    'you might like!\n\n'
-                    f'{top_three_original}'
-                ),
+                subject=recommendation.subject(),
+                body=recommendation.plain_text(),
+                html_body=recommendation.html(),
             )
 
         return {
@@ -218,6 +215,7 @@ class GuiController:
                 profile_choice
             ),
             'saved': saved,
+            'emailed': emailed,
         }
 
     def query_records(

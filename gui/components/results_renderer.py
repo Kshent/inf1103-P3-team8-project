@@ -217,3 +217,43 @@ class ResultsRenderer:
                 ui.label(
                     'Recommendations saved successfully.'
                 )
+
+
+        if bundle.get(
+            'emailed'
+        ) is True:
+            with ui.row().classes(
+                'w-full bg-emerald-50 '
+                'text-emerald-800 '
+                'rounded-xl p-3 '
+                'items-center gap-2'
+            ):
+                ui.icon(
+                    'mark_email_read'
+                )
+
+                ui.label(
+                    'Recommendations emailed to '
+                    + bundle['user_input_details'][
+                        'email_address'
+                    ]
+                    + '.'
+                )
+
+        elif bundle.get(
+            'emailed'
+        ) is False:
+            with ui.row().classes(
+                'w-full bg-amber-50 '
+                'text-amber-800 '
+                'rounded-xl p-3 '
+                'items-center gap-2'
+            ):
+                ui.icon(
+                    'warning'
+                )
+
+                ui.label(
+                    'Your recommendations could not be emailed.'
+                )
+        

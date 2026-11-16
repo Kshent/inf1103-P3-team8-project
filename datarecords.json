@@ -485,6 +485,92 @@
                     }
                 ]
             }
+        ],
+        [
+            {
+                "name": "Onyado Nono Namba Natural Hot Spring",
+                "city": "Osaka",
+                "country": "Japan",
+                "price_per_night_sgd": 175.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Breakfast included",
+                    "Indoor pool",
+                    "Hot spring bath",
+                    "Sauna"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Ichiran Dotonbori",
+                    "Dotonbori Konamon Museum"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Dotonbori",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Shinsaibashi-suji Shopping Street",
+                        "distance_m": 500
+                    }
+                ]
+            },
+            {
+                "name": "Daiwa Roynet Hotel Okinawa Kokusaidori",
+                "city": "Naha",
+                "country": "Japan",
+                "price_per_night_sgd": 145.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Breakfast included",
+                    "Pool access",
+                    "Free Wi-Fi",
+                    "Non-smoking rooms"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Makishi Public Market",
+                    "Danryu Ramen"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kokusai Dori",
+                        "distance_m": 100
+                    },
+                    {
+                        "name": "Makishi Public Market",
+                        "distance_m": 600
+                    }
+                ]
+            },
+            {
+                "name": "Daiwa Roynet Hotel Kyoto Ekimae",
+                "city": "Kyoto",
+                "country": "Japan",
+                "price_per_night_sgd": 165.0,
+                "rating": 4.3,
+                "amenities": [
+                    "Breakfast included",
+                    "Pool access",
+                    "Free Wi-Fi",
+                    "Laundry service"
+                ],
+                "distance_to_preferences": [],
+                "nearby_food": [
+                    "Kyoto Ramen Koji",
+                    "Nakamura Tokijiro Kyoto"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Kyoto Tower",
+                        "distance_m": 250
+                    },
+                    {
+                        "name": "Higashi Hongan-ji",
+                        "distance_m": 400
+                    }
+                ]
+            }
         ]
     ]
 }
