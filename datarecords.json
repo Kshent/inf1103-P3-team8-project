@@ -369,5 +369,114 @@
                 ]
             }
         ]
+    ],
+    "team8projecttesting@gmail.com": [
+        [
+            {
+                "name": "Furama City Centre",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 210.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Breakfast Included",
+                    "High Floor Superior Rooms",
+                    "Outdoor Pool",
+                    "Fitness Centre",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 2000
+                    }
+                ],
+                "nearby_food": [
+                    "People's Park Complex Food Centre",
+                    "Hong Lim Market & Food Centre",
+                    "Chinatown Point Eateries"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Clarke Quay Riverside",
+                        "distance_m": 500
+                    },
+                    {
+                        "name": "Chinatown Street Market",
+                        "distance_m": 400
+                    }
+                ]
+            },
+            {
+                "name": "Peninsula Excelsior Singapore, a Wyndham Hotel",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 235.0,
+                "rating": 4.0,
+                "amenities": [
+                    "Breakfast Buffet",
+                    "High Floor Tower Rooms",
+                    "Two Outdoor Pools",
+                    "Fitness Centre",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1800
+                    }
+                ],
+                "nearby_food": [
+                    "Song Fa Bak Kut Teh",
+                    "The Arts House Cafe",
+                    "Funan Mall Food Court"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "National Gallery Singapore",
+                        "distance_m": 350
+                    },
+                    {
+                        "name": "Fort Canning Park",
+                        "distance_m": 400
+                    }
+                ]
+            },
+            {
+                "name": "Dao by Dorsett AMTD Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 295.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Complimentary Breakfast",
+                    "High Floor Rooms Available",
+                    "Outdoor Infinity Pool",
+                    "Fitness Centre",
+                    "Free Wi-Fi"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1600
+                    }
+                ],
+                "nearby_food": [
+                    "Lau Pa Sat Hawker Centre",
+                    "Amoy Street Food Centre",
+                    "Boon Tat Street Satay Street"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Marina Bay Waterfront Promenade",
+                        "distance_m": 1200
+                    },
+                    {
+                        "name": "Gardens by the Bay",
+                        "distance_m": 2100
+                    }
+                ]
+            }
+        ]
     ]
 }
