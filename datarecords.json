@@ -183,5 +183,191 @@
                 "nearby_activities": []
             }
         ]
+    ],
+    "huifen.c@yahoo.com": [
+        [
+            {
+                "name": "The Ritz-Carlton, Millenia Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 295.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Complimentary Breakfast",
+                    "High Floor Harbour Views",
+                    "Outdoor Pool",
+                    "Spa"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 900
+                    }
+                ],
+                "nearby_food": [
+                    "Summer Pavilion",
+                    "Colony",
+                    "Chihuly Lounge"
+                ],
+                "nearby_activities": []
+            },
+            {
+                "name": "Marina Mandarin Singapore (Parkroyal Collection Marina Bay)",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 260.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor City Views",
+                    "Mineral Water Swimming Pool",
+                    "Fitness Centre"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 700
+                    }
+                ],
+                "nearby_food": [
+                    "Peppermint",
+                    "Ruth's Chris Steak House",
+                    "Supertree Food Hall"
+                ],
+                "nearby_activities": []
+            },
+            {
+                "name": "Pan Pacific Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 280.0,
+                "rating": 4.6,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor Rooms Available",
+                    "Swimming Pool",
+                    "Fitness Center",
+                    "Spa"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 850
+                    }
+                ],
+                "nearby_food": [
+                    "Edge",
+                    "Hai Tien Lo",
+                    "Makansutra Gluttons Bay"
+                ],
+                "nearby_activities": []
+            }
+        ],
+        [
+            {
+                "name": "Conrad Centennial Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 270.0,
+                "rating": 4.5,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor Available",
+                    "Outdoor Pool",
+                    "Fitness Centre",
+                    "Executive Lounge"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 1000
+                    }
+                ],
+                "nearby_food": [
+                    "Oscar's",
+                    "Golden Peony",
+                    "Makansutra Gluttons Bay"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Suntec City Fountain of Wealth",
+                        "distance_m": 250
+                    },
+                    {
+                        "name": "Esplanade Park",
+                        "distance_m": 700
+                    }
+                ]
+            },
+            {
+                "name": "Marina Mandarin Singapore (Parkroyal Collection Marina Bay)",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 260.0,
+                "rating": 4.4,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor Available",
+                    "Mineral Water Swimming Pool",
+                    "Fitness Centre"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 800
+                    }
+                ],
+                "nearby_food": [
+                    "Peppermint",
+                    "Peach Blossoms",
+                    "Satay by the Bay"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Marina Square",
+                        "distance_m": 200
+                    },
+                    {
+                        "name": "Gardens by the Bay",
+                        "distance_m": 1000
+                    }
+                ]
+            },
+            {
+                "name": "Ritz-Carlton, Millenia Singapore",
+                "city": "Singapore",
+                "country": "Singapore",
+                "price_per_night_sgd": 300.0,
+                "rating": 4.7,
+                "amenities": [
+                    "Free Breakfast",
+                    "High Floor Available",
+                    "Swimming Pool",
+                    "Spa",
+                    "Art Collection"
+                ],
+                "distance_to_preferences": [
+                    {
+                        "target": "Marina Bay Sands",
+                        "distance_m": 950
+                    }
+                ],
+                "nearby_food": [
+                    "Colony",
+                    "Summer Pavilion",
+                    "Chihuly Lounge"
+                ],
+                "nearby_activities": [
+                    {
+                        "name": "Millenia Walk",
+                        "distance_m": 300
+                    },
+                    {
+                        "name": "Singapore Flyer",
+                        "distance_m": 500
+                    }
+                ]
+            }
+        ]
     ]
 }
